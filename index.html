@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loja — Catálogo</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #e11d48;
+    --primary-dark: #be123c;
+    --success: #16a34a;
+    --warn: #d97706;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+    --shadow-lg: 0 4px 16px rgba(0,0,0,.14);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-800);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--primary);
+    color: #fff;
+    padding: 0 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-lg);
+  }
+  .header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 56px;
+  }
+  .logo { font-size: 1.25rem; font-weight: 700; flex: 1; white-space: nowrap; }
+  .logo span { opacity: .7; font-weight: 400; font-size: .9rem; }
+  .btn-refresh {
+    background: rgba(255,255,255,.2);
+    border: none;
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .btn-refresh:hover { background: rgba(255,255,255,.35); }
+  .btn-refresh.spinning { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .cart-btn {
+    background: rgba(255,255,255,.2);
+    border: none;
+    color: #fff;
+    height: 36px;
+    border-radius: 18px;
+    padding: 0 14px;
+    cursor: pointer;
+    font-size: .9rem;
+    display: flex; align-items: center; gap: 6px;
+    transition: background .2s;
+    white-space: nowrap;
+  }
+  .cart-btn:hover { background: rgba(255,255,255,.35); }
+  .cart-badge {
+    background: #fff;
+    color: var(--primary);
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: .75rem;
+    font-weight: 700;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  /* TOOLBAR */
+  .toolbar {
+    background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+    position: sticky;
+    top: 56px;
+    z-index: 90;
+  }
+  .toolbar-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 8px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 160px;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 10px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-400);
+    pointer-events: none;
+  }
+  #searchInput {
+    width: 100%;
+    padding: 8px 10px 8px 34px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: .9rem;
+    outline: none;
+    transition: border-color .2s;
+  }
+  #searchInput:focus { border-color: var(--primary); }
+  #roomFilter, #sortSelect {
+    padding: 8px 10px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: .85rem;
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+  }
+  #roomFilter:focus, #sortSelect:focus { border-color: var(--primary); }
+
+  /* CATEGORY TABS */
+  .cat-tabs-wrap {
+    background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .cat-tabs {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    padding: 0 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .cat-tabs::-webkit-scrollbar { display: none; }
+  .cat-tab {
+    flex-shrink: 0;
+    padding: 10px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: .85rem;
+    color: var(--gray-600);
+    border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+  .cat-tab:hover { color: var(--primary); }
+  .cat-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+
+  /* MAIN CONTENT */
+  main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .results-info {
+    font-size: .82rem;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+
+  /* PRODUCT GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  }
+
+  /* PRODUCT CARD */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow .2s, transform .2s;
+    position: relative;
+  }
+  .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  .card-img-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    background: var(--gray-100);
+    overflow: hidden;
+  }
+  .card-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .3s;
+  }
+  .card:hover .card-img-wrap img { transform: scale(1.04); }
+  .stock-badge {
+    position: absolute;
+    top: 6px; right: 6px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+  .badge-ok { background: #dcfce7; color: #15803d; }
+  .badge-low { background: #fef3c7; color: #b45309; }
+  .badge-out { background: #fee2e2; color: #dc2626; }
+  .card-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 6px;
+  }
+  .card-name {
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-prices {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .price-original {
+    font-size: .75rem;
+    color: var(--gray-400);
+    text-decoration: line-through;
+  }
+  .price-discounted {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--success);
+  }
+  .discount-tag {
+    display: inline-block;
+    background: #dcfce7;
+    color: var(--success);
+    font-size: .68rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 6px;
+    margin-left: 4px;
+  }
+  .card-category {
+    font-size: .72rem;
+    color: var(--gray-400);
+  }
+  .card-footer { margin-top: auto; }
+  .qty-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .qty-row label { font-size: .75rem; color: var(--gray-500); }
+  .qty-row select {
+    flex: 1;
+    padding: 4px 6px;
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    font-size: .8rem;
+    background: #fff;
+    cursor: pointer;
+  }
+  .btn-add {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: #fff;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .btn-add:hover:not(:disabled) { background: var(--primary-dark); }
+  .btn-add:disabled {
+    background: var(--gray-200);
+    color: var(--gray-400);
+    cursor: not-allowed;
+  }
+
+  /* PAGINATION */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .page-btn {
+    min-width: 36px; height: 36px;
+    border: 1px solid var(--gray-200);
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: .85rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+    padding: 0 10px;
+  }
+  .page-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+  .page-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: 700; }
+  .page-btn:disabled { opacity: .4; cursor: default; }
+
+  /* CART PANEL */
+  .cart-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 200;
+    backdrop-filter: blur(2px);
+  }
+  .cart-overlay.open { display: block; }
+  .cart-panel {
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    width: min(420px, 100vw);
+    background: #fff;
+    z-index: 201;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    box-shadow: -4px 0 24px rgba(0,0,0,.15);
+  }
+  .cart-panel.open { transform: translateX(0); }
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .cart-header h2 { font-size: 1.1rem; }
+  .btn-close-cart {
+    background: none; border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--gray-500);
+    line-height: 1;
+    padding: 4px;
+  }
+  .cart-items { flex: 1; overflow-y: auto; padding: 12px 16px; }
+  .cart-empty {
+    text-align: center;
+    color: var(--gray-400);
+    padding: 40px 0;
+    font-size: .95rem;
+  }
+  .cart-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .cart-item-img {
+    width: 56px; height: 56px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: var(--gray-100);
+  }
+  .cart-item-info { flex: 1; min-width: 0; }
+  .cart-item-name {
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cart-item-price { font-size: .78rem; color: var(--gray-500); margin-top: 2px; }
+  .cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .qty-ctrl {
+    width: 28px; height: 28px;
+    border: 1px solid var(--gray-200);
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s;
+  }
+  .qty-ctrl:hover { background: var(--gray-100); }
+  .qty-num { font-size: .85rem; font-weight: 600; min-width: 22px; text-align: center; }
+  .btn-remove {
+    background: none; border: none;
+    color: var(--gray-400);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px;
+    margin-left: 2px;
+  }
+  .btn-remove:hover { color: var(--primary); }
+  .cart-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--gray-200);
+    background: #fff;
+  }
+  .cart-totals { margin-bottom: 14px; }
+  .cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: .9rem;
+    margin-bottom: 4px;
+    color: var(--gray-600);
+  }
+  .cart-total-row.main {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--success);
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--gray-200);
+  }
+  .cart-actions { display: flex; flex-direction: column; gap: 8px; }
+  .btn-whatsapp {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: #25D366;
+    color: #fff;
+    font-size: .95rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background .2s;
+  }
+  .btn-whatsapp:hover { background: #1da851; }
+  .btn-whatsapp:disabled { background: var(--gray-300); cursor: not-allowed; }
+  .btn-share-cart {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--gray-300);
+    border-radius: 10px;
+    background: #fff;
+    font-size: .85rem;
+    cursor: pointer;
+    color: var(--gray-600);
+    transition: background .2s;
+  }
+  .btn-share-cart:hover { background: var(--gray-50); }
+  .btn-clear-cart {
+    background: none; border: none;
+    font-size: .78rem;
+    color: var(--gray-400);
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    padding: 4px;
+  }
+  .btn-clear-cart:hover { color: var(--primary); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--gray-800);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: .88rem;
+    z-index: 500;
+    transition: transform .3s, opacity .3s;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* SVG PLACEHOLDER */
+  .svg-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
+  }
+
+  /* NO RESULTS */
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray-400);
+  }
+  .no-results svg { margin-bottom: 12px; }
+
+  /* LOADING */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,.7);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .loading-overlay.show { display: flex; }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--gray-200);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @media (max-width: 600px) {
+    .toolbar-inner { gap: 6px; }
+    #roomFilter, #sortSelect { font-size: .8rem; }
+    main { padding: 10px; }
+    .card-body { padding: 8px; }
+    .card-name { font-size: .8rem; }
+    .price-discounted { font-size: .9rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <span style="color:var(--gray-600);font-size:.9rem">Atualizando catálogo…</span>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo">Loja <span>— Catálogo</span></div>
+    <button class="btn-refresh" id="btnRefresh" title="Atualizar catálogo">↻</button>
+    <button class="cart-btn" id="btnCart">
+      🛒 Carrinho
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="search-wrap">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="search" id="searchInput" placeholder="Buscar produtos…" autocomplete="off">
+    </div>
+<select id="sortSelect">
+      <option value="default">Ordenar</option>
+      <option value="price-asc">Menor preço</option>
+      <option value="price-desc">Maior preço</option>
+      <option value="name-asc">A → Z</option>
+      <option value="name-desc">Z → A</option>
+      <option value="stock-desc">Maior estoque</option>
+    </select>
+  </div>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="cat-tabs-wrap">
+  <div class="cat-tabs" id="catTabs"></div>
+</div>
+
+<!-- MAIN -->
+<main>
+  <div class="results-info" id="resultsInfo"></div>
+  <div class="grid" id="productGrid"></div>
+  <div class="pagination" id="pagination"></div>
+</main>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h2>🛒 Carrinho</h2>
+    <button class="btn-close-cart" id="btnCloseCart" title="Fechar">×</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-totals" id="cartTotals"></div>
+    <div class="cart-actions">
+      <button class="btn-whatsapp" id="btnWhatsApp">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Enviar pelo WhatsApp
+      </button>
+      <button class="btn-share-cart" id="btnShareCart">🔗 Compartilhar carrinho</button>
+      <button class="btn-clear-cart" id="btnClearCart">Limpar carrinho</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const GSHEETS_CSV_URL = 'https://raw.githubusercontent.com/lojinhadd/loja/main/data.csv';
+const WA_NUMBER = '5511998031143';
+const STORE_URL = 'https://lojinhadd.github.io/loja/';
+const PER_PAGE = 28;
+const DISCOUNT = 0.20;
+const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 min
+const LS_CART_KEY = 'loja_cart_v2';
+
+// ============================================================
+// EMBEDDED PRODUCTS FALLBACK
+// ============================================================
+const PRODUCTS_FALLBACK = [{"id": 0, "name": "300km Max Turbo Deo Colonia 100ml Avon", "price": 67.0, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m34qag7d5ez743"}, {"id": 1, "name": "AVON PERFUME PUR BLANCA SERENITY DEO COLÔNIA 75ML", "price": 75.0, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_662365-MLB52910195906_122022-O.webp"}, {"id": 2, "name": "Anti Bactéria E Mofo Sintra Fast 500ml Vonixx Incrível X", "price": 34.0, "stock": 1, "sheet": "Sala 01", "category": "Limpeza", "kw": "cleaning,spray", "img": "https://images.tcdn.com.br/img/img_prod/1250843/sintra_fast_500ml_219_3_858c28b8f93d873f9e8c4a64dbc16f3c.jpg"}, {"id": 3, "name": "Antitranspirante Roll-on Barbour's Beauty Tropicsun Fragrância Tropc sun", "price": 29.9, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_685203-MLB88154104312_072025-O.webp"}, {"id": 4, "name": "Apice  Crespo power , creme de pentear nutritivo para cabelo crespo . Óleo de semente de uva , manteiga de murumor , extrato de borru 500 g", "price": 56.5, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/sg-11134201-8225d-mhbwbzm6ij9p49"}, {"id": 5, "name": "Aps Cosmético Cacho Máscara hidratante nutritiva Tratamentos Condicionante , 300 g .", "price": 69.9, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://www.apicecosmeticos.com.br/cdn/shop/products/fded8c2caebf2af9fe102d452f5fc8b2_1800x1800.jpg?v=1675166887"}, {"id": 6, "name": "Aps Cosméticos , cachos , condicionador , nutritivo , cabelo macio e brilhoso 300 ml", "price": 42.8, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://www.apicecosmeticos.com.br/cdn/shop/files/condicionadorcachos300-_2_1800x1800.png?v=1701454303"}, {"id": 7, "name": "Aps Cosméticos , cachos , gelatina ativadora , umidificadora , 300 ml .", "price": 59.6, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/sg-11134201-7rcce-m6iyhv1ol8d77e"}, {"id": 8, "name": "Aps Cosméticos , cachos , máscara , hidratante e nutritiva , nutri e hidrata 300 g", "price": 42.2, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://http2.mlstatic.com/D_NQ_NP_750331-MLU72997267905_112023-O.webp"}, {"id": 9, "name": "Aps Cosméticos , caixas , shampoo nutritivo , limpeza suave , 300 ml .", "price": 45.2, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://http2.mlstatic.com/D_NQ_NP_607563-MLU75258854456_032024-O.webp"}, {"id": 10, "name": "Aps Cosméticos , nut O Wavis , gelatina acidificante condicionante Óleo de prakachi , proteína de arroz , 300 ml .", "price": 32.2, "stock": 1, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://images.tcdn.com.br/img/img_prod/1263558/gelatina_acidificante_eamp_condicionante_apice_cosmeticos_nutri_waves_300ml_1218684_2_bde04131bfbcd932937dfe3e4eb6af9b.jpg"}, {"id": 11, "name": "Aps Cosméticos , nutre aves , máscara Nutritiva , intensa Óleo de parakashi , proteína do arroz . 300 g", "price": 59.6, "stock": 1, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://http2.mlstatic.com/D_NQ_NP_960695-MLB78220900783_082024-O.webp"}, {"id": 12, "name": "Aps Cosméticos Olha o vegetal , semente de uva , 30 ml", "price": 29.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/MP167785/5864264a-6544-4b1f-8866-f1f5770cb5ec-mp167785-oleo-vegetal-semente-de-uva-apse-100-vegano-30ml.png"}, {"id": 13, "name": "Aps Cosméticos PH , control Anticorosidade , efeito teia condicionante . 500 g", "price": 59.6, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/sg-11134201-7ra1n-mbid7788gfed10"}, {"id": 14, "name": "Aps cosmético , Aquacremie multifuncional para todas as curvaturas 260 ml .", "price": 59.6, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "http://www.apicecosmeticos.com.br/cdn/shop/files/KITS_35.png?v=1729802082"}, {"id": 15, "name": "Aps cosmético , escalpquer , shampoo estimulante para todas as curvatura Óleo de babaçu menta . 250 g .", "price": 45.6, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/MP154464/60ef9b74-a6ab-4e34-9812-f4fca9baab6a-mp154464-kit-para-toda-cacheada-apse-shampoo-condicionador-e-ativador.png"}, {"id": 16, "name": "Aps cosmético Cachos , ativador e modelador antifriz uso diário sem enxague . 500 g", "price": 45.6, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/br-11134207-7qukw-livybptjcvi707"}, {"id": 17, "name": "Aps cosmético Caixas ativador e modelador antifriz . Sem enxagui 500 g", "price": 39.6, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_961849-MLB82762535235_022025-O-kit-ativador-anti-frizz-500g-ph-control-500g-apse-cosmeticos.webp"}, {"id": 18, "name": "Aps cosmético Escalp quer condicionador hidratante , óleo de babaçu mais menta , 300 ml .", "price": 46.8, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://http2.mlstatic.com/D_NQ_NP_989279-MLA83571259056_042025-O.webp"}, {"id": 19, "name": "Artex Contém 3 peças , um lençol de elástico de 1 e 60 por 2 e 2 fronha de 50 : 70 .", "price": 179.0, "stock": 1, "sheet": "Sala 01", "category": "Casa & Cama", "kw": "home,bedroom", "img": "https://static.ferju.com.br/public/ferju/imagens/produtos/jg-lencol-dobra-feita-200-fios-solteiro-artex-roberta-3320.jpg"}, {"id": 20, "name": "Assento de cadeira", "price": 129.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lq0vslf2b0nz04"}, {"id": 21, "name": "Ativador De Cachos Apice Nova Fragrância Vegano Anti Frizz Creme De Pentar Uso Diario 500g", "price": 53.2, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://m.media-amazon.com/images/I/61CTEVVW9AL._AC_SY300_SX300_QL70_ML2_.jpg"}, {"id": 22, "name": "Aura Beauty Afrodite Garden - Body Splash Desodorante Colônia 200ml", "price": 95.0, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://cdn.sistemawbuy.com.br/arquivos/2afb681c26a53b9823cd4977d1fd80dc/produtos/6880ebf238ffb/15364401442-imagem-do-whatsapp-de-2025-07-23-a-s-10-59-59-d29bf2ef-6880ec1e53b15.jpg"}, {"id": 23, "name": "Avon , caixa de sabonete . 4 unidades , 80 g cada .", "price": 18.9, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://down-br.img.susercontent.com/file/6b32bd03983c8e91ef5278b743c4a79c"}, {"id": 24, "name": "Avon atration Desiré Four hair Deu parfan 50 ml .", "price": 39.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lzw5wakoztc1cf"}, {"id": 25, "name": "Avène RetrinAL - Creme para Área dos Olhos 15ml", "price": 247.3, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/20052976/76e264f1-9444-4267-859c-ef9955f8d640-20052976-avene-retrinal-anti-idade-olhos-15ml.png"}, {"id": 26, "name": "BARBOUS Vitamina Clare Pára apenas manchadas com cicatriz e linha de expressão .", "price": 79.09, "stock": 1, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://photos.enjoei.com.br/gel-clareador-de-manchas-vitamina-c-barbous/1200xN/czM6Ly9waG90b3MuZW5qb2VpLmNvbS5ici9wcm9kdWN0cy8yMTYzODI4MC9kZTI3OTJiY2VjZTcxNWQzMmU2Yjc3N2IzYTY1ZWNiOC5qcGc"}, {"id": 27, "name": "BIO OIL ÓLEO PARA CUIDADO DA PELE - NATURAL 125M", "price": 81.0, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://m.media-amazon.com/images/I/616zUOSw-0L._AC_SL1500_.jpg"}, {"id": 28, "name": "Base de Maquiagem MAC Studio Fix Fluid | SPF 15 Matte NC20 24h Controle de Oleosidade | 30ml", "price": 259.0, "stock": 1, "sheet": "Sala 02", "category": "Maquiagem", "kw": "makeup,cosmetics", "img": "https://cdn.mos.cms.futurecdn.net/7q6rQ7uHYTMU328YB4KNEP.jpg"}, {"id": 29, "name": "Bastão Antriatrito Corporal Sallve - Lançamento", "price": 116.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/20070683/0383892c-f2b1-4006-99d4-1580c7f78d46-sallve-bastao-antiatrito-15g.png"}, {"id": 30, "name": "Bernardi Pra' Dei Salt Conegliano Valdobbiadene Brut 750ml", "price": 228.0, "stock": 6, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://pasvino.de/thumbnail/b2/ef/79/1722017914/schaumwein-glera-pra-dei-salt-bernardi-1000_800x800.png?ts=1723268553"}, {"id": 31, "name": "Blush Iluminador Bt Cushion Glow Bruna Tavares 15g Wine", "price": 78.9, "stock": 2, "sheet": "Sala 01", "category": "Maquiagem", "kw": "makeup,cosmetics", "img": "https://cdn.awsli.com.br/800x800/1824/1824275/produto/379938736/imagem_2025-11-13_081226152-494o1prjsq.png"}, {"id": 32, "name": "Body Splash - Cheiro de Rica Floral Intenso e Adocicado", "price": 49.9, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://down-br.img.susercontent.com/file/sg-11134201-824i3-metvtes5m87698"}, {"id": 33, "name": "Body Splash Afrodite Garden, Colônia Desodorante Feminino 200ml", "price": 90.0, "stock": 4, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mh3rg6cqew3kf7"}, {"id": 34, "name": "Body Splash Barbours Angelical Desodorante Colônia Corporal 200ml", "price": 49.0, "stock": 10, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://paguemenos.vtexassets.com/arquivos/ids/1024592/Desodorante-Body-Splash-Barbour-s-Beauty-Angelical-200ml.jpg?v=638852460481170000"}, {"id": 35, "name": "Body Splash L'Occitane au Brésil Mareô 150ml", "price": 127.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_958323-MLB83258362580_042025-O-kit-presente-mare-body-spray-e-creme-de-mos-loccitane.webp"}, {"id": 36, "name": "Body Splash My Sweet Delight Desodorante Colônia 200ml", "price": 99.0, "stock": 17, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mf8lj51yw7ie72"}, {"id": 37, "name": "Boné Approve Vasco Preto", "price": 233.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://images.tcdn.com.br/img/img_prod/311840/bone_approve_vasco_preto_159695_1_55911887b60495e8f93a2b687bb3efca.jpg"}, {"id": 38, "name": "Boné New Era Aba Curva 920 Brand Flag Core Metal Bege Tamanho Un", "price": 199.0, "stock": 1, "sheet": "Sala 02", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://images.tcdn.com.br/img/img_prod/710966/bone_new_era_920_brand_flag_core_metal_bege_3051_2_76141b3945669f0e626fa748a7c7f03c.jpg"}, {"id": 39, "name": "Bota Coturno Feminino Tratorado Preto Fosco Original Dubuy", "price": 129.0, "stock": 1, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://down-br.img.susercontent.com/file/21fd82b7dd842357544fda820e5f61ca"}, {"id": 40, "name": "Bota Coturno Militar Masculino Areia Adventure Confortável**", "price": 203.0, "stock": 1, "sheet": "Sala 02", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://http2.mlstatic.com/D_NQ_NP_681039-MLB81804523226_012025-O-bota-coturno-militar-masculino-areia-adventure-confortavel.webp"}, {"id": 41, "name": "Boticário Cuide-se Bem Feira Creme De Pentear Babosa 200ml", "price": 39.0, "stock": 5, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/B55105/b0ac04ab-a454-4e9e-9f7a-e8dc380f22b0-bot-55105-cuide-se-bem-feira-babosa-creme-de-pentear-frontal-01.jpg"}, {"id": 42, "name": "Boticário Malbec X Deo Colônia Masculino 100ml", "price": 319.0, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/products/B30192/MALBEC-DES-COL-X-100ml-B30192_conceito2.jpg"}, {"id": 43, "name": "Bowl De Cristal Martelado Com Borda Dourada Taj 13cm X 6,5cm", "price": 41.0, "stock": 2, "sheet": "Sala 02", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://down-br.img.susercontent.com/file/sg-11134201-7rce1-lqzitn7klfdn55"}, {"id": 44, "name": "Bt Juicy Oil - Óleo Labial Bruna Tavares", "price": 55.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://cdn.iset.io/assets/54712/produtos/16901/btjuicyoilbrunatavaresguava.jpg"}, {"id": 45, "name": "CAFETEIRA FRANCESA 300ML", "price": 24.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_841966-MLB50431438615_062022-F.jpg"}, {"id": 46, "name": "Cachaça Extra Premium Carvalho 12 Anos Dom Tápparo 750Ml", "price": 248.0, "stock": 2, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://images.tcdn.com.br/img/img_prod/1094017/cachaca_extra_premium_carvalho_12_anos_750ml_971_1_c9560e3f222bfa1ff23172acb78b6248.jpg"}, {"id": 47, "name": "Cadiveu Blonde Reconstructor Shampoo 1 Litro", "price": 153.0, "stock": 1, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://d1t9nl6jb56kn8.cloudfront.net/Custom/Content/Products/10/28/1028808_cadiveu-blonde-reconstructor-shampoo-de-limpeza-profunda-1-litro-62520_z1_637333465770794333.png"}, {"id": 48, "name": "Café Especial Dark Chocolate Em Grãos Ou Moído 250g Memoê", "price": 119.0, "stock": 4, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "http://memoe.com.br/cdn/shop/files/cafe-especial-dark-chocolate-155100.jpg?v=1743191076"}, {"id": 49, "name": "Camiseta , assinatura la Martin Amarelo , sol , Stone , tamanho g .", "price": 236.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://images.tcdn.com.br/img/img_prod/898214/camiseta_plus_size_stone_amarela_1970_1_2f329db88d27f2a80356a89e1574e58d.jpg"}, {"id": 50, "name": "Camiseta Mc Algodao Pima La Martina", "price": 236.0, "stock": 3, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "http://www.lamartinabrasil.com/cdn/shop/files/bea44222f9aae07cd3c86e2bb5b8e216.jpg?v=1753988234"}, {"id": 51, "name": "Casa Riachuelo Jogo de cama , bordado Queen , 4 peças Lençol 2 e 40 por 2 e 60 . Um lençol Um lash E 2 fronhas", "price": 189.9, "stock": 1, "sheet": "Sala 01", "category": "Casa & Cama", "kw": "home,bedroom", "img": "https://down-br.img.susercontent.com/file/da67a6224a1d5f37d83c18b5ee84f03e"}, {"id": 52, "name": "Cera Antifrizz Adeus Frizz 12g", "price": 79.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://drogariasp.vteximg.com.br/arquivos/ids/1255961-1000-1000/889717---CERA-ANTIFRIZZ-HIDRATEI-BASTAO-12G-2.jpg?v=638882827769300000"}, {"id": 53, "name": "Chinelo Nike Victori One Masculino Nº. 42", "price": 219.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://imgnike-a.akamaihd.net/1300x1300/009354IRA6.jpg"}, {"id": 54, "name": "Choco Wheyfer Wafer +mu 12unidades Chocolate Branco Mais Mu", "price": 93.0, "stock": 1, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://http2.mlstatic.com/D_NQ_NP_934378-MLB78503398010_082024-O-choco-wheyfer-wafer-mu-12unidades-chocolate-branco-mais-mu.webp"}, {"id": 55, "name": "Cobre Leito Solteiro 200 Fios Bordado Dupla Face Decor 2 Pçs", "price": 169.0, "stock": 1, "sheet": "Sala 01", "category": "Casa & Cama", "kw": "home,bedroom", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-ln2tswwbj3r8b8"}, {"id": 56, "name": "Coloração Profissional Cadiveu Idea Color 60g Todas As Cores", "price": 29.0, "stock": 12, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/br-11134207-7qukw-librlq5fx03433"}, {"id": 57, "name": "Condicionador Booma - 120ml", "price": 84.0, "stock": 1, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://boomaorganic.com.br/cdn/shop/files/CapturadeTela2025-01-20as14.30.54.png?v=1737394269"}, {"id": 58, "name": "Conjunto champagne ave rara", "price": 1498.0, "stock": 1, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://images.tcdn.com.br/img/img_prod/1001675/conjunto_plie_5_20251104160939_f13b9b7012c8.jpg"}, {"id": 59, "name": "Copo Termico Vibe 470ml - Gocase", "price": 87.0, "stock": 4, "sheet": "Sala 02", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://http2.mlstatic.com/D_NQ_NP_699035-MLB87647864746_072025-O.webp"}, {"id": 60, "name": "Copo Térmico Cerveja + Ebook - Flamengo Lettering Pattern Preto", "price": 169.0, "stock": 1, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://http2.mlstatic.com/D_NQ_NP_714140-MLB84903381058_052025-O.webp"}, {"id": 61, "name": "Cortador De Cabelo Gama Italy Profissional Maquina Acessorio", "price": 169.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/9306b0865c181113e0897bb69e5cd2c6"}, {"id": 62, "name": "Creme Acetinado Hidratante Corporal L'eau De Lily Soleil", "price": 119.0, "stock": 1, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:best/v1/imagens/product/B89446/db515943-492d-40e9-8d98-3d3e544712ec-bot-89446-lily-leau-de-soleil-creme-acetinado-01.jpg"}, {"id": 63, "name": "Creme Corporal Esfoliante De Coco Cuide-se Bem O Boticário", "price": 39.0, "stock": 3, "sheet": "Sala 02", "category": "Corpo", "kw": "body+care,soap", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/B53684/dc09ebf0-198f-4aff-a70c-b1e9e0692dad-bot-53684-cuide-se-bem-feira-coco-creme-esfoliante-frontal-01.jpg"}, {"id": 64, "name": "Creme Facial Anti-idade Hada Labo - Aging Care Milk 140ml", "price": 155.0, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://down-br.img.susercontent.com/file/sg-11134201-22100-3gnb4ytbw5iv17"}, {"id": 65, "name": "Creme Gel Facial Gota de Colágeno Kokeshi", "price": 49.0, "stock": 2, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_800/v1/imagens/products/MP385875/creme-gel-facial-gota-de-colgeno-kokeshi-3.png"}, {"id": 66, "name": "Creme Hidratante Anti-idade Colo E Pescoço Anna Pegova 40ml", "price": 799.0, "stock": 1, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://http2.mlstatic.com/D_NQ_NP_822181-MLB48594159101_122021-O.webp"}, {"id": 67, "name": "Creme Hidratante Corporal English Rose Mahogany 350ml", "price": 78.0, "stock": 2, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://http2.mlstatic.com/D_NQ_NP_882476-MLB75122093184_032024-O.webp"}, {"id": 68, "name": "Creme Hidratante Perfumado Mawwal Basir 200ml Feminino Original", "price": 54.0, "stock": 2, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://www.worldshop.com.py/img/55358/produtos/960/caa868dd9437324985247dfd2a59cc14.jpg"}, {"id": 69, "name": "Creme para Pentear Definição Siàge Pro Cronology Curvas 300ml", "price": 49.9, "stock": 10, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/E58310/11199214-1e65-4db6-ba54-27873dd6f5ad-e58310-siage-cpp-definicao-pro-cronology-curvas-300ml-4.jpg"}, {"id": 70, "name": "Deo Colônia L'Occitane Araucária Poente 100ml Amadeirado Especiado", "price": 131.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_647247-MLB84453996202_052025-O-loccitane-araucaria-poente-deo-colonia-100ml.webp"}, {"id": 71, "name": "Deo Colônia Olinda 100 Ml - L'occitane Au Brésil", "price": 142.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_929974-MLB52677568804_122022-O.webp"}, {"id": 72, "name": "Desodorante Antitranspirante Aerossol Instance Chá Verde e Romã 150ml/90g", "price": 35.0, "stock": 9, "sheet": "Sala 02", "category": "Higiene", "kw": "deodorant,hygiene", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_800/v1/imagens/products/E47815/DES-AER-INSTANCE-CHA-VERDE_E47815_conceito_.jpg"}, {"id": 73, "name": "Desodorante Herbissimo Creme Tradicional Com 12 Unidades", "price": 74.0, "stock": 4, "sheet": "Sala 01", "category": "Higiene", "kw": "deodorant,hygiene", "img": "https://down-br.img.susercontent.com/file/ef23eb8d24437ba47b9bbc629af28da9"}, {"id": 74, "name": "Desodorante Spray Eudora Club 6 Aerossol 125ml Seco 24h Proteção", "price": 29.0, "stock": 5, "sheet": "Sala 02", "category": "Higiene", "kw": "deodorant,hygiene", "img": "https://roujic.com/wp-content/uploads/2025/product/916-desodorante-antitranspirante-aerossol-club-6-125ml-1.webp"}, {"id": 75, "name": "Difusor De Aromas", "price": 54.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://images.tcdn.com.br/img/img_prod/775329/difusor_de_aromas_essential_alecrim_200_ml_1639_1_b9077c6bd2da25875e29041e24c90653.jpg"}, {"id": 76, "name": "Edredom King Dupla Face 200 Fios Algodão Misto Cotton", "price": 284.0, "stock": 1, "sheet": "Sala 01", "category": "Casa & Cama", "kw": "home,bedroom", "img": "https://http2.mlstatic.com/D_NQ_NP_799978-MLB82048523181_012025-O-edredom-king-algodo-dupla-face-200-fios-cotton.webp"}, {"id": 77, "name": "Escova mágica Para cab", "price": 12.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lweqfnvmmo5167"}, {"id": 78, "name": "Espumante Rio Valley Moscatel 750ml", "price": 35.0, "stock": 3, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://images.tcdn.com.br/img/img_prod/1322745/espumante_rio_valley_moscatel_branco_zero_alcool_7_1_20251201144242_4591fae86e17.jpeg"}, {"id": 79, "name": "Eudora Lyra Loção Hidratante Desodorante Corporal 150ml", "price": 33.0, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/E92730/4274b5f4-4414-449b-a7c4-4ee1236948c5-e92730-lyra-locao-hidratante-card.jpg"}, {"id": 80, "name": "Exquenta Mais Mu Performance Pré-Treino Amora e Melancia 300g", "price": 129.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lktoup9w034ma9"}, {"id": 81, "name": "Framboesa , Francine elke , Gloss labial com o mosquetão", "price": 89.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m8ywhhqje6te7f"}, {"id": 82, "name": "GA.MA Italy Barbeador 3 Lâminas GSH887 Sport W&D - USB", "price": 99.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://cdn.awsli.com.br/2500x2500/943/943085/produto/103048870/430744b021.jpg"}, {"id": 83, "name": "Galinha Pintadinha , banho da galinha", "price": 69.9, "stock": 1, "sheet": "Sala 01", "category": "Bebê", "kw": "baby,care", "img": "https://static.fatimacrianca.com.br/public/fatimacrianca/imagens/produtos/banho-da-galinha-pintadinha-elka-6838618bd2f39.png"}, {"id": 84, "name": "Garrafa Botafogo Térmica Fresh Mini Gocase Original 350ml", "price": 159.0, "stock": 1, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://http2.mlstatic.com/D_NQ_NP_714525-MLB83022297108_032025-O-garrafa-termica-fresh-mini-350ml-branca-gocase-0019.webp"}, {"id": 85, "name": "Garrafa Pantone + Kouda Térmica Lilac Solid Grey – 500ml", "price": 135.0, "stock": 1, "sheet": "Sala 02", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://a-static.mlcdn.com.br/1500x1500/garrafa-termica-kouda-grey-500ml-pantone-solid-lilac/yellooficial/706156961/f804e34f397cd68c40fb9da1d931f10b.jpg"}, {"id": 86, "name": "Garrafa Térmica Gocase Urban Inox Parede Dupla Isolada 500ml", "price": 78.0, "stock": 8, "sheet": "Sala 02", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://m.media-amazon.com/images/I/61szNdVyiPL.jpg"}, {"id": 87, "name": "Garrafa Térmica Kouda - Bento Go! - 500ml", "price": 164.0, "stock": 1, "sheet": "Sala 02", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://lojavirtual.urizun.com.br/image/cache/data/eftr/Img_ftr_rp_384801-1160x1160.PNG?version=20230809202338"}, {"id": 88, "name": "Gelatina Umidificadora E Ativadora Crespo Power 300ml Apice", "price": 43.0, "stock": 1, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://images.tcdn.com.br/img/img_prod/1349542/gelatina_ativadora_e_umidificadora_crespo_power_apice_300ml_15075_2_6f08135296c7c72e9aa8754fee582041.jpg"}, {"id": 89, "name": "Gin Tanqueray London Dry, 750ml", "price": 104.0, "stock": 29, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://meufestval.vtexassets.com/arquivos/ids/189542/gin-london-dry-tanqueray-garrafa-750ml-festval-5000291020706--1-.jpg?v=638102466486600000"}, {"id": 90, "name": "Gocase Bolsa Tote Mini Feminina Reforçada com Alça Transversal Trabalho e Faculdade", "price": 189.0, "stock": 3, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m8lx3nvbz7gx89"}, {"id": 91, "name": "Gocase Copo Life Premium - Aço Inoxidável com Tampa e Canudo Tritan, Parede Dupla Isolada a Vácuo, Bebidas Quentes ou Frias por muitas Horas (Preto, 600 ml)", "price": 199.0, "stock": 3, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://m.media-amazon.com/images/I/31nsA0gPTyL._AC_SY355_.jpg"}, {"id": 92, "name": "Gocase Garrafa Fresh", "price": 39.9, "stock": 1, "sheet": "Sala 01", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://http2.mlstatic.com/D_NQ_NP_678415-MLU76946365567_062024-O.webp"}, {"id": 93, "name": "Gocase Mala de Bordo Trip, 55x35x22 cm, 4 Rodas Giratórias 360°, Cadeado Fixo", "price": 493.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://m.media-amazon.com/images/I/41FTA4yPkvL._AC_SY300_SX300_QL70_ML2_.jpg"}, {"id": 94, "name": "Greenswet Difusor De Aromas Sal E Mar 350ml", "price": 185.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_723013-MLB84412759072_052025-O.webp"}, {"id": 95, "name": "Hadiya Eau De Parfum 75ml O Boticário", "price": 249.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,c_fit,c_fill,h_650,w_488,q_auto:eco,fl_progressive,q_auto:best/v1/imagens/product/605711c9-302e-4422-b155-54df522acaf4-1/749e63b2-e204-4e8b-be78-caee1485bd4b-16293117808861477800a5d17808-465f-48de-a392-37bd41afec40.jpeg"}, {"id": 96, "name": "Hidratante Colorido Nars Pure Radiant Spf 30 Pa+ 02 Alaska 5", "price": 436.0, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://i5.walmartimages.com/asr/d0d1954c-0ab1-491d-8f72-3509e1f867f5.cdffb7c98d8111c24a5306c97ed94a3a.jpeg"}, {"id": 97, "name": "Hidratante Corporal La Bella Itália 200 Ml Chipre Moderno Frutal", "price": 39.0, "stock": 1, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://http2.mlstatic.com/D_NQ_NP_983938-MLB84963544128_052025-O.webp"}, {"id": 98, "name": "Hidratante Facial Pele de Porcelana", "price": 34.9, "stock": 2, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://down-br.img.susercontent.com/file/0c44ed6e3f8006cc2d30fc846589a129"}, {"id": 99, "name": "Hidratante Geléia My Sweet Delight 200g - Barbours Beauty Floral", "price": 59.9, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://http2.mlstatic.com/D_NQ_NP_853087-MLB91988919742_092025-O.webp"}, {"id": 100, "name": "Hidratante Renovador Olhos de Gueixa Kokeshi 15g", "price": 30.0, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lnijmmlhi9wpb7"}, {"id": 101, "name": "Hidratante Renovador para Área dos Olhos - Olhos de Gueixa Kokeshi", "price": 24.9, "stock": 3, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/products/MP385865/hidratante-renovador-rea-dos-olhos-olhos-de-gueixa-kokeshi-7.png"}, {"id": 102, "name": "Hidratante Renovador para Área dos Olhos - Olhos de Gueixa Kokeshi", "price": 24.0, "stock": 2, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://a-static.mlcdn.com.br/800x560/hidratante-renovador-para-area-dos-olhos-olhos-de-gueixa-kokeshi-kokeshi-cosmeticos/kokeshi/0002/ab48fb5af6f505bf60cea3fd3dc311b8.jpeg"}, {"id": 103, "name": "Hidratante Vult Corpo Hidraluronic 300ml Hidratacao Intensiva Refil", "price": 19.0, "stock": 1, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/Z52444/6e1e6d96-762d-452c-8feb-a57330accadf-52444-3.jpg"}, {"id": 104, "name": "Ilike Leave-in Engrossa Cabelo - 300ml", "price": 35.0, "stock": 1, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://coprobel.vteximg.com.br/arquivos/ids/287790-1000-1000/14934.jpg?v=638787826283930000"}, {"id": 105, "name": "Jarra 2l Tupperware Policarbonato Transparente", "price": 180.0, "stock": 1, "sheet": "Sala 01", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://http2.mlstatic.com/D_NQ_NP_781375-MLB46587687926_072021-O.webp"}, {"id": 106, "name": "Jarra De Cristal Para Servir Palm Tree 1,5l Wolff", "price": 53.0, "stock": 1, "sheet": "Sala 02", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://dcdn.mitiendanube.com/stores/001/860/455/products/jarra-15l-palm-tree-cristal-wolff-ref-27439estoque-2peso-1-985kg-medidas-a21xl21xc275cm-de-r11900-por-r8900-8e75313bc6017d6af617212258314413-640-0.jpg"}, {"id": 107, "name": "Jequiti Champô anti resíduo detox , nova fórmula presente ml", "price": 19.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_753640-MLU74318420335_012024-O.webp"}, {"id": 108, "name": "Jogo De 6 Taças 365ml Borda Dourada Cameratta L´hermitage", "price": 159.0, "stock": 1, "sheet": "Sala 02", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://a-static.mlcdn.com.br/800x560/jogo-de-6-tacas-cameratta-em-vidro-com-borda-dourada-365ml-l-hermitage/aeutilidadesedecoracoes/29064/805ee238c5b0ef0308a7cba2a4957b39.jpeg"}, {"id": 109, "name": "Jogo Tabuleiro Perfil 7 De Quantas Dicas Voce Precisa Grow", "price": 109.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://rihappy.vtexassets.com/arquivos/ids/6375248/jogo-perfil-7-grow_detalhe1.jpg?v=638585714965000000"}, {"id": 110, "name": "Kiss New York Rk Cotton Pequena - Esponja Para Pó Solto 3g", "price": 12.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/57047/bfe03058-f300-4dd5-9ef0-3df63565ba95-57047-kiss-new-york-rk-by-kiss-esponja-cotton-algodao-pequena-3g.jpg"}, {"id": 111, "name": "Kit 2 Cxs Boticário Cuide-se Bem Deleite Sabonetes Em Barra 4 Unid", "price": 49.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m5qc1rky193k1d"}, {"id": 112, "name": "Kit Apse Cachos Anti Porosidade Ativador + Ph Control 300g", "price": 105.0, "stock": 1, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/sg-11134201-7rd6a-lualnjnkxdce84"}, {"id": 113, "name": "Kit Banho Bubbles Essential Shampoo Neutro E Condicionador", "price": 945.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://cdn.awsli.com.br/2500x2500/2108/2108144/produto/352451835/12e3690438c93ff629752dfbe9a05298-iqjmkde1o5.jpg"}, {"id": 114, "name": "Kit Cachos Definidos Completo - 4 Produtos - Amazônico Care", "price": 158.9, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/sg-11134201-7rdy6-mdou4omk88yy7b"}, {"id": 115, "name": "Kit Capilar Shampoo E Condicionador Sólido", "price": 75.0, "stock": 2, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/MP82259/8671a90b-8d51-418a-b5a8-3c4686acd772-629a6db0fc36bf54b0d3270a-14733778719987047647.jpg"}, {"id": 116, "name": "Kit Frescor Capim-limão & Mate L'occitane 2x30ml", "price": 129.0, "stock": 3, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://cdn.awsli.com.br/2500x2500/2429/2429224/produto/382791801/133f10c83b905c68a0c59071a9dfd917-zv9w42wqeg.jpg"}, {"id": 117, "name": "Kit Scalp Care - Shampoo, Condicionador e Máscara (3 itens)", "price": 145.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://www.apicecosmeticos.com.br/cdn/shop/files/9a3e552f472810a6629d5a41b3da8909.png?v=1744915579"}, {"id": 118, "name": "Kit lily creme acetinado hidratante corporal 75 g e 2 sabonete em barra oboticario..", "price": 99.9, "stock": 3, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:best/v1/imagens/product/B2024020320/4929e265-7934-4fa3-b533-6c1b4f31a374-b2024020320-combo-lily-creme-acetinado-refil-250g-preview.jpg"}, {"id": 119, "name": "Kérastase Densifique Bain Densité - Shampoo 250ml", "price": 233.0, "stock": 1, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://m.media-amazon.com/images/I/61ARFGdrZiL.jpg"}, {"id": 120, "name": "L'Occitane au Brésil Spray Perfumado Feminino Bafafá 150ml Pitanga e Toranja", "price": 106.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://fimgs.net/mdimg/secundar/o.140720.jpg"}, {"id": 121, "name": "Leave In Booma 100ml", "price": 79.0, "stock": 1, "sheet": "Sala 02", "category": "Óleos & Séruns", "kw": "serum,oil,beauty", "img": "https://m.media-amazon.com/images/I/31a5aTRo8KL._AC_SY300_SX300_QL70_ML2_.jpg"}, {"id": 122, "name": "Leave-in 2 em 1 Bubbles Hipoalergênico para Cão Gato 500ml", "price": 96.0, "stock": 1, "sheet": "Sala 01", "category": "Óleos & Séruns", "kw": "serum,oil,beauty", "img": "https://http2.mlstatic.com/D_NQ_NP_825446-MLB69250326309_052023-O.webp"}, {"id": 123, "name": "Limpa Vidros Efeito Invisível Repelente Água E Sujeira 236ml", "price": 88.0, "stock": 1, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://http2.mlstatic.com/D_NQ_NP_961567-MLB90035351999_082025-O.webp"}, {"id": 124, "name": "Lip Gloss People Colour", "price": 40.0, "stock": 1, "sheet": "Sala 02", "category": "Maquiagem", "kw": "makeup,cosmetics", "img": "https://cdn1.staticpanvel.com.br/produtos/15/91461-15.jpg?ims=424x"}, {"id": 125, "name": "Lipo Firma Gel Liporedutor E Firmador Anna Pegova", "price": 551.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/5/anna-pegova-lipo-firma-gel-redutor-de-medidas-e-firmador-100ml-30334-9190797003560797042.png"}, {"id": 126, "name": "Lla Marina , camiseta , couro , barra . Tamanho g Cor paçoca , stone", "price": 236.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://cdn.awsli.com.br/800x800/2609/2609403/produto/323395215/6f3f4f1d-3cb4-4eea-ae1a-e574de051996-orh7fm65rr.jpg"}, {"id": 127, "name": "Loreal Profissional Gold Quinoa Absolut Repair 500g Original", "price": 319.0, "stock": 1, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://http2.mlstatic.com/D_NQ_NP_609511-MLB76381720280_052024-O.webp"}, {"id": 128, "name": "Loção Facial Anti-idade Hada Labo - Aging Care Lotion 170ml", "price": 164.0, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m1bx82zjg6xu73"}, {"id": 129, "name": "Lívia , rafaelli . LR 25 , branco número 37 .", "price": 89.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://acdn.mitiendanube.com/stores/003/936/354/products/0ac8d6b2b3a11ea37159f11b45540725-b237338cecb302936517347257893809-640-0.png"}, {"id": 130, "name": "Lívia rafa LR 25 . Preto . Número 35", "price": 89.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://acdn.mitiendanube.com/stores/003/936/354/products/ccb2beecee390a082a3fbcce6e810808-bf665aac35d869212c17347290077842-640-0.jpeg"}, {"id": 131, "name": "MELISSA LADYLIKE 39/40", "price": 149.9, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://meninashoes.vtexassets.com/arquivos/ids/478446/Cor-BE582-MELISSA-LADYLIKE-AD-Variacao-3.jpg?v=638617623202300000"}, {"id": 132, "name": "Mahogany Fragrância Uma Tarde Na Toscana 100ml", "price": 141.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://down-br.img.susercontent.com/file/d34b4c4ed92630e3bc2c3f93bff3abac"}, {"id": 133, "name": "Manta Bebê Antialérgica Cobertor Infantil Enxoval Bebê Minky", "price": 85.0, "stock": 1, "sheet": "Sala 01", "category": "Casa & Cama", "kw": "home,bedroom", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lr7v3m2tptff95"}, {"id": 134, "name": "Manteiga Corporal Hidratante Natural 250g Tikbutter Fragrância Algodão Doce", "price": 29.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_612260-MLB83098254772_032025-O-manteiga-corporal-hidratante-algodao-doce-tikbutter-250g.webp"}, {"id": 135, "name": "Mascara Nutrioil Loreal 250g Nutrição E Brilho Sem Silicone", "price": 209.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_604956-MLB77489240755_072024-O.webp"}, {"id": 136, "name": "Mawwal Janah Eau De Parfum - Perfume Unissex 100ml", "price": 327.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://panvelprd.vteximg.com.br/arquivos/ids/338449?ims=424x"}, {"id": 137, "name": "Mel de Terroir Professional Mbee 1,4Kg", "price": 95.0, "stock": 2, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://santaluzia.vteximg.com.br/arquivos/ids/967813-1000-1000/1243837.jpg?v=637385224168700000"}, {"id": 138, "name": "Melissa Flip Flop Slim V Original 3", "price": 139.0, "stock": 1, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://down-br.img.susercontent.com/file/sg-11134201-7rbl9-lnd8hgv0b36ic4"}, {"id": 139, "name": "Mochila Nike Utility Elite Masculina", "price": 899.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://imgnike-a.akamaihd.net/1366x1366/0229077TA2.jpg"}, {"id": 140, "name": "Mochila de Carrinho 2 Rodas Play - Clear", "price": 229.0, "stock": 10, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m9xef2os4fsy40"}, {"id": 141, "name": "Molho Mrs Chicken Mrs Taste - 320g", "price": 27.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lzrzp09hd2qtcc"}, {"id": 142, "name": "Multivitamínico Complete, 90 Cápsulas, Complete Bari", "price": 176.0, "stock": 2, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://www.vitaminasbrasil.com/upload/produto/imagem/s_ceaee137a5e43d789989c44a13a9c393.webp"}, {"id": 143, "name": "Máscara Selante Reparação Pro Performance 900ml", "price": 0.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "http://www.belezaexpert.com.br/cdn/shop/files/MascaraSelanteReparacaoProPerformance900ml.png?v=1758831530"}, {"id": 144, "name": "Máscara de Cílios Para Olhares Maduros Le Moritz Cor Preto", "price": 104.0, "stock": 1, "sheet": "Sala 02", "category": "Maquiagem", "kw": "makeup,cosmetics", "img": "https://http2.mlstatic.com/D_NQ_NP_713828-MLA87962334515_072025-O.webp"}, {"id": 145, "name": "NIVEA Protetor Solar Facial UV Face Controle de Oleosidade FPS 60 50ml, Muito Alta Proteção UVA/UVB, Efeito Matte, Controle do Brilho, Cuidado Diário", "price": 68.0, "stock": 1, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://drogariasp.vteximg.com.br/arquivos/ids/1150859-1000-1000/869554---Protetor-Solar-Facial-Nivea-Sun-UV-Face-FPS-60-Controle-de-Oleosidade-Cor-Clara-50ml_0003_0.png?v=638610717579830000"}, {"id": 146, "name": "Nativaspa Refil Hidratante Uva Merlot 350ml Uva", "price": 55.0, "stock": 1, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://http2.mlstatic.com/D_NQ_NP_660024-MLB84723574454_052025-O.webp"}, {"id": 147, "name": "O Boticário Anni Desodorante Colônia 100ml", "price": 132.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/B2025050721/567c1cfe-99a5-420d-938b-f9bb6c5e42cf-bot-2025050721.jpg"}, {"id": 148, "name": "O Boticário Coffee Woman Seduction Deo-colônia 100ml para feminino", "price": 169.0, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/B74032/784d5efa-9a42-4897-b1c4-c9224acc741f-coffee-woman-seduction-desodorante-colonia-100-ml.png"}, {"id": 149, "name": "O Boticário Zaad Expedition EDP 95ml para masculino", "price": 299.0, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-ma4erholncshc5"}, {"id": 150, "name": "Oe 10 Ml Eucalipto Glóbulos Gt Brasil", "price": 54.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://drogariasp.vteximg.com.br/arquivos/ids/828290-1000-1000/image-f68c260a7d2d4b409e04141e7d456db4.jpg?v=638112831379230000"}, {"id": 151, "name": "Olympikus Citrus 2 2 Feminino 43759258", "price": 171.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://imgmarketplace.lojasrenner.com.br/20001/6117/7010705632979/7510712077786/7.jpeg"}, {"id": 152, "name": "Organizador multiuso 10 cm .", "price": 19.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://www.paramountplasticos.com.br/wp-content/uploads/2022/09/1251-1.jpg"}, {"id": 153, "name": "PUMA Speedcat Og Tênis feminino casual com cadarço - preto", "price": 968.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://ostoresneakers.vteximg.com.br/arquivos/ids/232006-500-500/tenis-puma-speedcat-400986_01-0.jpg?v=638990135331700000"}, {"id": 154, "name": "Partex , jogo de lençol . Contém 3 peças , 1 e 60 , 1 e 60 por 2 m .", "price": 198.2, "stock": 1, "sheet": "Sala 01", "category": "Casa & Cama", "kw": "home,bedroom", "img": "https://images.tcdn.com.br/img/img_prod/464197/jogo_de_lencol_cama_solteiro_3_pecas_400_fios_ponto_infinity_3922_1_571f0e2df95e06091f56b253681cfc0e.jpeg"}, {"id": 155, "name": "Partex P Queim Tecido , sai ou piqu 1 e 60 por 2 e 3 .", "price": 179.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_2X_678383-MLB43485539373_092020-F.jpg"}, {"id": 156, "name": "Patins Traxart Freestyle Revolt Preto - Abec-9", "price": 899.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://sportinline.com.br/wp-content/uploads/2023/04/Patins-Inline-Freestyle-Traxart-Revolt-Preto-Rodas-Pretas-Diagonal_1_1800x1800-1.jpg"}, {"id": 157, "name": "Perfume Capilar Very Sexy Barbour's Beauty Proteção Térmica 50ml", "price": 51.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/sg-11134201-7rbnd-m5ximqaoad8455"}, {"id": 158, "name": "Perfume Carolina Herrera Good Girl Eau de Parfum 150 ml feminino", "price": 774.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://microless.com/cdn/products/a775cea1a57f315ce86aa46084929e57-hi.jpg"}, {"id": 159, "name": "Perfume Colônia Cebolinha Masculino Turma Da Mônica Jequiti", "price": 69.0, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://images.tcdn.com.br/img/img_prod/1349542/colonia_masculina_jequiti_cebolinha_turma_da_monica_50ml_20641_1_cf7140cd9ace05deeaa9bf474c2593f3.png"}, {"id": 160, "name": "Perfume Deo Colônia Lescent N21 Luxe Saint-tropez 25ml Mascu", "price": 58.9, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://down-br.img.susercontent.com/file/br-11134207-81z1k-meg3wiin8a2p04"}, {"id": 161, "name": "Perfume E Body Splash Sitar Mawwal Feminino", "price": 296.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_674085-MLB99651160683_112025-O.webp"}, {"id": 162, "name": "Perfume Feminino Luminous Flowers Zyone 10ml", "price": 35.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://hprospera.com.br/wp-content/uploads/2024/09/Perfume-luminuos-flowers-10ml.jpg"}, {"id": 163, "name": "Perfume Feminino Scapin OUi 245 EDP 30ml Oui", "price": 245.0, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_791973-MLB48257636998_112021-F.jpg"}, {"id": 164, "name": "Perfume Gelato Pistache Bubbles 300ml Cães Gatos Pet Shop Pistache", "price": 125.0, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://dricaenfeites.com.br/wp-content/uploads/2025/08/04c369e5efb5150f36b5e99152d9b7aa-800x800.webp"}, {"id": 165, "name": "Perfume Masculino Loyal 28ml - Zyone", "price": 78.0, "stock": 2, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_753080-MLB77997128907_072024-O.webp"}, {"id": 166, "name": "Perfume Mawwal Fantasy Halem 100ml Floral Amadeirado Rosa e Tangerina", "price": 275.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://paguemenos.vtexassets.com/arquivos/ids/1025002/Mawwal-Fantasy-Halem-Eau-De-Parfum---Perfume-Feminino-100ml.jpg?v=638852485315130000"}, {"id": 167, "name": "Perfume Mawwal Oasisturab 100ml", "price": 245.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://mawwal.com.br/cdn/shop/files/Oasis_Turab_3_046fb6d6-d263-4bd5-bb71-3d13f61c7ae1.png?v=1753728860"}, {"id": 168, "name": "Perfume Mawwal Sense Ghamra Masculino 100ml Eau de Parfum 2024", "price": 257.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://armazemdoscosmeticos.agilecdn.com.br/25394_1.jpg"}, {"id": 169, "name": "Perfume Quasar Vision Colônia O Boticário - 100ml", "price": 153.0, "stock": 1, "sheet": "Sala 01", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_636835-MLB89129435214_082025-O.webp"}, {"id": 170, "name": "Perfume para cabelo / finalizador termoativo Very Sexy", "price": 119.0, "stock": 5, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://vendah.com.br/cdn/shop/files/perfume-para-cabelo-finalizador-termoativo-very-sexy-produtos-para-pentear-o-cabelo-862140.png?v=1749671528"}, {"id": 171, "name": "Perfume Árabe Mawwal Mystic Jawhar Parfum 100ml Floral Âmbar", "price": 163.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://armazemdoscosmeticos.agilecdn.com.br/25414_1.jpg"}, {"id": 172, "name": "Perfume Árabe Mawwal Najma 100ml Eau De Parfum Unissex Original", "price": 235.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_611175-MLB91557259972_092025-O.webp"}, {"id": 173, "name": "Perfume Árabe Mawwal Sitar Spray Feminino 250ml", "price": 79.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://fimgs.net/mdimg/perfume/o.106690.jpg"}, {"id": 174, "name": "Polietilenoglicol 4000 500gr Refil Sem Sabor", "price": 54.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://images.tcdn.com.br/img/img_prod/468484/peg_4000_polietilenoglicol_500_g_sem_sabor_4581_1_a3aaa20b4c0ed7fb8d8a6e73961d5a56.png"}, {"id": 175, "name": "Porta Cartão Floater Alça De Mão", "price": 69.0, "stock": 2, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m7nrkjzx2bsydd"}, {"id": 176, "name": "Pote Feijão 2kg Tupperware Cor Pop", "price": 96.0, "stock": 1, "sheet": "Sala 01", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://a-static.mlcdn.com.br/800x560/tupperware-caixa-feijao-pop-box-2kg/tupperwaredoiscoracoesii/1a36b59c0acc11ee89584201ac185049/2d9fd221885a1476fc4928640d2fbf73.jpeg"}, {"id": 177, "name": "Protetor Colchão SulBrasil Premium Impermeável Queen Branco", "price": 109.0, "stock": 9, "sheet": "Sala 01", "category": "Casa & Cama", "kw": "home,bedroom", "img": "https://down-br.img.susercontent.com/file/ef821fe5cbe1471592b444179cdd0a7c"}, {"id": 178, "name": "Puma Tênis Masculino Flyer Lite 3 Running", "price": 309.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://imgmarketplace.lojasrenner.com.br/20001/1567/7010705870316/7510712688208/0.jpeg"}, {"id": 179, "name": "Qualquer Creme , gel , gota de colágeno . Copaíba", "price": 19.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_727538-MLA82292403108_022025-O.webp"}, {"id": 180, "name": "Rain X Anti-fog 12oz", "price": 277.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://lzd-img-global.slatic.net/g/p/4af0fa39580193c7e3be40a5072ee40b.jpg_720x720q80.jpg_.webp"}, {"id": 181, "name": "Reconstrutor Cerâmico Gladius 500ml Vonixx", "price": 53.0, "stock": 1, "sheet": "Sala 01", "category": "Tratamento Capilar", "kw": "hair+mask+treatment", "img": "https://images.tcdn.com.br/img/img_prod/1109830/gladius_vonixx_500ml_reconstrutor_cermico_para_vit_3_20250906093526_f7d8ccc31c25.png"}, {"id": 182, "name": "Refil Difusor de Ambiente Giovanna Baby Essentials Blue 560ml", "price": 119.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://giovannababy.vteximg.com.br/arquivos/ids/158100-1200-1200/frasco_Refil_Blue_Perfume.jpg?v=637687076095170000"}, {"id": 183, "name": "Rocim Vale Do Rocim Tinto 750ml - Portugal", "price": 142.0, "stock": 3, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_627133-MLU77632576101_072024-O.webp"}, {"id": 184, "name": "SKIN.Q Hidratante toda . Regenerada Vitamina B 5 , ácido hialurônico , extrato de ginseng 50 ml . Quem disse , Berenice", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://m.media-amazon.com/images/I/51E8ppt0u7L._AC_SL1500_.jpg"}, {"id": 185, "name": "Sabe online Maria natureza , nutrição extraordinária , creme para pentear vegano 250 ml .", "price": 39.6, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://m.media-amazon.com/images/I/51cGmZQ6EwL._AC_SL1000_.jpg"}, {"id": 186, "name": "Sabonete Infantil Líquido de Glicerina Pampers 200ml", "price": 26.0, "stock": 2, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://drogariasp.vteximg.com.br/arquivos/ids/965075-1000-1000/825360---Sabonete-Infantil-Liquido-Pampers-Glicerina-Da-Cabeca-Aos-Pes-200ml-1.jpg?v=638300793524300000"}, {"id": 187, "name": "Sabonete Líquido Corporal Cuide-se Bem Bob Esponja Patrick Estrela 250ml", "price": 15.8, "stock": 4, "sheet": "Sala 02", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/B56447/4373e413-d072-4953-9ced-479ce7bf488e-bot-56447-cuide-se-bem-bob-esponja-sabonete-liquido-ambientada-03.jpg"}, {"id": 188, "name": "Sal online , Maria natureza . Hidratação sem pesar . Óleo e água de coco , condicionador vegano , 250 ml .", "price": 29.9, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://www.salonline.com.br/file/v3997894440001761565/collections/Banner-Maria-HIdratacao-mobile.jpg"}, {"id": 189, "name": "Sal online , SOS caixas protrate 10 em um multibenefícios 300 ml", "price": 32.6, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_970991-MLB81753814399_012025-O-salon-line-sos-10-em-1-multibeneficios-ativador-300ml.webp"}, {"id": 190, "name": "Sala online , SOS bomba original , nova fórmula , tônico fortalecedor , força e crescimento 100 ML", "price": 45.4, "stock": 1, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://valonlinestore.com/wp-content/uploads/2022/02/991363_salon-line-tonico-100ml-sos-bomba-vitaminas-antiqueda-533164_l2_638101628695139192.jpg"}, {"id": 191, "name": "Sala online , SOS bomba original , tônico , fortalecedor , crescimento . CML", "price": 45.0, "stock": 1, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lv5082fqb5pl47"}, {"id": 192, "name": "Salonline , Hidra , creme para pentear hidratação intensiva . 3 em um 3 em ml", "price": 31.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/sg-11134201-7rdvi-m15qn7gwspw9b0"}, {"id": 193, "name": "Salonline , Maria natureza , hidratação sem pes Óleo e água de coco , creme para pentear vegano , 250 ml", "price": 15.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://www.salonline.com.br/ccstore/v1/images/?source=/file/v4851685175630321105/products/SKU-31654.jpg"}, {"id": 194, "name": "Salonline , Maria natureza , hidratação sem pesar . Óleo e água de coco , máscara vegana , 200 g .", "price": 14.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://www.salonline.com.br/ccstore/v1/images/?source=/file/v9089980343079126508/products/SKU-31638.jpg"}, {"id": 195, "name": "Salonline , Maria natureza , hidratação sem pesar Olho de água De coco , shampoo vegano , 250 ml", "price": 15.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://www.adoromaquiagem.com.br/wp-content/uploads/2024/01/1-Shampoo-Maria-Natureza-Hidratacao-Sem-Pesar-Salon-Line--jpg.webp"}, {"id": 196, "name": "Salonline , Maria natureza , nutrição extraordinária , creme para pentear vegano 250 g .", "price": 16.9, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://m.media-amazon.com/images/I/51cGmZQ6EwL._AC_SL1000_.jpg"}, {"id": 197, "name": "Salonline , Maria natureza , nutrição extraordinária , shampoo vegano , 250 ml", "price": 16.9, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_800/v1/imagens/product/MP228135/5c686eb4-cac1-4cbc-b406-2b78a053365d-2024-04-24t112039653914248-shampoo-maria-natureza-nutricao-extraordinaria-salon-line-250mljpg4530074202988441775.jpg"}, {"id": 198, "name": "Salonline , Maria natureza , nutrição extraordinária Morumbiru e abacate . Condicionador vegano , 250 ml", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://m.media-amazon.com/images/I/51Z-rW+i2aL._AC_SY300_SX300_.jpg"}, {"id": 199, "name": "Salonline , Maria natureza , reconstrução reparadora . Gelatina vegetal , máscara vegana , 200 g .", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Tratamento Capilar", "kw": "hair+mask+treatment", "img": "https://down-br.img.susercontent.com/file/br-11134201-7r98o-luz2r3kgtshi8d"}, {"id": 200, "name": "Salonline , Maria natureza , reconstrução reparadora queratina vegetal , máscara vegana , 200 g .", "price": 25.0, "stock": 1, "sheet": "Sala 01", "category": "Tratamento Capilar", "kw": "hair+mask+treatment", "img": "https://down-br.img.susercontent.com/file/br-11134201-7r98o-luz2r3kgtshi8d"}, {"id": 201, "name": "Salonline , Maria natureza Nutrição extraordinária Muro murru e abacate , shampoo vegano para cabelo desnutridos , 250 ml", "price": 32.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://http2.mlstatic.com/D_NQ_NP_886841-MLB73568026057_122023-O.webp"}, {"id": 202, "name": "Salonline , S Bomba original Máscara hidratante Crescimento 1 kg .  Cada um é um aqui . Meu Deus . Vamos lá", "price": 16.0, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://panvelprd.vteximg.com.br/arquivos/ids/313542"}, {"id": 203, "name": "Salonline , SOS , caixas de repente , pronta Acidificante antiporosidade , equilíbrio do PH 300 ml", "price": 19.0, "stock": 1, "sheet": "Sala 01", "category": "Tratamento Capilar", "kw": "hair+mask+treatment", "img": "https://m.media-amazon.com/images/I/51vEZgUc0BL._AC_SX522_.jpg"}, {"id": 204, "name": "Salonline , SOS , hidratação . Xampu e condicionador , óleo de ricio , 1 l cada .", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://cdn.awsli.com.br/2500x2500/2390/2390749/produto/2524911951857ad7395.jpg"}, {"id": 205, "name": "Salonline , SOS bomba original , condicionador crescimento 300 ml .", "price": 24.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://drogal.vtexassets.com/arquivos/ids/233110/112992.jpg?v=638608844183500000"}, {"id": 206, "name": "Salonline , SOS bomba original , shampoo , crescimento . 300 ml", "price": 19.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://www.salonline.com.br/ccstore/v1/images/?source=/file/v2435435223449267879/products/95007-V1.jpg"}, {"id": 207, "name": "Salonline , SOS bomba original , shampoo , força e engrossamento 300 ml", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://images.tcdn.com.br/img/img_prod/926373/shampoo_s_o_s_bomba_original_forca_e_engrossamento_salon_line_300ml_7791_1_c6f6595cee4955963e1c7e4ab57a5648.png"}, {"id": 208, "name": "Salonline , SOS bomba original , tônico fortalecedor sem ml", "price": 26.0, "stock": 1, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://valonlinestore.com/wp-content/uploads/2022/02/991363_salon-line-tonico-100ml-sos-bomba-vitaminas-antiqueda-533164_l2_638101628695139192.jpg"}, {"id": 209, "name": "Salonline , SOS bomba original . Força e crescimento sem ml .", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://statics.docmorris.pt/static/promofarma/prod/product_images/z/CTCZHHJ0_pt_PT_0.png"}, {"id": 210, "name": "Salonline , SOS bomba original Máscara hidratante , crescimento 1 kg .", "price": 21.0, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://content.intellibrand.ai/image/3C0B410F-22EC-4585-9557-B96497DB41C4/f2af1b71bf3a11ee39b60193a1d5935b/1000X1000/7898524347687_2.jpg"}, {"id": 211, "name": "Salonline , SOS bomba original creme para pentear antiqueda e resistência , 300 ml .", "price": 21.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://lojasrede.vtexassets.com/arquivos/ids/414865/809919_1.jpg?v=638733397281870000"}, {"id": 212, "name": "Salonline , SOS bomba original creme para pentear crescimento 500 ml .", "price": 19.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://dannycosmeticos.vtexassets.com/arquivos/ids/333836/creme-para-pentear-s-o-s-bomba-crescimento-salon-line-500ml-7898623951662-1.jpg?v=638145900390700000"}, {"id": 213, "name": "Salonline , SOS bombo original shampoo crescimento 500 ml .", "price": 23.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/e8b85ab7573c7afed107e2826b582f23"}, {"id": 214, "name": "Salonline , SOS bonbo original Champô , força e engrossamento . 300 ml .", "price": 25.0, "stock": 1, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://down-br.img.susercontent.com/file/sg-11134201-824im-mebagt74bi0we8"}, {"id": 215, "name": "Salonline , SOS cachos , azeite de oliva . Uma hectação absoluta , ativador de caixas . 300 ml .", "price": 26.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/76605/a4268330-160e-4ecb-a293-b40028ff85e2-salon-line-sos-cachos-azeite-de-oliva-ativador-de-cachos-1000ml.png"}, {"id": 216, "name": "Salonline , SOS cachos Protrate 10 em um multibenefícios , condicionador 300 ml .", "price": 25.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://http2.mlstatic.com/D_NQ_NP_721360-MLB81483999472_012025-O-salon-line-sos-10-em-1-multibeneficios-condicionador-300ml.webp"}, {"id": 217, "name": "Salonline , SOS caixas , de repente , pronta condicionador ultragros 8 vezes mais desembaraço 500 ml .", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://imgmarketplace.lojasrenner.com.br/20001/6048/7010704901449/7510710323785/7.jpeg"}, {"id": 218, "name": "Salonline , SOS caixas . Óleo de coco , mas Máscara de hidratação intensa , 500 g .", "price": 19.0, "stock": 1, "sheet": "Sala 01", "category": "Óleos & Séruns", "kw": "serum,oil,beauty", "img": "https://static.wixstatic.com/media/295529_b1159c0d40f44bb0a086ce56fb5ad350~mv2.jpg/v1/fit/w_500,h_500,q_90/file.jpg"}, {"id": 219, "name": "Salonline , SOS hidratação , máscara concentrada , café e glicerina , 1 kg .", "price": 21.0, "stock": 1, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://www.afromarkets.ao/wp-content/uploads/2023/05/site-26.jpg"}, {"id": 220, "name": "Salonline , SOS hidratação , máscara concentrada , óleo de rcínio ou 1 kg ?", "price": 25.0, "stock": 1, "sheet": "Sala 01", "category": "Óleos & Séruns", "kw": "serum,oil,beauty", "img": "https://cdn.awsli.com.br/2500x2500/2752/2752602/produto/280727176/637393-0-8yi1sfzsm4.jpg"}, {"id": 221, "name": "Salonline , SOS hidratação , máscara concentrada a 1 kg", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://a-static.mlcdn.com.br/800x560/mascara-concentrada-salon-line-s-o-s-hidratacao-oleo-de-ricino-1kg/perfumariateruya/637393/4dc1bc724d23c953a1fcfb6d71f86064.jpeg"}, {"id": 222, "name": "Salonline , SOS hidratação , shampoo mais condicionador , óleo de ricílio , 1 l cada", "price": 23.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://cdn.awsli.com.br/2500x2500/2752/2752602/produto/280727523/637405-0-29p7042ylm.jpg"}, {"id": 223, "name": "Salonline , creme para pente Definição natural panifris 1 kg .", "price": 29.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://paguemenos.vtexassets.com/arquivos/ids/1116767/creme-para-pentear-salon-line-condicionador-definicao-natural-antifrizz-1kg-principal.png?v=639017676151730000"}, {"id": 224, "name": "Salonline , creme para pentear definição intensiva , nutrição e memorização dos cachos 500 g .", "price": 37.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://http2.mlstatic.com/D_NQ_NP_711555-MLB85779655028_062025-O.webp"}, {"id": 225, "name": "Salonline , creme para pentear definição intenso , antifriz 500 g .", "price": 32.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://dannycosmeticos.vtexassets.com/arquivos/ids/405807/creme-para-pentear-definicao-intensa-salon-line-500g-7908458326778-1.png?v=638677982519330000"}, {"id": 226, "name": "Salonline , creme para pentear definição natural , hidratação e definição Antifriz 1 kg", "price": 36.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://lojasrede.vtexassets.com/arquivos/ids/372725/2022101800-1-Kit-Creme-Para-Pentear-Salon-Line-Definicao-Natural-1Kg-2-Unidades.jpg?v=638488920065000000"}, {"id": 227, "name": "Salonline , creme para pentear definição natural . Pantefris , 1 kg .", "price": 38.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/MP72060/258a0c73-40dd-4762-81e9-f6c99de4fa83-salon-line-definicao-natural-creme-de-pentear-1kg.png"}, {"id": 228, "name": "Salonline , creme para pentear definição natural antifriz 1 kg .", "price": 35.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://paguemenos.vtexassets.com/arquivos/ids/1116767/creme-para-pentear-salon-line-condicionador-definicao-natural-antifrizz-1kg-principal.png?v=639017676151730000"}, {"id": 229, "name": "Salonline , creme para pentear hidratação profunda Anti ressecamento e definição 1 kg .", "price": 39.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://m.media-amazon.com/images/I/61vYFMevxeL.jpg"}, {"id": 230, "name": "Salonline , creme para pentear reconstrução intensa . 1 kg", "price": 35.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lxvc5rqktaj676"}, {"id": 231, "name": "Salonline , gelatina , mas creme para pentear definição extraordinária 1 kg", "price": 32.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://lojasrede.vtexassets.com/arquivos/ids/414824/805920_1.jpg?v=638733397038670000"}, {"id": 232, "name": "Salonline , manteiga , mais creme para pentear ativador de caixa 1 kg", "price": 29.9, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://tb2962.vtexassets.com/arquivos/ids/189537/Creme-para-Pentear-Ativador-de-Cachos---Manteiga-Salon-Line-Definicao-Nutritiva-1kg.jpg?v=638624591803870000"}, {"id": 233, "name": "Salonline , manteiga , mas creme para pentear ativador de cachos 1 kg .", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://tb2962.vtexassets.com/arquivos/ids/189537/Creme-para-Pentear-Ativador-de-Cachos---Manteiga-Salon-Line-Definicao-Nutritiva-1kg.jpg?v=638624591803870000"}, {"id": 234, "name": "Salonline , meu liso , Kids , condicionador , desembaraçante . Hidratação e brilho , 300 ml .", "price": 21.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://lojasrede.vtexassets.com/arquivos/ids/388291/782591_1.jpg?v=638610739869370000"}, {"id": 235, "name": "Salonline , meu liso , Kids , creme para pentear desembaraçante 250 ml .", "price": 19.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lz4ygqypfajp27"}, {"id": 236, "name": "Salonline , meu liso , Kids , creme para pentear desembaraçantes , 250 ml .", "price": 18.9, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://m.media-amazon.com/images/I/516XOB4fCWL._AC_SL1200_.jpg"}, {"id": 237, "name": "Salonline , meu liso , Kids , shampoo suave , 300 ml .", "price": 17.3, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/sg-11134201-824jc-medrj7lzzncz25"}, {"id": 238, "name": "Salonline , meu liso , muito mais liso . Óleo de tratamento multifuncional . 18 vezes mais liso chapado . 200 , 600 ml .", "price": 18.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://fikbella.vteximg.com.br/arquivos/ids/202994-1000-1000/Oleo-de-Tratamento-Meu-Liso-Muito---Liso-Salon-Line---60ml-fikbella-cosmeticos-157843.jpg?v=638460347654870000"}, {"id": 239, "name": "Salonline , meu liso , restauração intensa , spray resgate instantâneo , combate 7 danos 240 ml", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://content.intellibrand.ai/image/B3D65FEC-EEFD-4D8A-B08A-A6CA922072D1/57e4c2369efd58bb25a139d15ca5e5bb/1000X1000/7908458321292_1.jpg"}, {"id": 240, "name": "Salonline , meu liso Condicionador desembaraçante . 300 ml .", "price": 21.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://lojasrede.vtexassets.com/arquivos/ids/388291/782591_1.jpg?v=638610739869370000"}, {"id": 241, "name": "Salonline , meu liso demais , shampoo a linha 300 ml .", "price": 23.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://cdn.shopk.it/usercontent/smartbeauty/media/images/0e42c6b-sl0091.png"}, {"id": 242, "name": "Salonline , máscara , matizadora , loira , hidrata Profundamente , 300 g .", "price": 25.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_779723-MLB82048369651_012025-O.webp"}, {"id": 243, "name": "Salonline , proteção térmica até 230 , SOS cachos 42 m", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://cdn.awsli.com.br/800x800/1991/1991189/produto/308688219/80341a_71c7d9e215bc41fabe29ce5951fd0cb2-mv2-i834llof4m.jpg"}, {"id": 244, "name": "Salonline , reparação e antifriz , óleo de ricino queratina , creme para pentear 1 kg", "price": 25.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://drogariasp.vteximg.com.br/arquivos/ids/1094279-1000-1000/image-9b0466f2c0be413491baab6fa123cccf.jpg?v=638506798033330000"}, {"id": 245, "name": "Salonline , to de caixa , profix , ativador de caixa , definição volumosa 300 ml", "price": 24.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/sg-11134201-23030-u73n0adelnov47"}, {"id": 246, "name": "Salonline , to de caixas , gelatina fortalecedora 550 g", "price": 19.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://decminasb2b.vtexassets.com/arquivos/ids/310254/236111.png?v=638907597060300000"}, {"id": 247, "name": "Salonline , uva mais melancia , creme para pentear . 1 kg .", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://lojasrede.vtexassets.com/arquivos/ids/417061/814715-1-Creme-Para-Pentear-Salon-Line-Uva-Melancia-oleo-de-Tratamento-Extraordinario-1kg.jpg.jpg?v=638780107431600000"}, {"id": 248, "name": "Salonline , uva mais melancia , creme para pentear 1 kg", "price": 23.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://lojasrede.vtexassets.com/arquivos/ids/417061/814715-1-Creme-Para-Pentear-Salon-Line-Uva-Melancia-oleo-de-Tratamento-Extraordinario-1kg.jpg.jpg?v=638780107431600000"}, {"id": 249, "name": "Salonline , óleo De tratamento multi irresistível Óleo de uva e manteiga de kartê , 230 Ml", "price": 19.0, "stock": 1, "sheet": "Sala 01", "category": "Óleos & Séruns", "kw": "serum,oil,beauty", "img": "https://cdn.awsli.com.br/2500x2500/1775/1775051/produto/343982267/oleo-capilar-de-tratamento-salon-line-multy-uva-e-manteiga-de-karite-tratamento--dtnsrpuylw.jpg"}, {"id": 250, "name": "Salonline Bei Sapo 2 em um óleo , cabelo e corpo . 120 ml .", "price": 25.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://product-data.raiadrogasil.io/images/12166325.webp"}, {"id": 251, "name": "Salonline Beija sapo 2 em um olha o cabelo e corpo 120 ml", "price": 25.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/br-11134207-81z1k-me8l6kme4q9u78"}, {"id": 252, "name": "Salonline Creme denso , super hidratante de repente , pronta creme para pentear ultragrosse 500 g .", "price": 25.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://http2.mlstatic.com/D_NQ_NP_926318-MLB79795491232_102024-O.webp"}, {"id": 253, "name": "Salonline Creme para pentear uva , mais melancia , óleo de tratamento extraordinário ou 1 kg", "price": 26.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://lojasrede.vtexassets.com/arquivos/ids/417061/814715-1-Creme-Para-Pentear-Salon-Line-Uva-Melancia-oleo-de-Tratamento-Extraordinario-1kg.jpg.jpg?v=638780107431600000"}, {"id": 254, "name": "Salonline De repente , pronta , shampoo ultraglos , 48 horas de limpeza profunda , 500 ml .", "price": 24.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://cdn1.staticpanvel.com.br/produtos/15/91083-15.jpg"}, {"id": 255, "name": "Salonline Maria natureza , nutrição extraordinária . Moru , morru e abacate , máscara vegana . 200 g", "price": 18.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://m.media-amazon.com/images/I/719Cq0vGbNL._SL1500_.jpg"}, {"id": 256, "name": "Salonline Máscaras de tratamento anti porosidade 500 g .", "price": 15.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://lojasrede.vtexassets.com/arquivos/ids/401220/812961_1.jpg?v=638640091251070000"}, {"id": 257, "name": "Salonline Necessar love you selfie", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://cdn.awsli.com.br/2500x2500/2492/2492933/produto/2652835539e90cd3f23.jpg"}, {"id": 258, "name": "Salonline SOSOSOS caixas protra Tens em um multibenefício , 300 ml .", "price": 25.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_721360-MLB81483999472_012025-O-salon-line-sos-10-em-1-multibeneficios-condicionador-300ml.webp"}, {"id": 259, "name": "Salonline kids chocolate , creme para pentear cachinhos nutrido 1 kg", "price": 19.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://images.tcdn.com.br/img/img_prod/1221238/creme_para_pentear_salon_line_chocolate_kids_cachinhos_nutridos_1kg_14039_1_3f151cdd9a7fa39508eff99561ce123e.png"}, {"id": 260, "name": "Salão line , SOS bombo original , shampoo , força e engros 300 ml", "price": 42.5, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://down-br.img.susercontent.com/file/sg-11134201-824im-mebagt74bi0we8"}, {"id": 261, "name": "Salão line , meu liso demais , condicionador A linha dor , 300 , Daniel", "price": 39.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://product-data.raiadrogasil.io/images/12486487.webp"}, {"id": 262, "name": "Salão online , SOS caixas . De repente , pronta creme para pentear . 300 ml", "price": 19.9, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://assimdomeujeito.com/wp-content/uploads/2025/09/Salon-Line-S.O.S-Cachos-De-Repente-Pronta-Creme-Para-Pentear-em-Spray-300ml.jpg"}, {"id": 263, "name": "Samon online , meu liso kids , shampoo suave , presentes ml", "price": 18.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://lojasrede.vtexassets.com/arquivos/ids/390107/782580_3.jpg?v=638610793134300000"}, {"id": 264, "name": "Sandalia Rasteira Casual Feminina Beira Rio Original", "price": 76.0, "stock": 1, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m2wjrp1xpql1d8"}, {"id": 265, "name": "Sandália Chinelo Pédireito Unissex Nº. 37/38", "price": 79.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lzg8p6o68sd1f7"}, {"id": 266, "name": "Sandália Chinelo Pédireito Unissex Nº. 39/40", "price": 79.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-lzg8p6o68sd1f7"}, {"id": 267, "name": "Sandália Slide Feminina Tamanco Tiras Brilho Glitter Moleca", "price": 71.0, "stock": 1, "sheet": "Sala 02", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://http2.mlstatic.com/D_NQ_NP_822058-MLB84348449248_052025-O-sandalia-feminina-tamanco-tiras-slide-brilho-glitter-moleca.webp"}, {"id": 268, "name": "Santista , micro percal , Queen contém 3 peças . Toque de seda De 1 e 60 Por 2 m", "price": 79.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://cdn.awsli.com.br/2500x2500/2467/2467495/produto/20770899732eebb6393.jpg"}, {"id": 269, "name": "Serum Corporal Clareador Blemish Care Barbour's Beauty 150g Sem Fragrância", "price": 39.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_700136-MLB91331989354_092025-O.webp"}, {"id": 270, "name": "Shampoo De Glicerina Para Bebês Pampers 400ml", "price": 35.0, "stock": 2, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://paguemenos.vtexassets.com/arquivos/ids/718044/75526.png?v=638326222973530000"}, {"id": 271, "name": "Shampoo Loreal Série Expert Vitamino Refil 240ml - Mais Cor E Brilho", "price": 71.0, "stock": 1, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/20068667/cc225c59-a48a-4409-abd1-ea5abb0c1a2b-loreal-professionnel-serie-expert-vitamino-color-resveratrol-refil-shampoo-240ml.png"}, {"id": 272, "name": "Shampoo Refil Glicerina Pampers 350ml", "price": 20.0, "stock": 1, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://images.tcdn.com.br/img/img_prod/1221238/shampoo_de_glicerina_pampers_refil_350ml_6335_1_54de1cb108d7634ef72b72bfbdb81f63.jpg"}, {"id": 273, "name": "Shampoo Reparação Pro Performance 1L", "price": 0.0, "stock": 1, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://http2.mlstatic.com/D_NQ_NP_812191-MLB81994980498_022025-O.webp"}, {"id": 274, "name": "Shampoo Siàge Liso Intenso, 250ml - Eudora", "price": 46.0, "stock": 2, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://a-static.mlcdn.com.br/800x560/shampoo-eudora-liso-intenso-siage-250ml/lojaperolavvieira/12548166651/044ed5bcf0971f56f57bd58598e554f3.jpg"}, {"id": 275, "name": "Shign Brilho , proteção e limpeza a seco . Para carro", "price": 39.3, "stock": 1, "sheet": "Sala 01", "category": "Limpeza", "kw": "cleaning,spray", "img": "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mhv720rxrcau9d"}, {"id": 276, "name": "Shine 3 Em 1 Revestimento 300ml Brilho Proteção 12 Meses", "price": 65.0, "stock": 3, "sheet": "Sala 02", "category": "Limpeza", "kw": "cleaning,spray", "img": "https://http2.mlstatic.com/D_NQ_NP_679648-MLB96524649931_102025-O.webp"}, {"id": 277, "name": "Shiseido Synchro Skin Soft Blurring Primer - 30ml Tom Do Primer Branco", "price": 339.0, "stock": 1, "sheet": "Sala 02", "category": "Maquiagem", "kw": "makeup,cosmetics", "img": "https://http2.mlstatic.com/D_NQ_NP_626431-MLU73563967594_122023-O.webp"}, {"id": 278, "name": "Som line SOS hidratação , máscara concentrada , queratina e colágeno", "price": 22.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://lojasrede.vtexassets.com/arquivos/ids/401244/759476_1.jpg?v=638640091578530000"}, {"id": 279, "name": "Suplemento Multivitamínico Complete Bari 23 Nutrientes Máxima Absorção 90 Cápsulas", "price": 151.0, "stock": 2, "sheet": "Sala 02", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://www.vitaminasbrasil.com/upload/produto/imagem/s_ceaee137a5e43d789989c44a13a9c393.webp"}, {"id": 280, "name": "Tangle Teezer - Escova de cabelo Modeladora Comb Wide Tooth Cor: Lilás e Preto", "price": 139.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://http2.mlstatic.com/D_NQ_NP_916764-MLB91270041112_092025-O.webp"}, {"id": 281, "name": "Taças Vinho Cristal Bohemia 850ml Translúcido Kit 2 Peças", "price": 119.0, "stock": 2, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://images.tcdn.com.br/img/img_prod/766438/jogo_2_tacas_cristal_bohemia_vinho_grand_sommelier_850ml_4777_1_7bfd3ee99b4eaa98b78145c70e27fdf6.jpg"}, {"id": 282, "name": "Tenis Masculino adidas Vl Court Base", "price": 395.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://imgcentauro-a.akamaihd.net/1366x1366/M13XZS51.jpg"}, {"id": 283, "name": "Tenis Nike Air Jordan 4 Rm Premium", "price": 1119.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://static.nike.com.cn/a/images/t_PDP_936_v1/f_auto,q_auto:eco,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b4f9ea47-2880-4a1b-827a-52f061267ac9/AIR+JORDAN+4+RM+PRM.png"}, {"id": 284, "name": "Thick & Easy 225g - Fresenius", "price": 133.0, "stock": 18, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/9aa0d87d00c93b9bd623af6828cf4add"}, {"id": 285, "name": "Torneira Misturador Monocomando Cascata Cromado", "price": 163.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://cdn.leroymerlin.com.br/products/torneira_monocomando_misturador_cascata_alta_metal_cromada_1570941720_03b6_600x600.png"}, {"id": 286, "name": "Travesseiro 50x70cm Buddemeyer Vision Fill 100% Algodão Branco", "price": 170.0, "stock": 4, "sheet": "Sala 01", "category": "Casa & Cama", "kw": "home,bedroom", "img": "https://americanas.vtexassets.com/arquivos/ids/2804378/7506874406_3_xlarge.jpg?v=638751087152900000"}, {"id": 287, "name": "Tábua De Carne Em Madeira Guarapa Para Churrasco E Cortes", "price": 56.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://cdn.leroymerlin.com.br/products/tabua_de_madeira_para_churrasco_35x24cm_corte_de_carnes_1571933481_eb52_300x300.png"}, {"id": 288, "name": "Tênis Nike Air Zoom G.T.", "price": 721.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://imgnike-a.akamaihd.net/1920x1920/01141352.jpg"}, {"id": 289, "name": "Tênis Nike Court Borough Low Recraft", "price": 449.0, "stock": 1, "sheet": "Sala 02", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/78cb1b12-67ed-44f7-91d9-0343624bf9cc/COURT+BOROUGH+LOW+RECRAFT+BG.png"}, {"id": 290, "name": "Tênis Nike Court Vision Low", "price": 408.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://imgnike-a.akamaihd.net/1920x1920/013702ID.jpg"}, {"id": 291, "name": "Tênis Nike SB Force 58 Masculino", "price": 455.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://imgnike-a.akamaihd.net/1920x1920/011580ID.jpg"}, {"id": 292, "name": "Tênis Nike Star Runner 5 Infantil", "price": 275.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://www.melhorcomprar.com.br/images/produto/585008-1.webp"}, {"id": 293, "name": "Tênis Puma Club II Era", "price": 274.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://cdn.awsli.com.br/2500x2500/200/200534/produto/310349114/1372_89c8dd86-6117-4d6a-b1e3-7d73ded5b089_1200x1200-0yreak57np.jpg"}, {"id": 294, "name": "Tênis Puma Feminino Carina", "price": 325.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://cdnv2.moovin.com.br/margilcalcados/imagens/produtos/original/tenis-puma-feminino-carina-em-couro-l-bdp-12ef1e84491e83a62a886d05112726b8.jpg"}, {"id": 295, "name": "Tênis Puma Flyer Lite 3 Bdp - Original", "price": 427.0, "stock": 1, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://images.tcdn.com.br/img/img_prod/917287/tenis_puma_flyer_lite_3_bdp_preto_312728_feminino_loja_tuka_oficial_9809_2_ae5cf7a1540dab2c5bbcc53b67abf332.jpg"}, {"id": 296, "name": "Tênis adidas Advantage Base 2.0", "price": 271.0, "stock": 1, "sheet": "Sala 01", "category": "Moda & Calçados", "kw": "fashion,clothes", "img": "https://assets.adidas.com/images/w_600,f_auto,q_auto/ddd79833f68846888a4af71da9545881_9366/Tenis_Advantage_Base_2.0_Azul_JP7945_04_standard.jpg"}, {"id": 297, "name": "Tônico Crescimento Absoluto - 100ml", "price": 38.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://down-br.img.susercontent.com/file/sg-11134201-824ib-me66thqfq60w95"}, {"id": 298, "name": "Vinho Argentino D.v Catena Cabernet - Malbec Tinto ORIGINAL 750ml", "price": 249.0, "stock": 1, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m76u4svp56bw60"}, {"id": 299, "name": "Vinho Argentino Tinto Angelica Zapata Cabernet Franc 750ml", "price": 139.0, "stock": 1, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://http2.mlstatic.com/D_NQ_NP_848054-MLB87698986658_072025-O.webp"}, {"id": 300, "name": "Vinho Australiano Jacob's Creek Classic Shiraz Tinto 750ml", "price": 150.0, "stock": 5, "sheet": "Sala 01", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "http://cellar.com/cdn/shop/files/JACOBS_CREEK_CLASSIC_SHIRAZ_2021_FRONT.jpg?v=1755190399"}, {"id": 301, "name": "Vinho Branco Garzon Reserva Sauvignon Blanc 750 Ml Uruguaio", "price": 149.0, "stock": 5, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://http2.mlstatic.com/D_NQ_NP_704512-MLB52472972795_112022-O.webp"}, {"id": 302, "name": "Vinho Frisante Mayos Green Branco Demi-sec 750 Ml", "price": 44.0, "stock": 1, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://http2.mlstatic.com/D_NQ_NP_708008-MLB90657897554_082025-O.webp"}, {"id": 303, "name": "Vinho Frisante Mayos Pink Rosé 750ml", "price": 42.0, "stock": 2, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://images.tcdn.com.br/img/img_prod/1249547/vinho_frisante_rose_mayos_pink_750_ml_149_1_1b1ee39bfd6f600e799e61759b93c389.png"}, {"id": 304, "name": "Vinho Pêra Manca Branco - 2023", "price": 611.0, "stock": 1, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://www.vinha.pt/wp-content/uploads/2015/05/100181-3.jpg"}, {"id": 305, "name": "Vinho Rendez Vous Premier Merlot Cabernet Sauvignon 750m", "price": 71.0, "stock": 4, "sheet": "Sala 02", "category": "Vinhos & Bebidas", "kw": "wine,bottle", "img": "https://www.imigrantesbebidas.com.br/img/bebida/images/products/full/99936-vinho-premier-rendez-vous-merlot-cabernet-750ml.20230627210747.jpg?s=349b2fb3f5c68fa28bb567da8e7a2815"}, {"id": 306, "name": "Vitamina D3 10000 Gotas Sabor Menta Complete Bari 10ml Imunidade", "price": 61.0, "stock": 1, "sheet": "Sala 02", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://product-data.raiadrogasil.io/images/10701985.webp"}, {"id": 307, "name": "Watar Mawwal Arabia Eau De Parfum Perfume Feminino Original 100ml", "price": 249.0, "stock": 1, "sheet": "Sala 02", "category": "Perfumes", "kw": "perfume,fragrance", "img": "https://http2.mlstatic.com/D_NQ_NP_789532-MLB90049095911_082025-O.webp"}, {"id": 308, "name": "Wella Oil Reflections Luminous Óleo 100 ml", "price": 179.0, "stock": 2, "sheet": "Sala 02", "category": "Óleos & Séruns", "kw": "serum,oil,beauty", "img": "https://images.tcdn.com.br/img/img_prod/939182/wella_professionals_oil_reflections_luminous_smoothening_oleo_capilar_100_ml_2349_1_3ee8f3cbf4231ebe63f6165a058c0902.png"}, {"id": 309, "name": "Whey Muke 450g - Mais Mu | Muke +mu Isolado E Hidrolisado", "price": 203.0, "stock": 1, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://http2.mlstatic.com/D_NQ_NP_998574-MLU75771544508_042024-O.webp"}, {"id": 310, "name": "Whey Protein Concentrado Mais +mu 450g - Vaquinha Way Whay", "price": 155.0, "stock": 1, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://http2.mlstatic.com/D_NQ_NP_967703-MLB81058383342_122024-O.webp"}, {"id": 311, "name": "XTRATUS - Suplemento com Carboidratos e Eletrólitos Intra-Treino de Abacaxi e Hortelã - Livre de OGMS, Corantes e Conservantes. Contém Fruta de Verdade para sabor. 100% Natural e Vegano -1Kg", "price": 228.0, "stock": 13, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://images.tcdn.com.br/img/img_prod/1134293/suplemento_intratreino_com_abacaxi_e_hortela_1kg_45_1_d85098c8279d71e8a1a1bf36649f0ce8.jpg"}, {"id": 312, "name": "Xtratus Endurance Intratreino Caixa Com 12 Saches", "price": 305.0, "stock": 13, "sheet": "Sala 01", "category": "Café & Alimentos", "kw": "coffee,food", "img": "https://http2.mlstatic.com/D_NQ_NP_725317-MLB72857536689_112023-O.webp"}, {"id": 313, "name": "Xícara De Cristal Para Chá Stripe Wolff 200ml", "price": 16.0, "stock": 1, "sheet": "Sala 02", "category": "Casa & Utilidades", "kw": "cup,bottle", "img": "https://http2.mlstatic.com/D_NQ_NP_963425-MLB89939273763_082025-O.webp"}, {"id": 314, "name": "blush contorno bruna tavares bt blush", "price": 44.0, "stock": 1, "sheet": "Sala 02", "category": "Maquiagem", "kw": "makeup,cosmetics", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_800/v1/imagens/product/MP66403/5795d752-95d6-402e-9f85-5c8ea1033ad1-622b586ad6d1671603d2fab6-5755063559931761501.jpg"}, {"id": 315, "name": "sex massager high water g spot", "price": 325.0, "stock": 1, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://m.media-amazon.com/images/I/61Ak0WN0PAL._AC_SL1500_.jpg"}, {"id": 316, "name": "Água Limpeza Granado Bebe Pele Sensível 500ml Envio Imediato", "price": 58.0, "stock": 4, "sheet": "Sala 02", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://cdn.awsli.com.br/2500x2500/939/939830/produto/294644646/6b77c6af8ad1dfd80a2209ef5f2924ff-o612zsrjgt.png"}, {"id": 317, "name": "Água Oxigenada Cremosa Cadiveu 20 Volumes 900ml", "price": 43.0, "stock": 5, "sheet": "Sala 02", "category": "Outros", "kw": "cosmetics,product", "img": "https://ikesaki.vteximg.com.br/arquivos/ids/327752/Agua-Oxigenada-Cadiveu-20-Volumes---900ml--1-.png"}, {"id": 318, "name": "Ápice , cachos , shampoo nutritivo , limpeza suave , 300 ml", "price": 44.9, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://a-static.mlcdn.com.br/800x560/kit-2-shampoo-nutritivo-cachos-apse-apice-limpeza-suave-vegano-cabelo-sem-sulfato-300ml/bestdreammagazine/aps258/46a5cbb00122c7cbb7dfe771a231034c.jpeg"}, {"id": 319, "name": "Ápice Cosméticos , ativador antifrês condicionante 500 g", "price": 47.9, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://http2.mlstatic.com/D_NQ_NP_941191-MLB79073171141_092024-O-ativador-anti-frizz-aco-condicionante-500g-apse-apice.webp"}, {"id": 320, "name": "Ápice Creme de Pentear Nutri Waves | Proteína do Arroz e Óleo de Pracaxi I Definição de cabelos com curvatura | 500g", "price": 47.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://m.media-amazon.com/images/I/71lQRgYZaHL._AC_SX569_.jpg"}, {"id": 321, "name": "Ápice Creme de Pentear África Baobá | Hidratação, Definição e Proteção Térmica para Cabelos Cacheados, Crespos e Ondulados | 500g", "price": 45.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://yumeicosmeticos.com.br/wp-content/uploads/2024/06/7898652874741_3.png"}, {"id": 322, "name": "Ápice Esfoliante Corporal Baunilha e Coco | Renovação Celular e Toque Aveludado | 300g", "price": 58.32, "stock": 1, "sheet": "Sala 01", "category": "Corpo", "kw": "body+care,soap", "img": "https://www.apicecosmeticos.com.br/cdn/shop/files/a9ac43bde436003cd7aece1217e42d43_400x.png?v=1732729966"}, {"id": 323, "name": "Ápice Tratamento Anti Porosidade pH Control | Máscara Acidificante com Efeito Teia, Restauração e Brilho para Todas as Curvaturas | 500g", "price": 59.8, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://yumeicosmeticos.com.br/wp-content/uploads/2024/06/7898945725569_1.png"}, {"id": 324, "name": "Ápsi Cosmético Nesse cer", "price": 0.0, "stock": 1, "sheet": "Sala 01", "category": "Outros", "kw": "cosmetics,product", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/product/MP21395/54b1949e-11cb-4591-992e-08c107b3f91d-kit-apse-cosmetics-crespo-power-4-produtos.png"}, {"id": 325, "name": "Óleo Capilar Oil Reflections Light 30ml Wella", "price": 62.0, "stock": 1, "sheet": "Sala 02", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://images.tcdn.com.br/img/img_prod/1282834/wella_professionals_oil_reflections_light_oleo_capilar_30ml_153677143_1_8415af0afb63d86c563687af68d10575.jpg"}, {"id": 326, "name": "Óleo Capilar Wella Professionals Oil Reflections 100ml", "price": 176.0, "stock": 1, "sheet": "Sala 01", "category": "Cabelo", "kw": "shampoo,hair", "img": "https://a-static.mlcdn.com.br/1500x1500/wella-oil-reflections-oleo-de-tratamento-100ml/websalao/1538/90a8dc48365e5a65b290375ebfa81006.jpg"}, {"id": 327, "name": "Óleo Light Wella Oil Reflection 100 Ml", "price": 127.0, "stock": 1, "sheet": "Sala 02", "category": "Óleos & Séruns", "kw": "serum,oil,beauty", "img": "https://images.tcdn.com.br/img/img_prod/981272/wella_professionals_oil_reflections_oleo_light_100ml_319_2_bcb39a9d39e6fc183ec6a4c674fdfe39.jpg"}, {"id": 328, "name": "Óleo de Rosa Mosqueta 100% Kokeshi", "price": 59.0, "stock": 1, "sheet": "Sala 01", "category": "Skincare", "kw": "skincare,moisturizer", "img": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_1800,c_limit/e_trim/v1/imagens/products/MP385861/leo-de-rosa-mosqueta-100-kokeshi-8.png"}];
+
+// ============================================================
+// CATEGORY EMOJI MAP
+// ============================================================
+const CAT_EMOJI = {
+  'Perfumes': '🌸',
+  'Maquiagem': '💄',
+  'Skincare': '✨',
+  'Cabelo': '💇',
+  'Tratamento Capilar': '🧴',
+  'Corpo': '🧼',
+  'Higiene': '🪥',
+  'Limpeza': '🫧',
+  'Casa & Cama': '🏠',
+  'Casa & Utilidades': '🔧',
+  'Bebê': '👶',
+  'Moda & Calçados': '👗',
+  'Café & Alimentos': '☕',
+  'Vinhos & Bebidas': '🍷',
+  'Óleos & Séruns': '💧',
+  'Outros': '📦',
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let allProducts = [];
+let filteredProducts = [];
+let currentPage = 1;
+let activeCategory = 'Todas';
+let cart = {};
+let refreshTimer = null;
+
+// ============================================================
+// CSV PARSER (handles quoted fields)
+// ============================================================
+function parseCSV(text) {
+  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+  if (lines.length < 2) return [];
+  const headers = parseLine(lines[0]);
+  const results = [];
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    const vals = parseLine(lines[i]);
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h.trim()] = (vals[idx] || '').trim(); });
+    results.push(obj);
+  }
+  return results;
+}
+
+function parseLine(line) {
+  const result = [];
+  let cur = '';
+  let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+      else { inQ = !inQ; }
+    } else if (ch === ',' && !inQ) {
+      result.push(cur); cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+function csvRowToProduct(row, idx) {
+  const ativo = (row['Ativo'] || '').toUpperCase().trim();
+  if (ativo !== 'SIM') return null;
+  const preco = parseFloat((row['Preco'] || '0').replace(',', '.')) || 0;
+  const estoque = parseInt(row['Estoque'] || '0', 10) || 0;
+  return {
+    id: idx,
+    name: (row['Nome'] || '').trim(),
+    price: preco,
+    stock: estoque,
+    sheet: (row['Sala'] || '').trim(),
+    category: (row['Categoria'] || '').trim(),
+    img: (row['Imagem'] || '').trim(),
+  };
+}
+
+// ============================================================
+// DATA LOADING
+// ============================================================
+async function fetchCSV() {
+  if (!GSHEETS_CSV_URL) return null;
+  try {
+    const resp = await fetch(GSHEETS_CSV_URL + '?t=' + Date.now());
+    if (!resp.ok) return null;
+    const text = await resp.text();
+    const rows = parseCSV(text);
+    const products = rows.map((r, i) => csvRowToProduct(r, i)).filter(Boolean);
+    if (products.length === 0) return null;
+    return products;
+  } catch (e) {
+    return null;
+  }
+}
+
+function deduplicateProducts(list) {
+  const seen = new Map();
+  for (const p of list) {
+    const key = p.name.toLowerCase().trim();
+    if (!seen.has(key)) {
+      seen.set(key, { ...p });
+    } else {
+      // keep highest stock, accumulate
+      const existing = seen.get(key);
+      existing.stock = Math.max(existing.stock, p.stock);
+      if (!existing.img && p.img) existing.img = p.img;
+    }
+  }
+  return Array.from(seen.values()).map((p, i) => ({ ...p, id: i }));
+}
+
+async function loadProducts(showLoader = false) {
+  if (showLoader) document.getElementById('loadingOverlay').classList.add('show');
+  const btn = document.getElementById('btnRefresh');
+  btn.classList.add('spinning');
+  try {
+    const csvProducts = await fetchCSV();
+    if (csvProducts && csvProducts.length > 0) {
+      allProducts = deduplicateProducts(csvProducts);
+    } else {
+      allProducts = deduplicateProducts(PRODUCTS_FALLBACK);
+    }
+  } catch (e) {
+    allProducts = deduplicateProducts(PRODUCTS_FALLBACK);
+  } finally {
+    btn.classList.remove('spinning');
+    if (showLoader) document.getElementById('loadingOverlay').classList.remove('show');
+  }
+  buildCategoryTabs();
+  applyFilters();
+}
+
+// ============================================================
+// FILTERS & SORT
+// ============================================================
+function applyFilters() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const sort = document.getElementById('sortSelect').value;
+
+  let list = allProducts.filter(p => {
+    if (activeCategory !== 'Todas' && p.category !== activeCategory) return false;
+    if (query) {
+      const haystack = (p.name + ' ' + p.category).toLowerCase();
+      if (!haystack.includes(query)) return false;
+    }
+    return true;
+  });
+
+  if (sort === 'price-asc') list.sort((a, b) => a.price - b.price);
+  else if (sort === 'price-desc') list.sort((a, b) => b.price - a.price);
+  else if (sort === 'name-asc') list.sort((a, b) => a.name.localeCompare(b.name, 'pt'));
+  else if (sort === 'name-desc') list.sort((a, b) => b.name.localeCompare(a.name, 'pt'));
+  else if (sort === 'stock-desc') list.sort((a, b) => b.stock - a.stock);
+
+  filteredProducts = list;
+  currentPage = 1;
+  renderGrid();
+  renderPagination();
+  updateResultsInfo();
+}
+
+// ============================================================
+// CATEGORY TABS
+// ============================================================
+function buildCategoryTabs() {
+  const cats = ['Todas', ...new Set(allProducts.map(p => p.category).filter(Boolean))].sort((a, b) => {
+    if (a === 'Todas') return -1;
+    if (b === 'Todas') return 1;
+    return a.localeCompare(b, 'pt');
+  });
+
+  const container = document.getElementById('catTabs');
+  container.innerHTML = '';
+  cats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-tab' + (cat === activeCategory ? ' active' : '');
+    btn.textContent = (CAT_EMOJI[cat] ? CAT_EMOJI[cat] + ' ' : '') + cat;
+    btn.addEventListener('click', () => {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
+    });
+    container.appendChild(btn);
+  });
+}
+
+// ============================================================
+// RENDER GRID
+// ============================================================
+function discountedPrice(price) {
+  return price * (1 - DISCOUNT);
+}
+
+function formatBRL(n) {
+  return n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function stockBadgeHTML(stock) {
+  if (stock <= 0) return '<span class="stock-badge badge-out">Esgotado</span>';
+  if (stock <= 3) return '<span class="stock-badge badge-low">Últimas ' + stock + '</span>';
+  return '<span class="stock-badge badge-ok">Em estoque</span>';
+}
+
+function svgPlaceholder(category) {
+  const emoji = CAT_EMOJI[category] || '📦';
+  return `<div class="svg-placeholder">${emoji}</div>`;
+}
+
+function buildQtyOptions(stock, productId) {
+  const inCart = cart[productId] ? cart[productId].qty : 0;
+  const max = Math.max(0, stock - inCart);
+  if (max === 0) return '<option value="0">—</option>';
+  let opts = '';
+  for (let i = 1; i <= Math.min(max, 20); i++) {
+    opts += `<option value="${i}">${i}</option>`;
+  }
+  return opts;
+}
+
+function renderGrid() {
+  const grid = document.getElementById('productGrid');
+  const start = (currentPage - 1) * PER_PAGE;
+  const page = filteredProducts.slice(start, start + PER_PAGE);
+
+  if (page.length === 0) {
+    grid.innerHTML = `<div class="no-results" style="grid-column:1/-1">
+      <svg width="48" height="48" fill="none" stroke="var(--gray-300)" stroke-width="1.5" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <p>Nenhum produto encontrado</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = page.map(p => {
+    const disc = discountedPrice(p.price);
+    const inCart = cart[p.id] ? cart[p.id].qty : 0;
+    const availQty = p.stock - inCart;
+    const isOut = p.stock <= 0;
+    const canAdd = !isOut && availQty > 0;
+    return `<div class="card" data-id="${p.id}">
+      <div class="card-img-wrap">
+        ${p.img
+          ? `<img src="${escHTML(p.img)}" alt="${escHTML(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+          : ''
+        }
+        <div class="svg-placeholder" style="display:${p.img ? 'none' : 'flex'}">${CAT_EMOJI[p.category] || '📦'}</div>
+        ${stockBadgeHTML(p.stock)}
+      </div>
+      <div class="card-body">
+        <div class="card-name" title="${escHTML(p.name)}">${escHTML(p.name)}</div>
+        <div class="card-prices">
+          <div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−20%</span></div>
+          <div class="price-discounted">R$ ${formatBRL(disc)}</div>
+        </div>
+        <div class="card-category">${escHTML(p.category)}${p.sheet ? ' · ' + escHTML(p.sheet) : ''}</div>
+        <div class="card-footer">
+          ${canAdd ? `<div class="qty-row">
+            <label for="qty_${p.id}">Qtd:</label>
+            <select id="qty_${p.id}">${buildQtyOptions(p.stock, p.id)}</select>
+          </div>` : ''}
+          <button class="btn-add" data-id="${p.id}" ${!canAdd ? 'disabled' : ''}>${isOut ? 'Esgotado' : 'Adicionar'}</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // attach add-to-cart listeners
+  grid.querySelectorAll('.btn-add:not(:disabled)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = parseInt(btn.dataset.id, 10);
+      const sel = document.getElementById('qty_' + id);
+      const qty = sel ? parseInt(sel.value, 10) : 1;
+      if (qty < 1) return;
+      addToCart(id, qty);
+    });
+  });
+}
+
+function escHTML(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ============================================================
+// PAGINATION
+// ============================================================
+function renderPagination() {
+  const total = Math.ceil(filteredProducts.length / PER_PAGE);
+  const pag = document.getElementById('pagination');
+  if (total <= 1) { pag.innerHTML = ''; return; }
+
+  let html = `<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="goPage(${currentPage - 1})">‹</button>`;
+
+  const maxVisible = 7;
+  let start = Math.max(1, currentPage - 3);
+  let end = Math.min(total, start + maxVisible - 1);
+  if (end - start < maxVisible - 1) start = Math.max(1, end - maxVisible + 1);
+
+  if (start > 1) {
+    html += `<button class="page-btn" onclick="goPage(1)">1</button>`;
+    if (start > 2) html += `<span class="page-btn" style="pointer-events:none;border:none">…</span>`;
+  }
+  for (let i = start; i <= end; i++) {
+    html += `<button class="page-btn${i === currentPage ? ' active' : ''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  if (end < total) {
+    if (end < total - 1) html += `<span class="page-btn" style="pointer-events:none;border:none">…</span>`;
+    html += `<button class="page-btn" onclick="goPage(${total})">${total}</button>`;
+  }
+  html += `<button class="page-btn" ${currentPage === total ? 'disabled' : ''} onclick="goPage(${currentPage + 1})">›</button>`;
+  pag.innerHTML = html;
+}
+
+function goPage(n) {
+  currentPage = n;
+  renderGrid();
+  renderPagination();
+  updateResultsInfo();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateResultsInfo() {
+  const start = Math.min((currentPage - 1) * PER_PAGE + 1, filteredProducts.length);
+  const end = Math.min(currentPage * PER_PAGE, filteredProducts.length);
+  const total = filteredProducts.length;
+  const info = document.getElementById('resultsInfo');
+  if (total === 0) { info.textContent = 'Nenhum produto encontrado'; return; }
+  info.textContent = `Mostrando ${start}–${end} de ${total} produto${total !== 1 ? 's' : ''}`;
+}
+
+// ============================================================
+// CART
+// ============================================================
+function cartProduct(id) {
+  return allProducts.find(p => p.id === id);
+}
+
+function addToCart(id, qty) {
+  const p = cartProduct(id);
+  if (!p) return;
+  const current = cart[id] ? cart[id].qty : 0;
+  const newQty = Math.min(current + qty, p.stock);
+  if (newQty <= current) { showToast('Quantidade máxima atingida'); return; }
+  cart[id] = { qty: newQty };
+  saveCart();
+  updateCartBadge();
+  renderGrid(); // refresh buttons/stock display
+  showToast(`✓ ${p.name.slice(0, 30)} adicionado`);
+}
+
+function removeFromCart(id) {
+  delete cart[id];
+  saveCart();
+  updateCartBadge();
+  renderCartPanel();
+  renderGrid();
+}
+
+function setCartQty(id, qty) {
+  const p = cartProduct(id);
+  if (!p) return;
+  if (qty <= 0) { removeFromCart(id); return; }
+  cart[id] = { qty: Math.min(qty, p.stock) };
+  saveCart();
+  updateCartBadge();
+  renderCartPanel();
+  renderGrid();
+}
+
+function clearCart() {
+  cart = {};
+  saveCart();
+  updateCartBadge();
+  renderCartPanel();
+  renderGrid();
+}
+
+function saveCart() {
+  localStorage.setItem(LS_CART_KEY, JSON.stringify(cart));
+}
+
+function loadCart() {
+  try {
+    const raw = localStorage.getItem(LS_CART_KEY);
+    if (raw) cart = JSON.parse(raw);
+  } catch (e) { cart = {}; }
+}
+
+function updateCartBadge() {
+  const total = Object.values(cart).reduce((s, v) => s + v.qty, 0);
+  document.getElementById('cartBadge').textContent = total;
+}
+
+function cartItemCount() {
+  return Object.values(cart).reduce((s, v) => s + v.qty, 0);
+}
+
+function cartSubtotal() {
+  return Object.entries(cart).reduce((s, [id, v]) => {
+    const p = cartProduct(parseInt(id, 10));
+    return s + (p ? p.price * v.qty : 0);
+  }, 0);
+}
+
+function renderCartPanel() {
+  const itemsEl = document.getElementById('cartItems');
+  const footerEl = document.getElementById('cartFooter');
+  const totalsEl = document.getElementById('cartTotals');
+
+  const ids = Object.keys(cart).map(Number);
+  if (ids.length === 0) {
+    itemsEl.innerHTML = '<div class="cart-empty">Seu carrinho está vazio 🛒</div>';
+    footerEl.style.display = 'none';
+    return;
+  }
+  footerEl.style.display = '';
+
+  itemsEl.innerHTML = ids.map(id => {
+    const p = cartProduct(id);
+    if (!p) return '';
+    const qty = cart[id].qty;
+    const disc = discountedPrice(p.price);
+    return `<div class="cart-item">
+      ${p.img
+        ? `<img class="cart-item-img" src="${escHTML(p.img)}" alt="${escHTML(p.name)}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 56 56%22><rect width=%2256%22 height=%2256%22 fill=%22%23f3f4f6%22/><text x=%2228%22 y=%2234%22 text-anchor=%22middle%22 font-size=%2224%22>${encodeURIComponent(CAT_EMOJI[p.category]||'📦')}</text></svg>'">`
+        : `<div class="cart-item-img" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:var(--gray-100)">${CAT_EMOJI[p.category]||'📦'}</div>`
+      }
+      <div class="cart-item-info">
+        <div class="cart-item-name" title="${escHTML(p.name)}">${escHTML(p.name)}</div>
+        <div class="cart-item-price">R$ ${formatBRL(disc)}/un · Total: R$ ${formatBRL(disc * qty)}</div>
+        <div class="cart-item-controls">
+          <button class="qty-ctrl" onclick="setCartQty(${id}, ${qty - 1})">−</button>
+          <span class="qty-num">${qty}</span>
+          <button class="qty-ctrl" onclick="setCartQty(${id}, ${qty + 1})" ${qty >= p.stock ? 'disabled style=opacity:.4;cursor:not-allowed' : ''}>+</button>
+          <button class="btn-remove" onclick="removeFromCart(${id})" title="Remover">🗑</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const subtotal = cartSubtotal();
+  const discTotal = subtotal * (1 - DISCOUNT);
+  const saved = subtotal - discTotal;
+  totalsEl.innerHTML = `
+    <div class="cart-total-row"><span>Subtotal (sem desconto)</span><span>R$ ${formatBRL(subtotal)}</span></div>
+    <div class="cart-total-row" style="color:var(--success)"><span>Desconto (20%)</span><span>− R$ ${formatBRL(saved)}</span></div>
+    <div class="cart-total-row main"><span>Total com desconto</span><span>R$ ${formatBRL(discTotal)}</span></div>`;
+}
+
+// ============================================================
+// CART OPEN/CLOSE
+// ============================================================
+function openCart() {
+  renderCartPanel();
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('btnCart').addEventListener('click', openCart);
+document.getElementById('btnCloseCart').addEventListener('click', closeCart);
+document.getElementById('cartOverlay').addEventListener('click', closeCart);
+document.getElementById('btnClearCart').addEventListener('click', () => {
+  if (confirm('Limpar carrinho?')) clearCart();
+});
+
+// ============================================================
+// WHATSAPP
+// ============================================================
+document.getElementById('btnWhatsApp').addEventListener('click', () => {
+  const ids = Object.keys(cart).map(Number);
+  if (ids.length === 0) return;
+
+  const lines = ids.map(id => {
+    const p = cartProduct(id);
+    if (!p) return '';
+    const qty = cart[id].qty;
+    const disc = discountedPrice(p.price);
+    return `• ${p.name}\n  Qtd: ${qty}x | Subtotal: R$ ${formatBRL(disc * qty)}`;
+  }).filter(Boolean);
+
+  const total = cartSubtotal() * (1 - DISCOUNT);
+  const msg = [
+    '🛒 *Pedido — Loja*',
+    '',
+    ...lines,
+    '',
+    `*Total com 20% de desconto: R$ ${formatBRL(total)}*`,
+    '',
+    `Link: ${STORE_URL}`,
+  ].join('\n');
+
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+});
+
+// ============================================================
+// SHARE CART VIA URL HASH
+// ============================================================
+document.getElementById('btnShareCart').addEventListener('click', () => {
+  const encoded = btoa(JSON.stringify(cart));
+  const url = location.origin + location.pathname + '#cart=' + encoded;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast('Link copiado!'));
+  } else {
+    prompt('Copie o link:', url);
+  }
+});
+
+function loadCartFromHash() {
+  const hash = location.hash;
+  if (!hash.startsWith('#cart=')) return;
+  try {
+    const encoded = hash.slice(6);
+    const decoded = JSON.parse(atob(encoded));
+    cart = decoded;
+    saveCart();
+    updateCartBadge();
+    history.replaceState(null, '', location.pathname);
+    showToast('Carrinho carregado do link!');
+  } catch (e) {}
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+let toastTimer = null;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ============================================================
+// AUTO REFRESH
+// ============================================================
+function startAutoRefresh() {
+  if (!GSHEETS_CSV_URL) return;
+  if (refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = setInterval(() => loadProducts(false), REFRESH_INTERVAL);
+}
+
+document.getElementById('btnRefresh').addEventListener('click', () => {
+  loadProducts(true);
+});
+
+// ============================================================
+// FILTER LISTENERS
+// ============================================================
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+document.getElementById('sortSelect').addEventListener('change', applyFilters);
+
+// ============================================================
+// INIT
+// ============================================================
+loadCart();
+loadCartFromHash();
+updateCartBadge();
+loadProducts(false);
+startAutoRefresh();
+</script>
+</body>
+</html>
