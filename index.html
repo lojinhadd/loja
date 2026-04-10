@@ -644,7 +644,8 @@
 // ============================================================
 // CONFIG
 // ============================================================
-const GSHEETS_CSV_URL = 'https://raw.githubusercontent.com/lojinhadd/loja/main/data.csv';
+const GSHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTcIIJ9U0ktLeshYzEEARXu4uqVSbrRWdnx2NjkQxc4UNsCpWkL3HfBWCfoYFzQ2vJQpCwQN7ychgxY/pub?output=csv';
+const GITHUB_CSV_URL  = 'https://raw.githubusercontent.com/lojinhadd/loja/main/data.csv';
 const WA_NUMBER = '5511998031143';
 const STORE_URL = 'https://lojinhadd.github.io/loja/';
 const PER_PAGE = 28;
@@ -751,18 +752,29 @@ function csvRowToProduct(row, idx) {
 // DATA LOADING
 // ============================================================
 async function fetchCSV() {
-  if (!GSHEETS_CSV_URL) return null;
+  // Tenta 1: Google Sheets direto (sempre fresquinho, CORS liberado)
   try {
-    const resp = await fetch(GSHEETS_CSV_URL + '?t=' + Date.now());
-    if (!resp.ok) return null;
-    const text = await resp.text();
-    const rows = parseCSV(text);
-    const products = rows.map((r, i) => csvRowToProduct(r, i)).filter(Boolean);
-    if (products.length === 0) return null;
-    return products;
-  } catch (e) {
-    return null;
-  }
+    const resp = await fetch(GSHEETS_CSV_URL + '&t=' + Date.now());
+    if (resp.ok) {
+      const text = await resp.text();
+      const rows = parseCSV(text);
+      const products = rows.map((r, i) => csvRowToProduct(r, i)).filter(Boolean);
+      if (products.length > 0) return products;
+    }
+  } catch (e) { /* continua para fallback */ }
+
+  // Tenta 2: GitHub (pode ter até 5min de cache, mas é backup)
+  try {
+    const resp = await fetch(GITHUB_CSV_URL + '?t=' + Date.now());
+    if (resp.ok) {
+      const text = await resp.text();
+      const rows = parseCSV(text);
+      const products = rows.map((r, i) => csvRowToProduct(r, i)).filter(Boolean);
+      if (products.length > 0) return products;
+    }
+  } catch (e) { /* continua para fallback */ }
+
+  return null;
 }
 
 function deduplicateProducts(list) {
@@ -787,14 +799,7 @@ async function loadProducts(showLoader = false) {
   btn.classList.add('spinning');
   try {
     const csvProducts = await fetchCSV();
-    if (csvProducts && csvProducts.length > 0) {
-      allProducts = deduplicateProducts(csvProducts);
-    } else {
-      // Tenta de novo após 3s (pode ser cache do GitHub)
-      await new Promise(r => setTimeout(r, 3000));
-      const retry = await fetchCSV();
-      allProducts = deduplicateProducts(retry && retry.length > 0 ? retry : PRODUCTS_FALLBACK);
-    }
+    allProducts = deduplicateProducts(csvProducts && csvProducts.length > 0 ? csvProducts : PRODUCTS_FALLBACK);
   } catch (e) {
     allProducts = deduplicateProducts(PRODUCTS_FALLBACK);
   } finally {
