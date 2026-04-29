@@ -560,9 +560,88 @@
     .card-name { font-size: .8rem; }
     .price-discounted { font-size: .9rem; }
   }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: var(--primary-dark);
+    color: rgba(255,255,255,.88);
+    overflow: hidden;
+    height: 30px;
+    display: none; /* mostrado via JS após carregar */
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 101;
+    gap: 0;
+    font-size: .74rem;
+    font-weight: 500;
+    letter-spacing: .01em;
+  }
+  .ticker-label {
+    padding: 0 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(255,255,255,.22);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+  }
+  .ticker-overflow { overflow: hidden; flex: 1; }
+  .ticker-track {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    will-change: transform;
+    animation: ticker-scroll 50s linear infinite;
+  }
+  .ticker-wrap:hover .ticker-track { animation-play-state: paused; }
+  @keyframes ticker-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .ticker-item {
+    padding: 0 20px;
+    flex-shrink: 0;
+    transition: color .15s;
+  }
+  .ticker-item.clickable {
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .ticker-item.clickable:hover { color: #fff; }
+  .ticker-sep { opacity: .35; flex-shrink: 0; }
+
+  /* ── BADGE NEW ── */
+  .badge-new {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: var(--primary);
+    color: #fff;
+    font-size: .58rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    z-index: 2;
+    box-shadow: 0 1px 4px rgba(0,0,0,.25);
+    pointer-events: none;
+    line-height: 1.5;
+  }
 </style>
 </head>
 <body>
+
+<!-- TICKER -->
+<div class="ticker-wrap" id="tickerWrap">
+  <span class="ticker-label">🔥 Destaques</span>
+  <div class="ticker-overflow">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+</div>
 
 <!-- LOADING -->
 <div class="loading-overlay" id="loadingOverlay">
@@ -649,7 +728,10 @@ const GITHUB_CSV_URL  = 'https://raw.githubusercontent.com/lojinhadd/loja/main/d
 const WA_NUMBER = '5511998031143';
 const STORE_URL = 'https://lojinhadd.github.io/loja/';
 const PER_PAGE = 28;
-const DISCOUNT = 0.20;
+let globalDiscount = 0.20;          // controlado pela planilha via linha __CONFIG__
+const DISCOUNT_FALLBACK = 0.20;     // fallback seguro se planilha não tiver config
+const NOVIDADES_COUNT = 50;         // quantos itens na aba Novidades
+const CAT_NOVIDADES = '✨ Novidades';
 const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 min
 const LS_CART_KEY = 'loja_cart_v2';
 
@@ -685,6 +767,7 @@ const CAT_EMOJI = {
 // ============================================================
 let allProducts = [];
 let filteredProducts = [];
+let noveltyIds = new Set();         // IDs dos últimos NOVIDADES_COUNT produtos
 let currentPage = 1;
 let activeCategory = 'Todas';
 let cart = {};
@@ -728,6 +811,10 @@ function parseLine(line) {
 }
 
 function csvRowToProduct(row, idx) {
+  const nome = (row['Nome'] || '').trim();
+  if (!nome) return null;
+  // Linha de configuração — não é produto
+  if (nome === '__CONFIG__') return null;
   const ativo = (row['Ativo'] || '').toLowerCase().trim();
   if (ativo !== 'sim') return null;
   // Extrai apenas dígitos e ponto/vírgula do preço (evita datas ou texto)
@@ -735,8 +822,6 @@ function csvRowToProduct(row, idx) {
   const preco = parseFloat(precoRaw) || 0;
   const estoqueRaw = (row['Estoque'] || '1').replace(/[^\d]/g, '');
   const estoque = parseInt(estoqueRaw, 10) || 1;
-  const nome = (row['Nome'] || '').trim();
-  if (!nome) return null;
   return {
     id: idx,
     name: nome,
@@ -746,6 +831,20 @@ function csvRowToProduct(row, idx) {
     category: (row['Categoria'] || '').trim(),
     img: (row['Imagem'] || '').trim(),
   };
+}
+
+// Lê linha __CONFIG__ da planilha e extrai desconto global
+function parseConfigRow(rows) {
+  for (const row of rows) {
+    if ((row['Nome'] || '').trim() === '__CONFIG__') {
+      const val = parseFloat((row['Preco'] || '').replace(',', '.').replace(/[^\d.]/g, ''));
+      if (!isNaN(val) && val > 0 && val <= 100) {
+        globalDiscount = val / 100;
+        return;
+      }
+    }
+  }
+  // Sem linha de config: mantém o valor atual (não reseta para fallback)
 }
 
 // ============================================================
@@ -758,6 +857,7 @@ async function fetchCSV() {
     if (resp.ok) {
       const text = await resp.text();
       const rows = parseCSV(text);
+      parseConfigRow(rows);                                    // lê __CONFIG__ p/ desconto
       const products = rows.map((r, i) => csvRowToProduct(r, i)).filter(Boolean);
       if (products.length > 0) return products;
     }
@@ -769,6 +869,7 @@ async function fetchCSV() {
     if (resp.ok) {
       const text = await resp.text();
       const rows = parseCSV(text);
+      parseConfigRow(rows);
       const products = rows.map((r, i) => csvRowToProduct(r, i)).filter(Boolean);
       if (products.length > 0) return products;
     }
@@ -806,8 +907,11 @@ async function loadProducts(showLoader = false) {
     btn.classList.remove('spinning');
     if (showLoader) document.getElementById('loadingOverlay').classList.remove('show');
   }
+  // Marca os últimos NOVIDADES_COUNT produtos como "novos"
+  noveltyIds = new Set(allProducts.slice(-NOVIDADES_COUNT).map(p => p.id));
   buildCategoryTabs();
   applyFilters();
+  buildTicker();   // atualiza faixa rotativa com desconto e produtos novos
 }
 
 // ============================================================
@@ -817,14 +921,23 @@ function applyFilters() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const sort = document.getElementById('sortSelect').value;
 
-  let list = allProducts.filter(p => {
-    if (activeCategory !== 'Todas' && p.category !== activeCategory) return false;
+  let list;
+  if (activeCategory === CAT_NOVIDADES) {
+    // Últimos NOVIDADES_COUNT produtos em ordem inversa (mais novo primeiro)
+    list = allProducts.slice(-NOVIDADES_COUNT).reverse();
     if (query) {
-      const haystack = (p.name + ' ' + p.category).toLowerCase();
-      if (!haystack.includes(query)) return false;
+      list = list.filter(p => (p.name + ' ' + p.category).toLowerCase().includes(query));
     }
-    return true;
-  });
+  } else {
+    list = allProducts.filter(p => {
+      if (activeCategory !== 'Todas' && p.category !== activeCategory) return false;
+      if (query) {
+        const haystack = (p.name + ' ' + p.category).toLowerCase();
+        if (!haystack.includes(query)) return false;
+      }
+      return true;
+    });
+  }
 
   if (sort === 'price-asc') list.sort((a, b) => a.price - b.price);
   else if (sort === 'price-desc') list.sort((a, b) => b.price - a.price);
@@ -849,9 +962,12 @@ function buildCategoryTabs() {
     return a.localeCompare(b, 'pt');
   });
 
+  // Insere aba Novidades logo após "Todas"
+  const allCats = [cats[0], CAT_NOVIDADES, ...cats.slice(1)];
+
   const container = document.getElementById('catTabs');
   container.innerHTML = '';
-  cats.forEach(cat => {
+  allCats.forEach(cat => {
     const btn = document.createElement('button');
     btn.className = 'cat-tab' + (cat === activeCategory ? ' active' : '');
     btn.textContent = (CAT_EMOJI[cat] ? CAT_EMOJI[cat] + ' ' : '') + cat;
@@ -859,6 +975,7 @@ function buildCategoryTabs() {
       activeCategory = cat;
       document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      currentPage = 1;
       applyFilters();
     });
     container.appendChild(btn);
@@ -869,7 +986,10 @@ function buildCategoryTabs() {
 // RENDER GRID
 // ============================================================
 function discountedPrice(price) {
-  return price * (1 - DISCOUNT);
+  return price * (1 - globalDiscount);
+}
+function discountPct() {
+  return Math.round(globalDiscount * 100);
 }
 
 function formatBRL(n) {
@@ -919,8 +1039,10 @@ function renderGrid() {
     const availQty = p.stock - inCart;
     const isOut = p.stock <= 0;
     const canAdd = !isOut && availQty > 0;
+    const isNew = noveltyIds.has(p.id);
     return `<div class="card" data-id="${p.id}">
       <div class="card-img-wrap">
+        ${isNew ? '<span class="badge-new">New!</span>' : ''}
         ${p.img
           ? `<img src="${escHTML(p.img)}" alt="${escHTML(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
           : ''
@@ -931,7 +1053,7 @@ function renderGrid() {
       <div class="card-body">
         <div class="card-name" title="${escHTML(p.name)}">${escHTML(p.name)}</div>
         <div class="card-prices">
-          <div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−20%</span></div>
+          <div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−${discountPct()}%</span></div>
           <div class="price-discounted">R$ ${formatBRL(disc)}</div>
         </div>
         <div class="card-category">${escHTML(p.category)}${p.sheet ? ' · ' + escHTML(p.sheet) : ''}</div>
@@ -1120,11 +1242,11 @@ function renderCartPanel() {
   }).join('');
 
   const subtotal = cartSubtotal();
-  const discTotal = subtotal * (1 - DISCOUNT);
+  const discTotal = subtotal * (1 - globalDiscount);
   const saved = subtotal - discTotal;
   totalsEl.innerHTML = `
     <div class="cart-total-row"><span>Subtotal (sem desconto)</span><span>R$ ${formatBRL(subtotal)}</span></div>
-    <div class="cart-total-row" style="color:var(--success)"><span>Desconto (20%)</span><span>− R$ ${formatBRL(saved)}</span></div>
+    <div class="cart-total-row" style="color:var(--success)"><span>Desconto (${discountPct()}%)</span><span>− R$ ${formatBRL(saved)}</span></div>
     <div class="cart-total-row main"><span>Total com desconto</span><span>R$ ${formatBRL(discTotal)}</span></div>`;
 }
 
@@ -1166,13 +1288,13 @@ document.getElementById('btnWhatsApp').addEventListener('click', () => {
     return `• ${p.name}\n  Qtd: ${qty}x | Subtotal: R$ ${formatBRL(disc * qty)}`;
   }).filter(Boolean);
 
-  const total = cartSubtotal() * (1 - DISCOUNT);
+  const total = cartSubtotal() * (1 - globalDiscount);
   const msg = [
     '🛒 *Pedido — Loja*',
     '',
     ...lines,
     '',
-    `*Total com 20% de desconto: R$ ${formatBRL(total)}*`,
+    `*Total com ${discountPct()}% de desconto: R$ ${formatBRL(total)}*`,
     '',
     `Link: ${STORE_URL}`,
   ].join('\n');
@@ -1217,6 +1339,63 @@ function showToast(msg) {
   el.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ============================================================
+// TICKER (faixa rotativa de destaques)
+// ============================================================
+function buildTicker() {
+  const wrap  = document.getElementById('tickerWrap');
+  const track = document.getElementById('tickerTrack');
+  if (!wrap || !track || allProducts.length === 0) return;
+
+  const pct      = discountPct();
+  const newProds = allProducts.slice(-Math.min(8, allProducts.length)).reverse();
+
+  // Monta lista de itens do ticker
+  const items = [
+    { text: `🎉 Todo o site com ${pct}% OFF!`, action: null },
+    { text: `✨ ${Math.min(NOVIDADES_COUNT, allProducts.length)} novidades disponíveis — confira!`,
+      action: () => goToCategory(CAT_NOVIDADES) },
+    ...newProds.map(p => ({
+      text: `🛍️ ${p.name.length > 48 ? p.name.slice(0, 48) + '…' : p.name}`,
+      action: () => { goToCategory(p.category); }
+    }))
+  ];
+
+  // Duplica para loop contínuo e sem corte visual
+  const all = [...items, ...items];
+  track.innerHTML = all.map((item, i) =>
+    `<span class="ticker-item${item.action ? ' clickable' : ''}" data-idx="${i % items.length}">${escHTML(item.text)}</span>` +
+    `<span class="ticker-sep" aria-hidden="true">·</span>`
+  ).join('');
+
+  // Ajusta duração da animação conforme a quantidade de texto
+  const duration = Math.max(30, items.length * 6);
+  track.style.animationDuration = duration + 's';
+
+  // Eventos de clique
+  track.querySelectorAll('.ticker-item.clickable').forEach(el => {
+    el.addEventListener('click', () => {
+      const idx = parseInt(el.dataset.idx, 10);
+      if (items[idx] && items[idx].action) items[idx].action();
+    });
+  });
+
+  wrap.style.display = 'flex';
+}
+
+function goToCategory(cat) {
+  activeCategory = cat;
+  document.querySelectorAll('.cat-tab').forEach(b => {
+    // Compara sem emoji (remove caracteres não-ASCII do início)
+    const label = b.textContent.replace(/^\S+\s/, '').trim();
+    b.classList.toggle('active', b.textContent.trim() === cat || label === cat.replace(/^\S+\s/, ''));
+  });
+  document.getElementById('searchInput').value = '';
+  currentPage = 1;
+  applyFilters();
+  window.scrollTo({ top: document.querySelector('main')?.offsetTop || 200, behavior: 'smooth' });
 }
 
 // ============================================================
