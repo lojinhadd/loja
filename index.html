@@ -824,6 +824,7 @@ function csvRowToProduct(row, idx) {
   const estoque = parseInt(estoqueRaw, 10) || 1;
   return {
     id: idx,
+    rowIdx: idx,   // posição original na planilha — nunca sobrescrita, usada para Novidades
     name: nome,
     price: preco,
     stock: estoque,
@@ -885,12 +886,14 @@ function deduplicateProducts(list) {
     if (!seen.has(key)) {
       seen.set(key, { ...p });
     } else {
-      // keep highest stock, accumulate
+      // keep highest stock; rowIdx: guarda o MAIOR (último na planilha) para Novidades
       const existing = seen.get(key);
       existing.stock = Math.max(existing.stock, p.stock);
       if (!existing.img && p.img) existing.img = p.img;
+      if (p.rowIdx > existing.rowIdx) existing.rowIdx = p.rowIdx; // mantém a posição mais recente
     }
   }
+  // id = posição no array (para lógica do carrinho); rowIdx = posição original na planilha
   return Array.from(seen.values()).map((p, i) => ({ ...p, id: i }));
 }
 
@@ -907,8 +910,9 @@ async function loadProducts(showLoader = false) {
     btn.classList.remove('spinning');
     if (showLoader) document.getElementById('loadingOverlay').classList.remove('show');
   }
-  // Marca os últimos NOVIDADES_COUNT produtos como "novos"
-  noveltyIds = new Set(allProducts.slice(-NOVIDADES_COUNT).map(p => p.id));
+  // Marca os últimos NOVIDADES_COUNT produtos como "novos" — por posição REAL na planilha (rowIdx)
+  const sortedByRow = allProducts.slice().sort((a, b) => b.rowIdx - a.rowIdx);
+  noveltyIds = new Set(sortedByRow.slice(0, NOVIDADES_COUNT).map(p => p.id));
   buildCategoryTabs();
   applyFilters();
   buildTicker();   // atualiza faixa rotativa com desconto e produtos novos
@@ -923,8 +927,8 @@ function applyFilters() {
 
   let list;
   if (activeCategory === CAT_NOVIDADES) {
-    // Últimos NOVIDADES_COUNT produtos em ordem inversa (mais novo primeiro)
-    list = allProducts.slice(-NOVIDADES_COUNT).reverse();
+    // Ordena por posição real na planilha (rowIdx) — estável entre refreshes
+    list = allProducts.slice().sort((a, b) => b.rowIdx - a.rowIdx).slice(0, NOVIDADES_COUNT);
     if (query) {
       list = list.filter(p => (p.name + ' ' + p.category).toLowerCase().includes(query));
     }
