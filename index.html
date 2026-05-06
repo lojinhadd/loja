@@ -631,6 +631,385 @@
     pointer-events: none;
     line-height: 1.5;
   }
+
+  /* ============================================================
+     v2 — MELHORIAS (todas additivas, identidade preservada)
+     ============================================================ */
+
+  /* — Dark mode — */
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+  html[data-theme="dark"] body {
+    background: #0f1115;
+    color: #e5e7eb;
+  }
+  html[data-theme="dark"] .toolbar,
+  html[data-theme="dark"] .cat-tabs-wrap,
+  html[data-theme="dark"] .card,
+  html[data-theme="dark"] .cart-panel,
+  html[data-theme="dark"] .cart-footer,
+  html[data-theme="dark"] .modal-content,
+  html[data-theme="dark"] #searchInput,
+  html[data-theme="dark"] #sortSelect,
+  html[data-theme="dark"] .qty-row select,
+  html[data-theme="dark"] .page-btn,
+  html[data-theme="dark"] .qty-ctrl,
+  html[data-theme="dark"] .btn-share-cart,
+  html[data-theme="dark"] .stock-toggle,
+  html[data-theme="dark"] .skeleton-card {
+    background: #1a1d24;
+    color: #e5e7eb;
+    border-color: #2d3139;
+  }
+  html[data-theme="dark"] .toolbar,
+  html[data-theme="dark"] .cat-tabs-wrap {
+    border-bottom-color: #2d3139;
+  }
+  html[data-theme="dark"] .card-name { color: #f3f4f6; }
+  html[data-theme="dark"] .card-category,
+  html[data-theme="dark"] .results-info,
+  html[data-theme="dark"] .cart-total-row { color: #9ca3af; }
+  html[data-theme="dark"] .price-original { color: #6b7280; }
+  html[data-theme="dark"] .card-img-wrap,
+  html[data-theme="dark"] .cart-item-img,
+  html[data-theme="dark"] .svg-placeholder {
+    background: #14171c;
+  }
+  html[data-theme="dark"] .cart-item { border-bottom-color: #2d3139; }
+  html[data-theme="dark"] .cart-header,
+  html[data-theme="dark"] .cart-footer { border-color: #2d3139; }
+  html[data-theme="dark"] .cart-total-row.main { border-top-color: #2d3139; }
+  html[data-theme="dark"] mark.search-hl {
+    background: #422006;
+    color: #fde68a;
+  }
+
+  /* — Header extras (theme toggle) — */
+  .btn-theme {
+    background: rgba(255,255,255,.2);
+    border: none;
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .btn-theme:hover { background: rgba(255,255,255,.35); }
+  .last-update {
+    font-size: .68rem;
+    opacity: .75;
+    margin-right: 4px;
+    white-space: nowrap;
+  }
+  @media (max-width: 600px) { .last-update { display: none; } }
+
+  /* — Toolbar: stock toggle + favorites — */
+  .stock-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 11px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: .82rem;
+    background: #fff;
+    cursor: pointer;
+    color: var(--gray-600);
+    transition: all .15s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .stock-toggle:hover { border-color: var(--primary); color: var(--primary); }
+  .stock-toggle.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    font-weight: 600;
+  }
+  .stock-toggle input { display: none; }
+
+  /* — Tab counts — */
+  .cat-count {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: .7rem;
+    color: var(--gray-400);
+    font-weight: 500;
+  }
+  .cat-tab.active .cat-count { color: var(--primary); opacity: .75; }
+
+  /* — Favorites (heart) — */
+  .fav-btn {
+    position: absolute;
+    top: 6px; left: 6px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.92);
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    z-index: 3;
+    transition: transform .15s, background .15s;
+    box-shadow: 0 1px 3px rgba(0,0,0,.18);
+  }
+  .fav-btn:hover { transform: scale(1.1); background: #fff; }
+  .fav-btn.active { color: var(--primary); }
+  .fav-btn.active svg { fill: var(--primary); stroke: var(--primary); }
+  .fav-btn svg { width: 16px; height: 16px; fill: none; stroke: var(--gray-500); stroke-width: 2; }
+  .badge-new + .fav-btn { left: auto; right: 44px; top: 6px; }
+  .card-img-wrap .badge-new ~ .fav-btn { top: 6px; left: auto; right: 44px; }
+
+  /* — Savings amount on card — */
+  .price-savings {
+    font-size: .68rem;
+    color: var(--success);
+    font-weight: 600;
+    margin-top: 1px;
+  }
+  html[data-theme="dark"] .price-savings { color: #4ade80; }
+
+  /* — Search highlight — */
+  mark.search-hl {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+
+  /* — Skeleton loading — */
+  .skeleton-card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    aspect-ratio: 1 / 1.5;
+  }
+  .skeleton-line {
+    background: linear-gradient(90deg, var(--gray-100) 0%, var(--gray-200) 50%, var(--gray-100) 100%);
+    background-size: 200% 100%;
+    animation: skeleton-pulse 1.4s ease-in-out infinite;
+    border-radius: 4px;
+  }
+  .skeleton-card .skeleton-img { aspect-ratio: 1; width: 100%; border-radius: 0; }
+  .skeleton-card .skeleton-body { padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .skeleton-card .skeleton-name { height: 12px; width: 90%; }
+  .skeleton-card .skeleton-name-2 { height: 12px; width: 60%; }
+  .skeleton-card .skeleton-price { height: 18px; width: 40%; margin-top: 4px; }
+  @keyframes skeleton-pulse {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  html[data-theme="dark"] .skeleton-line {
+    background: linear-gradient(90deg, #1a1d24 0%, #252830 50%, #1a1d24 100%);
+    background-size: 200% 100%;
+  }
+
+  /* — Back to top — */
+  .btn-top {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,.2);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: opacity .25s, transform .25s, background .15s;
+    z-index: 150;
+    font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .btn-top.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .btn-top:hover { background: var(--primary-dark); }
+
+  /* — Quick view modal — */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 250;
+    backdrop-filter: blur(3px);
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-content {
+    background: #fff;
+    border-radius: 14px;
+    max-width: 640px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 12px 40px rgba(0,0,0,.3);
+    animation: modal-in .2s ease-out;
+  }
+  @keyframes modal-in {
+    from { transform: scale(.95); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  @media (max-width: 580px) {
+    .modal-grid { grid-template-columns: 1fr; }
+  }
+  .modal-img-wrap {
+    aspect-ratio: 1;
+    background: var(--gray-100);
+    overflow: hidden;
+    position: relative;
+  }
+  .modal-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #fff;
+  }
+  .modal-body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .modal-cat {
+    font-size: .75rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .modal-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--gray-800);
+  }
+  html[data-theme="dark"] .modal-name { color: #f3f4f6; }
+  html[data-theme="dark"] .modal-cat { color: #9ca3af; }
+  .modal-prices { display: flex; flex-direction: column; gap: 2px; margin: 6px 0; }
+  .modal-prices .price-original { font-size: .9rem; }
+  .modal-prices .price-discounted { font-size: 1.5rem; }
+  .modal-stock {
+    font-size: .85rem;
+    color: var(--gray-600);
+  }
+  html[data-theme="dark"] .modal-stock { color: #d1d5db; }
+  .modal-actions { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
+  .modal-actions .qty-row { flex: 0 0 110px; margin: 0; }
+  .modal-actions .btn-add { flex: 1; }
+  .btn-modal-close {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.95);
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,.18);
+    z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .btn-modal-close:hover { background: #fff; }
+
+  /* — Toast variants — */
+  .toast.success { background: var(--success); }
+  .toast.warning { background: var(--warn); }
+
+  /* — Discount hero banner — */
+  .discount-hero {
+    background: linear-gradient(90deg, #fde68a 0%, #fbbf24 50%, #fde68a 100%);
+    color: #7c2d12;
+    padding: 12px 18px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    border-bottom: 1px solid #f59e0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(245,158,11,.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .discount-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.5) 50%, transparent 100%);
+    transform: translateX(-100%);
+    animation: hero-shine 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes hero-shine {
+    0%, 60% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .discount-hero-pct {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #b91c1c;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    letter-spacing: -.02em;
+  }
+  .discount-hero-txt strong {
+    color: #b91c1c;
+    text-decoration: underline;
+    text-decoration-color: #fbbf24;
+    text-underline-offset: 3px;
+  }
+  .discount-hero-spark {
+    font-size: 1.1rem;
+    animation: hero-spark 1.6s ease-in-out infinite;
+  }
+  @keyframes hero-spark {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.18) rotate(15deg); }
+  }
+  @media (max-width: 480px) {
+    .discount-hero { font-size: .88rem; padding: 10px 14px; gap: 6px; }
+    .discount-hero-pct { font-size: 1.25rem; }
+  }
+  html[data-theme="dark"] .discount-hero {
+    background: linear-gradient(90deg, #422006 0%, #92400e 50%, #422006 100%);
+    color: #fde68a;
+    border-bottom-color: #78350f;
+  }
+  html[data-theme="dark"] .discount-hero-pct,
+  html[data-theme="dark"] .discount-hero-txt strong {
+    color: #fbbf24;
+    text-shadow: none;
+  }
+
+  /* — Discount tag mais destacada nos cards — */
+  .discount-tag {
+    background: #fee2e2;
+    color: #b91c1c;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: .72rem;
+    letter-spacing: .01em;
+    box-shadow: 0 1px 2px rgba(185,28,28,.15);
+  }
+  html[data-theme="dark"] .discount-tag {
+    background: #7f1d1d;
+    color: #fecaca;
+  }
 </style>
 </head>
 <body>
@@ -653,6 +1032,8 @@
 <header>
   <div class="header-inner">
     <div class="logo">Loja <span>— Catálogo</span></div>
+    <span class="last-update" id="lastUpdate" title="Última atualização do catálogo"></span>
+    <button class="btn-theme" id="btnTheme" title="Alternar tema (claro/escuro)" aria-label="Alternar tema">🌙</button>
     <button class="btn-refresh" id="btnRefresh" title="Atualizar catálogo">↻</button>
     <button class="cart-btn" id="btnCart">
       🛒 Carrinho
@@ -677,8 +1058,17 @@
       <option value="name-asc">A → Z</option>
       <option value="name-desc">Z → A</option>
       <option value="stock-desc">Maior estoque</option>
+      <option value="newest">Mais recentes</option>
     </select>
   </div>
+</div>
+
+<!-- DISCOUNT HERO BANNER -->
+<div class="discount-hero" id="discountHero" role="banner" aria-label="Desconto em todo o site">
+  <span class="discount-hero-spark">✨</span>
+  <span class="discount-hero-pct" id="discountHeroPct">30%</span>
+  <span class="discount-hero-txt">OFF em <strong>tudo</strong></span>
+  <span class="discount-hero-spark">✨</span>
 </div>
 
 <!-- CATEGORY TABS -->
@@ -719,6 +1109,14 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- BACK TO TOP -->
+<button class="btn-top" id="btnTop" title="Voltar ao topo" aria-label="Voltar ao topo">↑</button>
+
+<!-- QUICK VIEW MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-content" id="modalContent" role="dialog" aria-modal="true" aria-labelledby="modalName"></div>
+</div>
+
 <script>
 // ============================================================
 // CONFIG
@@ -730,7 +1128,7 @@ const STORE_URL = 'https://lojinhadd.github.io/loja/';
 const PER_PAGE = 28;
 let globalDiscount = 0.20;          // controlado pela planilha via linha __CONFIG__
 const DISCOUNT_FALLBACK = 0.20;     // fallback seguro se planilha não tiver config
-const NOVIDADES_COUNT = 50;         // quantos itens na aba Novidades
+const NOVIDADES_COUNT = 100;        // quantos itens na aba Novidades
 const CAT_NOVIDADES = '✨ Novidades';
 const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 min
 const LS_CART_KEY = 'loja_cart_v2';
@@ -772,6 +1170,12 @@ let currentPage = 1;
 let activeCategory = 'Todas';
 let cart = {};
 let refreshTimer = null;
+
+// v2 — novas state vars
+const LS_THEME_KEY  = 'loja_theme_v1';
+let lastSearchTerm = '';            // p/ highlight nos cards
+let lastUpdateTime = null;          // timestamp da última carga
+let searchDebounceTimer = null;
 
 // ============================================================
 // CSV PARSER (handles quoted fields)
@@ -901,6 +1305,8 @@ async function loadProducts(showLoader = false) {
   if (showLoader) document.getElementById('loadingOverlay').classList.add('show');
   const btn = document.getElementById('btnRefresh');
   btn.classList.add('spinning');
+  // v2: skeleton no primeiro carregamento
+  if (allProducts.length === 0) renderSkeletons();
   try {
     const csvProducts = await fetchCSV();
     allProducts = deduplicateProducts(csvProducts && csvProducts.length > 0 ? csvProducts : PRODUCTS_FALLBACK);
@@ -913,9 +1319,15 @@ async function loadProducts(showLoader = false) {
   // Marca os últimos NOVIDADES_COUNT produtos como "novos" — por posição REAL na planilha (rowIdx)
   const sortedByRow = allProducts.slice().sort((a, b) => b.rowIdx - a.rowIdx);
   noveltyIds = new Set(sortedByRow.slice(0, NOVIDADES_COUNT).map(p => p.id));
+  // v2: timestamp de última carga
+  lastUpdateTime = Date.now();
+  updateLastUpdateDisplay();
+  // v2: atualiza banner de desconto (lê valor da planilha via __CONFIG__)
+  const heroPct = document.getElementById('discountHeroPct');
+  if (heroPct) heroPct.textContent = discountPct() + '%';
   buildCategoryTabs();
   applyFilters();
-  buildTicker();   // atualiza faixa rotativa com desconto e produtos novos
+  buildTicker();   // atualiza faixa rotativa com desconto e produtos prováveis de venda
 }
 
 // ============================================================
@@ -924,6 +1336,7 @@ async function loadProducts(showLoader = false) {
 function applyFilters() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const sort = document.getElementById('sortSelect').value;
+  lastSearchTerm = query;
 
   let list;
   if (activeCategory === CAT_NOVIDADES) {
@@ -948,6 +1361,11 @@ function applyFilters() {
   else if (sort === 'name-asc') list.sort((a, b) => a.name.localeCompare(b.name, 'pt'));
   else if (sort === 'name-desc') list.sort((a, b) => b.name.localeCompare(a.name, 'pt'));
   else if (sort === 'stock-desc') list.sort((a, b) => b.stock - a.stock);
+  else if (sort === 'newest') list.sort((a, b) => b.rowIdx - a.rowIdx);
+  else if (activeCategory === 'Todas' && !query) {
+    // Default em "Todas" (sem busca): produtos de maior valor primeiro — chamam mais atenção
+    list.sort((a, b) => b.price - a.price);
+  }
 
   filteredProducts = list;
   currentPage = 1;
@@ -969,12 +1387,23 @@ function buildCategoryTabs() {
   // Insere aba Novidades logo após "Todas"
   const allCats = [cats[0], CAT_NOVIDADES, ...cats.slice(1)];
 
+  // v2: contador de produtos por categoria
+  const counts = {};
+  counts['Todas'] = allProducts.length;
+  counts[CAT_NOVIDADES] = Math.min(NOVIDADES_COUNT, allProducts.length);
+  allProducts.forEach(p => {
+    if (p.category) counts[p.category] = (counts[p.category] || 0) + 1;
+  });
+
   const container = document.getElementById('catTabs');
   container.innerHTML = '';
   allCats.forEach(cat => {
     const btn = document.createElement('button');
     btn.className = 'cat-tab' + (cat === activeCategory ? ' active' : '');
-    btn.textContent = (CAT_EMOJI[cat] ? CAT_EMOJI[cat] + ' ' : '') + cat;
+    const emojiPart = CAT_EMOJI[cat] ? CAT_EMOJI[cat] + ' ' : '';
+    const countPart = counts[cat] != null ? `<span class="cat-count">${counts[cat]}</span>` : '';
+    btn.innerHTML = escHTML(emojiPart + cat) + countPart;
+    btn.dataset.cat = cat;
     btn.addEventListener('click', () => {
       activeCategory = cat;
       document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
@@ -1002,7 +1431,8 @@ function formatBRL(n) {
 
 function stockBadgeHTML(stock) {
   if (stock <= 0) return '<span class="stock-badge badge-out">Esgotado</span>';
-  if (stock <= 3) return '<span class="stock-badge badge-low">Últimas ' + stock + '</span>';
+  if (stock === 1) return '<span class="stock-badge badge-low">Última unidade</span>';
+  if (stock <= 3) return '<span class="stock-badge badge-low">Últimas ' + stock + ' unidades</span>';
   return '<span class="stock-badge badge-ok">Em estoque</span>';
 }
 
@@ -1039,14 +1469,17 @@ function renderGrid() {
 
   grid.innerHTML = page.map(p => {
     const disc = discountedPrice(p.price);
+    const saved = p.price - disc;
     const inCart = cart[p.id] ? cart[p.id].qty : 0;
     const availQty = p.stock - inCart;
     const isOut = p.stock <= 0;
     const canAdd = !isOut && availQty > 0;
     const isNew = noveltyIds.has(p.id);
+    const nameHL = highlightTerm(p.name, lastSearchTerm);
     return `<div class="card" data-id="${p.id}">
       <div class="card-img-wrap">
         ${isNew ? '<span class="badge-new">New!</span>' : ''}
+        <div class="card-img-clickzone" data-quickview="${p.id}" style="position:absolute;inset:0;cursor:zoom-in;z-index:1"></div>
         ${p.img
           ? `<img src="${escHTML(p.img)}" alt="${escHTML(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
           : ''
@@ -1055,10 +1488,11 @@ function renderGrid() {
         ${stockBadgeHTML(p.stock)}
       </div>
       <div class="card-body">
-        <div class="card-name" title="${escHTML(p.name)}">${escHTML(p.name)}</div>
+        <div class="card-name" title="${escHTML(p.name)}">${nameHL}</div>
         <div class="card-prices">
           <div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−${discountPct()}%</span></div>
           <div class="price-discounted">R$ ${formatBRL(disc)}</div>
+          ${saved > 0.005 ? `<div class="price-savings">Economize R$ ${formatBRL(saved)}</div>` : ''}
         </div>
         <div class="card-category">${escHTML(p.category)}${p.sheet ? ' · ' + escHTML(p.sheet) : ''}</div>
         <div class="card-footer">
@@ -1080,6 +1514,14 @@ function renderGrid() {
       const qty = sel ? parseInt(sel.value, 10) : 1;
       if (qty < 1) return;
       addToCart(id, qty);
+    });
+  });
+
+  // v2: click image → quick view
+  grid.querySelectorAll('.card-img-clickzone').forEach(zone => {
+    zone.addEventListener('click', () => {
+      const id = parseInt(zone.dataset.quickview, 10);
+      openQuickView(id);
     });
   });
 }
@@ -1293,11 +1735,16 @@ document.getElementById('btnWhatsApp').addEventListener('click', () => {
   }).filter(Boolean);
 
   const total = cartSubtotal() * (1 - globalDiscount);
+  const itemCount = ids.reduce((s, id) => s + cart[id].qty, 0);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   const msg = [
     '🛒 *Pedido — Loja*',
+    `📅 ${dateStr}`,
     '',
     ...lines,
     '',
+    `🧾 ${itemCount} ${itemCount === 1 ? 'item' : 'itens'}`,
     `*Total com ${discountPct()}% de desconto: R$ ${formatBRL(total)}*`,
     '',
     `Link: ${STORE_URL}`,
@@ -1354,14 +1801,42 @@ function buildTicker() {
   if (!wrap || !track || allProducts.length === 0) return;
 
   const pct      = discountPct();
-  const newProds = allProducts.slice(-Math.min(8, allProducts.length)).reverse();
+
+  // Seleção de produtos "mais prováveis de venda": pondera por estoque + recência.
+  // Ranking = stock (em escala log) + bônus para recém-adicionados (rowIdx alto)
+  const maxRowIdx = Math.max(...allProducts.map(p => p.rowIdx));
+  const pool = allProducts
+    .filter(p => p.stock > 0 && p.img)         // só com estoque e com imagem
+    .map(p => ({
+      p,
+      score: Math.log2(p.stock + 1) + (p.rowIdx / Math.max(1, maxRowIdx)) * 1.5
+    }));
+
+  // Sorteio ponderado SEM reposição — varia a cada refresh do catálogo
+  const pickWeighted = (arr, n) => {
+    const out = [];
+    const items = arr.slice();
+    for (let i = 0; i < n && items.length; i++) {
+      const total = items.reduce((s, x) => s + x.score, 0);
+      let r = Math.random() * total;
+      let idx = 0;
+      for (let j = 0; j < items.length; j++) {
+        r -= items[j].score;
+        if (r <= 0) { idx = j; break; }
+      }
+      out.push(items[idx].p);
+      items.splice(idx, 1);
+    }
+    return out;
+  };
+  const featured = pickWeighted(pool, 10);
 
   // Monta lista de itens do ticker
   const items = [
-    { text: `🎉 Todo o site com ${pct}% OFF!`, action: null },
+    { text: `🔥 Tudo com ${pct}% OFF — aproveite!`, action: null },
     { text: `✨ ${Math.min(NOVIDADES_COUNT, allProducts.length)} novidades disponíveis — confira!`,
       action: () => goToCategory(CAT_NOVIDADES) },
-    ...newProds.map(p => ({
+    ...featured.map(p => ({
       text: `🛍️ ${p.name.length > 48 ? p.name.slice(0, 48) + '…' : p.name}`,
       action: () => { goToCategory(p.category); }
     }))
@@ -1418,12 +1893,178 @@ document.getElementById('btnRefresh').addEventListener('click', () => {
 // ============================================================
 // FILTER LISTENERS
 // ============================================================
-document.getElementById('searchInput').addEventListener('input', applyFilters);
+// v2: debounce na busca (250ms) — evita re-render a cada tecla em catálogos grandes
+document.getElementById('searchInput').addEventListener('input', () => {
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(applyFilters, 250);
+});
 document.getElementById('sortSelect').addEventListener('change', applyFilters);
+
+// ============================================================
+// v2 — HELPERS: theme, favoritos, modal, skeleton, highlight
+// ============================================================
+
+// — Tema (dark/light) —
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : 'light');
+  const btn = document.getElementById('btnTheme');
+  if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  try { localStorage.setItem(LS_THEME_KEY, next); } catch (e) {}
+}
+function loadTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem(LS_THEME_KEY); } catch (e) {}
+  if (!saved) {
+    saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  applyTheme(saved);
+}
+
+// — Highlight do termo buscado —
+function highlightTerm(text, term) {
+  const safe = escHTML(text);
+  if (!term || term.length < 2) return safe;
+  try {
+    const re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    return safe.replace(re, '<mark class="search-hl">$1</mark>');
+  } catch (e) {
+    return safe;
+  }
+}
+
+// — Skeleton —
+function renderSkeletons(count = 12) {
+  const grid = document.getElementById('productGrid');
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    html += `<div class="skeleton-card">
+      <div class="skeleton-line skeleton-img"></div>
+      <div class="skeleton-body">
+        <div class="skeleton-line skeleton-name"></div>
+        <div class="skeleton-line skeleton-name-2"></div>
+        <div class="skeleton-line skeleton-price"></div>
+      </div>
+    </div>`;
+  }
+  grid.innerHTML = html;
+}
+
+// — Last update display —
+function updateLastUpdateDisplay() {
+  const el = document.getElementById('lastUpdate');
+  if (!el || !lastUpdateTime) return;
+  const diff = Math.max(0, Date.now() - lastUpdateTime);
+  const min = Math.floor(diff / 60000);
+  const txt = min < 1 ? 'agora' : (min === 1 ? 'há 1 min' : `há ${min} min`);
+  el.textContent = '↻ ' + txt;
+}
+setInterval(updateLastUpdateDisplay, 30000);
+
+// — Quick view modal —
+function openQuickView(productId) {
+  const p = allProducts.find(x => x.id === productId);
+  if (!p) return;
+  const disc = discountedPrice(p.price);
+  const saved = p.price - disc;
+  const isOut = p.stock <= 0;
+  const inCart = cart[p.id] ? cart[p.id].qty : 0;
+  const availQty = p.stock - inCart;
+  const canAdd = !isOut && availQty > 0;
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <button class="btn-modal-close" id="btnModalClose" aria-label="Fechar">×</button>
+    <div class="modal-grid">
+      <div class="modal-img-wrap">
+        ${p.img
+          ? `<img src="${escHTML(p.img)}" alt="${escHTML(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+          : ''}
+        <div class="svg-placeholder" style="display:${p.img ? 'none' : 'flex'}">${CAT_EMOJI[p.category] || '📦'}</div>
+        ${stockBadgeHTML(p.stock)}
+      </div>
+      <div class="modal-body">
+        <div class="modal-cat">${escHTML(p.category)}${p.sheet ? ' · ' + escHTML(p.sheet) : ''}</div>
+        <h2 class="modal-name" id="modalName">${escHTML(p.name)}</h2>
+        <div class="modal-prices">
+          <div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−${discountPct()}%</span></div>
+          <div class="price-discounted">R$ ${formatBRL(disc)}</div>
+          ${saved > 0.005 ? `<div class="price-savings">Economize R$ ${formatBRL(saved)}</div>` : ''}
+        </div>
+        <div class="modal-stock">${isOut ? '⚠️ Esgotado' : `📦 ${p.stock === 1 ? 'Última unidade' : p.stock + ' unidades em estoque'}${inCart ? ` · ${inCart === 1 ? '1 já no carrinho' : inCart + ' já no carrinho'}` : ''}`}</div>
+        <div class="modal-actions">
+          ${canAdd ? `<div class="qty-row">
+            <label for="modal_qty">Qtd:</label>
+            <select id="modal_qty">${buildQtyOptions(p.stock, p.id)}</select>
+          </div>` : ''}
+          <button class="btn-add" id="modalBtnAdd" data-id="${p.id}" ${!canAdd ? 'disabled' : ''}>${isOut ? 'Esgotado' : 'Adicionar'}</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('btnModalClose').addEventListener('click', closeQuickView);
+  const addBtn = document.getElementById('modalBtnAdd');
+  if (addBtn && !addBtn.disabled) {
+    addBtn.addEventListener('click', () => {
+      const sel = document.getElementById('modal_qty');
+      const qty = sel ? parseInt(sel.value, 10) : 1;
+      if (qty < 1) return;
+      addToCart(p.id, qty);
+      closeQuickView();
+    });
+  }
+}
+function closeQuickView() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// — Back to top —
+const btnTop = document.getElementById('btnTop');
+window.addEventListener('scroll', () => {
+  if (!btnTop) return;
+  btnTop.classList.toggle('show', window.scrollY > 400);
+}, { passive: true });
+btnTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// — Listeners de novos controles —
+document.getElementById('btnTheme')?.addEventListener('click', toggleTheme);
+
+// Modal: fecha clicando fora
+document.getElementById('modalOverlay')?.addEventListener('click', e => {
+  if (e.target.id === 'modalOverlay') closeQuickView();
+});
+
+// — Atalhos de teclado —
+document.addEventListener('keydown', e => {
+  // Ignora se está digitando em input/textarea (exceto Esc)
+  const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
+  if (e.key === 'Escape') {
+    if (document.getElementById('modalOverlay').classList.contains('open')) {
+      closeQuickView();
+    } else if (document.getElementById('cartPanel').classList.contains('open')) {
+      closeCart();
+    } else if (isTyping) {
+      document.activeElement.blur();
+    }
+    return;
+  }
+  if (isTyping) return;
+  if (e.key === '/') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
 
 // ============================================================
 // INIT
 // ============================================================
+loadTheme();
 loadCart();
 loadCartFromHash();
 updateCartBadge();
