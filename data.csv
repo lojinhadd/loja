@@ -1,5 +1,6 @@
 Nome,Preco,Estoque,Sala,Categoria,Imagem,Ativo
-__CONFIG__,30,,,,,Sim
+__CONFIG__,20,,,,http://www.minutodosaber.com/wp-content/uploads/2013/04/nome-produto.jpg,
+Nome,30,,,,,Sim
 Água Limpeza Granado Bebe Pele Sensível 500ml Envio Imediato,58,4,Sala 02,Bebê,https://cdn.awsli.com.br/2500x2500/939/939830/produto/294644646/6b77c6af8ad1dfd80a2209ef5f2924ff-o612zsrjgt.png,sim
 Água Oxigenada Cremosa Cadiveu 20 Volumes 900ml,43,5,Sala 02,Cabelo,https://ikesaki.vteximg.com.br/arquivos/ids/327752/Agua-Oxigenada-Cadiveu-20-Volumes---900ml--1-.png,sim
 Anti Bactéria E Mofo Sintra Fast 500ml Vonixx Incrível X,36,1,Sala 01,Limpeza,https://images.tcdn.com.br/img/img_prod/1250843/sintra_fast_500ml_219_3_858c28b8f93d873f9e8c4a64dbc16f3c.jpg,Não
@@ -829,7 +830,7 @@ AFRODITE GARDEN MAGIC BUTTER MANTEIGA ILUMINADA DESODORANTE CORPORAL 200G,139,1,
 AFRODITE GARDEN BODY SPLASH DESODORANTE CORPORAL 200ML,95,1,Sala 01,,https://m.media-amazon.com/images/I/51hNtSFDbbL._AC_SY300_SX300_QL70_ML2_.jpg,Sim
 AFRODITE SECRET GARDEN DESODORANTE COLONIA 50ML,129,1,Sala 01,,https://m.media-amazon.com/images/I/31BLam+mLRL._AC_.jpg,Sim
 Cora Secante mais rápido do mundo!,8.9,1,Sala 01,,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwh_TQFBjXcHHEpctWQYFYAV3y3EDZ4z9xFA&s,Sim
-Camisa De Futebol Masculina Cr Flamengo,230,1,Sala 01,,https://http2.mlstatic.com/D_NQ_NP_621091-MLB84979646375_052025-O.webp,Sim
+Camisa De Futebol Masculina Cr Flamengo Tamanho G,230,1,Sala 01,,https://http2.mlstatic.com/D_NQ_NP_621091-MLB84979646375_052025-O.webp,Sim
 Body Splash 200ml Athena Glow Jade Picon Aura Beauty,88.9,1,Sala 01,,https://http2.mlstatic.com/D_NQ_NP_824807-MLA95622939716_102025-O.webp,Sim
 Aura Shine - Geleia Radiante Iluminadora desodorante corporal 200GR,119,1,Sala 01,,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5HuWOYJ7Fwe-OzOQrKcIzMbzCZCjg15BW0A&s,Sim
 Gotas Iluminadas Aurora Shine Primer Acetinado Aura Beuaty By Jade,95,1,Sala 01,,https://down-br.img.susercontent.com/file/br-11134207-7r98o-m7rws9qyg1fm0b,Sim
