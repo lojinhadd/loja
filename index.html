@@ -1012,7 +1012,7 @@
   }
 
   /* ==========================================================
-     v3 — CAMPANHAS (08.08 e Dia dos Pais)
+     v3/v5 — CAMPANHAS (campanha principal + seleção curada)
      ========================================================== */
 
   /* — Masthead da campanha — */
@@ -1043,7 +1043,68 @@
     0%, 65% { left: -35%; }
     100%    { left: 125%; }
   }
-  .promo-0808 { background: linear-gradient(118deg, #b3000f 0%, #e8110f 42%, #ff6a00 100%); }
+  /* ── Tema "neon" (09.09): Y2K / arcade / cromado sobre meia-noite ──
+     Deliberadamente escuro nos dois temas do site: é um palco, não um bloco de UI. */
+  .promo-masthead-neon {
+    background:
+      radial-gradient(120% 160% at 8% 0%,   rgba(124,58,237,.55) 0%, transparent 55%),
+      radial-gradient(110% 150% at 92% 20%, rgba(34,211,238,.40) 0%, transparent 55%),
+      radial-gradient(140% 180% at 50% 120%, rgba(232,121,249,.38) 0%, transparent 60%),
+      #0a0a1a;
+    border: 1px solid rgba(167,139,250,.38);
+    box-shadow: 0 0 0 1px rgba(34,211,238,.12) inset,
+                0 10px 40px rgba(76,29,149,.45),
+                0 0 60px rgba(34,211,238,.10);
+    color: #f5f3ff;
+  }
+  /* grão fino: tira o aspecto "gradiente de template" */
+  .promo-masthead-neon::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.55) .5px, transparent .5px);
+    background-size: 3px 3px;
+    opacity: .05;
+    pointer-events: none;
+  }
+  .promo-masthead-neon .promo-mark { border-right-color: rgba(167,139,250,.34); }
+  /* numeral cromado/holográfico */
+  .promo-masthead-neon .promo-mark-big {
+    /* cromado: tons claros nos extremos e um vale ciano no meio.
+       Evita mid-tones indigo, que somem contra o violeta do painel. */
+    background: linear-gradient(168deg, #ffffff 2%, #e0f2fe 22%, #22d3ee 46%, #c7d2fe 62%, #f5d0fe 80%, #ffffff 98%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 1px 0 rgba(10,10,26,.55)) drop-shadow(0 3px 16px rgba(34,211,238,.55));
+    letter-spacing: -.045em;
+  }
+  .promo-masthead-neon .promo-mark-sub { color: #c4b5fd; opacity: 1; letter-spacing: .3em; }
+  .promo-masthead-neon .promo-kicker   { color: #67e8f9; opacity: 1; }
+  .promo-masthead-neon .promo-headline em {
+    background: linear-gradient(100deg, rgba(124,58,237,.55), rgba(34,211,238,.45));
+    box-shadow: 0 0 0 1px rgba(165,243,252,.35) inset;
+    color: #fff;
+  }
+  .promo-masthead-neon .promo-sub { color: #ddd6fe; opacity: .95; }
+  .promo-masthead-neon .promo-cta {
+    background: linear-gradient(100deg, #22d3ee, #a78bfa);
+    color: #0a0a1a;
+    box-shadow: 0 2px 14px rgba(34,211,238,.45);
+  }
+  .promo-masthead-neon .promo-clock-label { color: #a5b4fc; opacity: 1; }
+  /* dígitos em vidro, não em caixa preta */
+  .promo-masthead-neon .promo-digit {
+    background: rgba(255,255,255,.07);
+    border-color: rgba(165,243,252,.34);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 18px rgba(34,211,238,.16) inset;
+  }
+  .promo-masthead-neon .promo-digit b    { color: #fff; }
+  .promo-masthead-neon .promo-digit span { color: #a5b4fc; opacity: 1; }
+  /* a varredura do 08.08 era um brilho branco; aqui é um facho ciano mais sutil */
+  .promo-masthead-neon::after {
+    background: linear-gradient(100deg, transparent, rgba(165,243,252,.16), transparent);
+  }
   .promo-pais { background: linear-gradient(118deg, #0d2137 0%, #17395c 52%, #2b5f86 100%); }
 
   /* marca da campanha (numerais grandes tipo marketplace) */
@@ -1162,25 +1223,36 @@
   }
   .cat-tab.tab-promo:hover { color: #fff; filter: brightness(1.07); }
   .cat-tab.tab-promo.active { color: #fff; border-bottom: none; }
-  .cat-tab.tab-0808 { background: linear-gradient(118deg, #e8110f, #ff6a00); }
-  .cat-tab.tab-0808.active { box-shadow: 0 0 0 3px rgba(232,17,15,.32); }
+  .cat-tab.tab-neon {
+    background: linear-gradient(118deg, #7c3aed 0%, #6366f1 45%, #22d3ee 100%);
+    text-shadow: 0 1px 6px rgba(10,10,26,.45);
+  }
+  .cat-tab.tab-neon.active { box-shadow: 0 0 0 3px rgba(124,58,237,.34), 0 0 18px rgba(34,211,238,.35); }
   .cat-tab.tab-pais { background: linear-gradient(118deg, #17395c, #2b5f86); }
   .cat-tab.tab-pais.active { box-shadow: 0 0 0 3px rgba(43,95,134,.34); }
   .cat-tab.tab-promo .cat-count {
     background: rgba(255,255,255,.26) !important;
     color: #fff !important;
   }
-  .cat-tab.tab-0808:not(.active) { animation: tab-pulse 2.4s ease-in-out infinite; }
-  @keyframes tab-pulse {
+  .cat-tab.tab-neon:not(.active) { animation: tab-pulse-neon 2.6s ease-in-out infinite; }
+  @keyframes tab-pulse-neon {
     0%, 100% { box-shadow: 0 2px 8px rgba(0,0,0,.16); }
-    50%      { box-shadow: 0 2px 8px rgba(0,0,0,.16), 0 0 0 5px rgba(232,17,15,.16); }
+    50%      { box-shadow: 0 2px 8px rgba(0,0,0,.16), 0 0 0 5px rgba(124,58,237,.20), 0 0 16px rgba(34,211,238,.30); }
   }
   .tab-teaser { opacity: .92; }
 
   /* — Cards dentro das campanhas — */
-  .card.promo-card-0808 { box-shadow: 0 0 0 2px #e8110f, var(--shadow); }
+  .card.promo-card-neon {
+    box-shadow: 0 0 0 1px rgba(124,58,237,.55), 0 0 22px rgba(34,211,238,.20), var(--shadow);
+  }
+  .card.promo-card-neon::after {           /* fio de luz no topo do card */
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, #7c3aed, #22d3ee, #f0abfc);
+    z-index: 3;
+  }
   .card.promo-card-pais { box-shadow: 0 0 0 2px #2b5f86, var(--shadow); }
-  .card.promo-card-0808:hover,
+  .card.promo-card-neon:hover,
   .card.promo-card-pais:hover { box-shadow: 0 0 0 2px currentColor, var(--shadow-lg); }
   .promo-flag {
     position: absolute;
@@ -1195,7 +1267,10 @@
     border-radius: 999px;
     box-shadow: 0 2px 6px rgba(0,0,0,.25);
   }
-  .promo-flag-0808 { background: linear-gradient(118deg, #e8110f, #ff6a00); }
+  .promo-flag-neon {
+    background: linear-gradient(118deg, #7c3aed, #22d3ee);
+    box-shadow: 0 2px 10px rgba(34,211,238,.40);
+  }
   .promo-flag-pais { background: linear-gradient(118deg, #17395c, #2b5f86); }
   .promo-flag-top  { background: #111827; }
 
@@ -1204,16 +1279,16 @@
     margin-top: 3px;
     font-size: .68rem;
     font-weight: 600;
-    color: #9f1010;
-    background: #fff1f0;
-    border: 1px dashed #ffb3ac;
+    color: #5b21b6;
+    background: #f5f3ff;
+    border: 1px dashed #c4b5fd;
     border-radius: 6px;
     padding: 2px 6px;
     display: inline-block;
   }
   .promo-preview b { font-weight: 800; }
   html[data-theme="dark"] .promo-preview {
-    color: #ffc9c4; background: #2a1112; border-color: #6b2420;
+    color: #ddd6fe; background: #17132b; border-color: #4c3f8a;
   }
 
   /* — Aviso de catálogo em modo de segurança — */
@@ -1251,9 +1326,9 @@
     gap: 8px;
     line-height: 1.35;
   }
-  .promo-strip-0808 { background: #fff1f0; color: #9f1010; border: 1px solid #ffd3cf; }
+  .promo-strip-neon { background: #f5f3ff; color: #5b21b6; border: 1px solid #ddd6fe; }
   .promo-strip-pais { background: #eef4fa; color: #12395c; border: 1px solid #cfe0ef; }
-  html[data-theme="dark"] .promo-strip-0808 { background: #2a1112; color: #ffc9c4; border-color: #4d1c1a; }
+  html[data-theme="dark"] .promo-strip-neon { background: #17132b; color: #ddd6fe; border-color: #3b2f6b; }
   html[data-theme="dark"] .promo-strip-pais { background: #101d29; color: #b9d6ee; border-color: #1f3b52; }
 
   /* — Responsivo — */
@@ -1315,7 +1390,7 @@
       <input type="search" id="searchInput" placeholder="Buscar produtos…" autocomplete="off">
     </div>
 <select id="sortSelect">
-      <option value="default">Ordenar</option>
+      <option value="default">Destaques</option>
       <option value="price-asc">Menor preço</option>
       <option value="price-desc">Maior preço</option>
       <option value="name-asc">A → Z</option>
@@ -1334,7 +1409,7 @@
   <span class="discount-hero-spark">✨</span>
 </div>
 
-<!-- PROMO MASTHEAD (08.08 / Dia dos Pais) — preenchido por renderPromoMasthead() -->
+<!-- PROMO MASTHEAD (campanha / seleção curada) — preenchido por renderPromoMasthead() -->
 <div id="promoMasthead"></div>
 
 <!-- CATEGORY TABS -->
@@ -1397,32 +1472,35 @@ const PER_PAGE = 28;
 let globalDiscount = 0.30;          // controlado pela planilha via linha __CONFIG__
 const DISCOUNT_FALLBACK = 0.30;     // fallback = desconto padrão da loja; se a planilha
                                     // não puder ser lida, o preço não muda 10pp sozinho
-const NOVIDADES_COUNT = 100;        // quantos itens na aba Novidades
+const NOVIDADES_COUNT = 150;        // quantos itens na aba Novidades
 const CAT_NOVIDADES = '✨ Novidades';
 const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 min
 const LS_CART_KEY = 'loja_cart_v2';
 
 // ============================================================
-// v3 — CAMPANHAS (08.08 e Dia dos Pais)
+// v3/v5 — CAMPANHAS (campanha principal + seleção curada)
 // ------------------------------------------------------------
 // Tudo que precisa de ajuste de data/desconto está AQUI.
 // As datas usam fuso -03:00 (Brasília) e valem para qualquer visitante.
 // ============================================================
-const CAT_0808 = '🔥 08.08';
+const CAT_CAMP = '💎 09.09';
 const CAT_PAIS = '👔 Dia dos Pais';
 
-const PROMO_0808 = {
-  cat: CAT_0808,
-  discount: 0.40,                                          // site INTEIRO a 40%
-  start:  new Date('2026-08-05T00:00:00-03:00').getTime(), // no ar desde 05/08
-  end:    new Date('2026-08-10T17:00:00-03:00').getTime(), // segunda-feira 10/08 às 17h
-  teaser: true,                                            // se a data de início for futura, a aba entra em modo "chegando"
-  size:   56,                                              // itens em destaque (2 páginas de 28)
+const PROMO_CAMP = {
+  cat:   CAT_CAMP,
+  label: '09.09',            // aparece no numeral grande e nos textos
+  marca: 'Super 9',          // legenda sob o numeral
+  tema:  'neon',             // identidade visual (classe .promo-neon no CSS)
+  discount: 0.40,            // site INTEIRO neste percentual enquanto durar
+  start:  new Date('2026-09-08T23:59:00-03:00').getTime(), // hoje 08/09 às 23:59
+  end:    new Date('2026-09-09T23:59:59-03:00').getTime(), // fim do dia 09/09
+  teaser: true,              // com start no futuro, a aba entra em modo "chegando"
+  size:   56,                // itens na vitrine (2 páginas de 28)
 };
 
 const PROMO_PAIS = {
   cat: CAT_PAIS,
-  discount: 0.35,                                          // piso de 35% — vale só até o 08.08 abrir; de lá em diante o site inteiro fica a 40%
+  discount: 0.35,                                          // piso de 35%; acompanha o desconto do site sempre que ele for maior
   start:  new Date('2026-08-01T00:00:00-03:00').getTime(), // já no ar
   end:    new Date('2026-08-09T23:59:59-03:00').getTime(), // Dia dos Pais 2026 = domingo 09/08
   dateLabel: '09.08',
@@ -1472,15 +1550,15 @@ const PAIS_BLOCK = [
   /sex massager|lubrificante/,
 ];
 
-// ---- 08.08: itens que sempre lideram a vitrine (curadoria manual) ----
-const P0808_HERO = [
+// ---- Campanha: itens que sempre lideram a vitrine (curadoria manual) ----
+const CAMP_HERO = [
   'conjunto champagne','pera manca','home bar gipsy','new era','nars pure radiant',
   'mac studio fix','shiseido synchro','fenty x puma','bialetti','la martina','crocs bayaband',
   'swiss move','dom tapparo','melissa ladylike','forum paul slim','valdobbiadene',
 ];
 
-// ---- 08.08: marcas com apelo/procura comprovados ----
-const P0808_PREMIUM = [
+// ---- Campanha: marcas com apelo/procura comprovados ----
+const CAMP_PREMIUM = [
   'nars','mac studio','shiseido','fenty','puma','crocs','melissa','new era','la martina','la martin',
   'forum','11mwz','bialetti','tupperware','bohemia','wolff','occitane','korres','boticario','eudora',
   'mahogany','nivea','cetaphil','avene','hada labo','keune','ga.ma','gama italy','dr jones','ketel one',
@@ -1489,8 +1567,8 @@ const P0808_PREMIUM = [
   'mary kay','carrano','artex','buettner','porto brasil','bioderma','cadiveu','nappo','wrangler',
 ];
 
-// ---- 08.08: fora da vitrine (atacado, itens de giro ruim, linhas repetidas) ----
-const P0808_BLOCK = [
+// ---- Campanha: fora da vitrine (atacado, giro ruim, linhas repetidas) ----
+const CAMP_BLOCK = [
   /\bpet\b|caes|gatos|banho e tosa|bubbles/,
   /sex massager|lubrificante intimo|absorvente|bisturi/,
   /essesncia|essencia (para|aromatizadora)|essencia [a-z]+ gold|difusor de aromas|essencias perfumes/,
@@ -1498,18 +1576,115 @@ const P0808_BLOCK = [
   /limpa (estofados|maquina)|lava roupas|repelente|higienizador/,
 ];
 
-// ---- Peso por categoria na vitrine 08.08 ----
-const P0808_CAT_W = {
+// ---- Peso por categoria na vitrine da campanha ----
+const CAMP_CAT_W = {
   'Vinhos & Bebidas': 8, 'Moda & Calçados': 6, 'Maquiagem': 6, 'Casa & Utilidades': 5,
   'Skincare': 5, 'Perfumes': 3, 'Café & Alimentos': 3, 'Outros': 1, 'Corpo': 1,
   'Higiene': 0, 'Casa & Cama': 0, 'Cabelo': -2, 'Óleos & Séruns': -3,
   'Tratamento Capilar': -3, 'Limpeza': -4, 'Bebê': -2,
 };
 
+// ============================================================
+// v5 — VITRINE DA ABA "TODAS": ordem por apelo, não por preço
+// ------------------------------------------------------------
+// A planilha não tem histórico de vendas, então "mais legal" aqui é uma
+// heurística explícita: marca reconhecida, categoria com apelo, novidade,
+// cadastro bem feito e uma faixa de preço aspiracional mas atingível.
+// Não é demanda medida — é curadoria automatizada.
+// ============================================================
+const LEGAL_MARCAS = [
+  'nars','mac ','shiseido','fenty','puma','crocs','melissa','new era','la martina','la martin',
+  'forum','11mwz','wrangler','bialetti','tupperware','bohemia','wolff','occitane','korres','boticario',
+  'eudora','mahogany','nivea','cetaphil','avene','hada labo','keune','ga.ma','gama italy','dr jones',
+  'ketel one','pera manca','garzon','ypioca','tapparo','gocase','swiss move','adidas','olympikus',
+  'riachuelo','hering','aramis','approve','overcome','traxart','ferrari','lakers','granado','neutrogena',
+  'mary kay','carrano','porto brasil','bioderma','cadiveu','nappo','pampili','via marte','arezzo',
+  'vizzano','anacapri','schutz','colcci','calvin','lacoste','levis','osklen','stanley','munger','bold ',
+];
+
+const LEGAL_CAT_W = {
+  'Moda & Calçados': 9, 'Vinhos & Bebidas': 8, 'Perfumes': 7, 'Maquiagem': 7, 'Skincare': 6,
+  'Casa & Utilidades': 5, 'Café & Alimentos': 4, 'Corpo': 3, 'Outros': 2, 'Casa & Cama': 2,
+  'Higiene': 1, 'Cabelo': 0, 'Bebê': 0, 'Óleos & Séruns': -3, 'Tratamento Capilar': -3, 'Limpeza': -5,
+};
+
+// Itens de reposição/atacado: vendem, mas não são vitrine.
+const LEGAL_CHATO = [
+  /\brefil\b/, /\bessencia|essesncia|essencias perfumes/, /difusor de aromas/, /agua oxigenada/,
+  /\bpet\b|caes|gatos|banho e tosa|bubbles/, /5\s?l\b|5litros/, /agua desmineralizada/,
+  /alcool (de )?cereais/, /limpa (estofados|maquina)|lava roupas|higienizador|repelente/,
+  /polietilenoglicol/, /\bbisturi\b/, /absorvente/, /lubrificante/, /sex massager/,
+  /coloracao|tonalizante|diluidor/,
+];
+
+// Cadastro que parece código de etiqueta espanta o cliente.
+function legalNomeRuim(nome) {
+  let ruim = 0;
+  const letras = nome.replace(/[^A-Za-zÀ-ÿ]/g, '');
+  if (letras.length && (letras.replace(/[^A-ZÀ-Ý]/g, '').length / letras.length) > 0.7) ruim++;
+  if (/\b[A-Z]{1,3}\d{2,}[A-Z]*\b/.test(nome)) ruim++;                 // BG120, W1MZUG303
+  if (/tamanho\s*:?\s*\d|n[ºo°]\.?\s*\d|\btam\b/i.test(nome)) ruim++;
+  if ((nome.match(/,/g) || []).length >= 3) ruim++;
+  return ruim;
+}
+
+// Sino de preço: pico entre R$ 80 e R$ 250. Barato demais não encanta,
+// e o outlier de R$ 1.000 na primeira posição afasta em vez de atrair.
+function legalFaixaPreco(v) {
+  if (v <= 0)   return -30;
+  if (v < 15)   return -12;
+  if (v < 30)   return -4;
+  if (v < 60)   return 6;
+  if (v < 80)   return 12;
+  if (v <= 250) return 18;
+  if (v <= 450) return 10;
+  if (v <= 800) return 2;
+  return -8;
+}
+
+let legalMaxRow = 1;
+function scoreLegal(p) {
+  if (!p.img) return -999;                                            // sem foto não vai pra vitrine
+  const n = normTxt(p.name);
+  let s = legalFaixaPreco(p.price);
+  if (LEGAL_MARCAS.some(m => n.includes(m))) s += 22;
+  s += (LEGAL_CAT_W[p.category] != null ? LEGAL_CAT_W[p.category] : 0);
+  s += (p.rowIdx / legalMaxRow) * 14;                                 // recém-chegado é mais legal
+  s -= legalNomeRuim(p.name) * 7;
+  if (LEGAL_CHATO.some(rx => rx.test(n))) s -= 14;
+  if (p.name.length >= 20 && p.name.length <= 70) s += 3;
+  if (p.stockKnown && p.stock >= 3) s += 2;
+  return s;
+}
+
+// Passe de diversidade: não deixa a primeira tela virar três Tupperwares
+// seguidos. Escolhe sempre o melhor cujo "sobrenome" não saiu nas últimas N.
+function legalFamilia(p) {
+  if (p._fam != null) return p._fam;
+  const n = normTxt(p.name);
+  const marca = LEGAL_MARCAS.find(m => n.includes(m));
+  return (p._fam = marca || n.split(/[\s,\-|]+/).filter(Boolean).slice(0, 2).join(' '));
+}
+
+function diversificar(list, janela) {
+  const fam = new Map(list.map(p => [p.id, legalFamilia(p)]));
+  const pool = list.slice();
+  const out = [], recentes = [];
+  while (pool.length) {
+    let i = pool.findIndex(p => !recentes.includes(fam.get(p.id)));
+    if (i === -1) i = 0;                                              // nada diverso sobrou
+    const p = pool.splice(i, 1)[0];
+    out.push(p);
+    recentes.push(fam.get(p.id));
+    if (recentes.length > janela) recentes.shift();
+  }
+  return out;
+}
+
 // ---- Lixo da planilha que não deve virar produto no site ----
 const JUNK_NAMES = ['nome','teste','test','produto','item','x','-','preco','preço'];
 
-let pais0808Ids = new Set();   // ids da vitrine 08.08
+let campIds = new Set();   // ids da vitrine da campanha
 let paisIds     = new Set();   // ids da aba Dia dos Pais
 let cabecalhoReparado = false;   // v4: cabeçalho da planilha veio quebrado e foi reparado
 let usandoRetrato = false;       // v4: caiu no retrato embutido (dados podem estar velhos)
@@ -1550,7 +1725,7 @@ let allProducts = [];
 let filteredProducts = [];
 let noveltyIds = new Set();         // IDs dos últimos NOVIDADES_COUNT produtos
 let currentPage = 1;
-let activeCategory = 'Todas';
+let activeCategory = CAT_NOVIDADES;   // v5: quem entra no site cai em Novidades
 let cart = {};
 let refreshTimer = null;
 
@@ -1632,14 +1807,19 @@ function csvRowToProduct(row, idx) {
   // Extrai apenas dígitos e ponto/vírgula do preço (evita datas ou texto)
   const precoRaw = (row['Preco'] || '0').replace(',', '.').replace(/[^\d.]/g, '');
   const preco = parseFloat(precoRaw) || 0;
-  const estoqueRaw = (row['Estoque'] || '1').replace(/[^\d]/g, '');
-  const estoque = parseInt(estoqueRaw, 10) || 1;
+  // v5: estoque em branco na planilha nao e "1". Guardar isso separado evita
+  // gritar "Ultima unidade" em quase todo o catalogo, que e o que mata a confianca.
+  const estoqueRaw = (row['Estoque'] || '').replace(/[^\d]/g, '');
+  const estoqueNum = parseInt(estoqueRaw, 10);
+  const estoqueConhecido = estoqueRaw !== '' && !isNaN(estoqueNum);
+  const estoque = estoqueConhecido ? estoqueNum : 1;
   return {
     id: idx,
     rowIdx: idx,   // posição original na planilha — nunca sobrescrita, usada para Novidades
     name: nome,
     price: preco,
     stock: estoque,
+    stockKnown: estoqueConhecido,
     sheet: (row['Sala'] || '').trim(),
     category: (row['Categoria'] || '').trim(),
     img: (row['Imagem'] || '').trim(),
@@ -1717,6 +1897,7 @@ function deduplicateProducts(list) {
       // keep highest stock; rowIdx: guarda o MAIOR (último na planilha) para Novidades
       const existing = seen.get(key);
       existing.stock = Math.max(existing.stock, p.stock);
+      existing.stockKnown = existing.stockKnown || p.stockKnown;   // v5
       if (!existing.img && p.img) existing.img = p.img;
       if (p.rowIdx > existing.rowIdx) existing.rowIdx = p.rowIdx; // mantém a posição mais recente
     }
@@ -1749,7 +1930,11 @@ async function loadProducts(showLoader = false) {
   lastUpdateTime = Date.now();
   updateLastUpdateDisplay();
   atualizarFaixaDesconto();   // v3: faixa amarela segue o desconto vigente
-  montarSelecoesPromo();   // v3: define a vitrine 08.08 e a seleção Dia dos Pais
+  legalMaxRow = Math.max(1, ...allProducts.map(p => p.rowIdx));   // v5: base da nota de novidade
+  // v5: as notas não mudam com aba nem com busca, só com a carga do catálogo.
+  // Calcular uma vez aqui evita ~5.700 recálculos por ordenação (engasgo no celular).
+  for (const p of allProducts) { p._legal = scoreLegal(p); p._camp = scoreCamp(p); }
+  montarSelecoesPromo();   // v3: define a vitrine da campanha e a seleção curada
   buildCategoryTabs();
   applyFilters();
   buildTicker();   // atualiza faixa rotativa com desconto e produtos prováveis de venda
@@ -1764,7 +1949,7 @@ function applyFilters() {
   lastSearchTerm = query;
 
   let list;
-  if (activeCategory === CAT_0808 || activeCategory === CAT_PAIS) {
+  if (activeCategory === CAT_CAMP || activeCategory === CAT_PAIS) {
     list = listaPromo(activeCategory);
     if (query) {
       list = list.filter(p => (p.name + ' ' + p.category).toLowerCase().includes(query));
@@ -1792,12 +1977,14 @@ function applyFilters() {
   else if (sort === 'name-desc') list.sort((a, b) => b.name.localeCompare(a.name, 'pt'));
   else if (sort === 'stock-desc') list.sort((a, b) => b.stock - a.stock);
   else if (sort === 'newest') list.sort((a, b) => b.rowIdx - a.rowIdx);
-  else if (activeCategory === CAT_0808 || activeCategory === CAT_PAIS) {
+  else if (activeCategory === CAT_CAMP || activeCategory === CAT_PAIS) {
     /* mantém a ordem de curadoria definida em listaPromo() */
   }
   else if (activeCategory === 'Todas' && !query) {
-    // Default em "Todas" (sem busca): produtos de maior valor primeiro — chamam mais atenção
-    list.sort((a, b) => b.price - a.price);
+    // v5: vitrine por apelo, não por preço. Antes a loja abria com jogo de cama de
+    // R$ 1.057 e shampoo pet de 5L na primeira tela.
+    list.sort((a, b) => (b._legal - a._legal) || (b.rowIdx - a.rowIdx));
+    list = diversificar(list, 3);
   }
 
   filteredProducts = list;
@@ -1823,15 +2010,16 @@ function buildCategoryTabs() {
 
   // v3: campanhas primeiro (maior visibilidade), depois Novidades, depois as categorias
   const promoTabs = [];
-  if (tab0808Visivel()) promoTabs.push(CAT_0808);
+  if (tabCampVisivel()) promoTabs.push(CAT_CAMP);
   if (tabPaisVisivel()) promoTabs.push(CAT_PAIS);
-  const allCats = [cats[0], ...promoTabs, CAT_NOVIDADES, ...cats.slice(1)];
+  // v5: Novidades primeiro, campanhas em seguida, depois Todas e as categorias
+  const allCats = [CAT_NOVIDADES, ...promoTabs, cats[0], ...cats.slice(1)];
 
   // v2: contador de produtos por categoria
   const counts = {};
   counts['Todas'] = allProducts.length;
   counts[CAT_NOVIDADES] = Math.min(NOVIDADES_COUNT, allProducts.length);
-  counts[CAT_0808] = pais0808Ids.size;
+  counts[CAT_CAMP] = campIds.size;
   counts[CAT_PAIS] = paisIds.size;
   allProducts.forEach(p => {
     if (p.category) counts[p.category] = (counts[p.category] || 0) + 1;
@@ -1842,7 +2030,7 @@ function buildCategoryTabs() {
   allCats.forEach(cat => {
     const btn = document.createElement('button');
     let extra = '';
-    if (cat === CAT_0808) extra = ' tab-promo tab-0808' + (promoPhase(PROMO_0808) === 'antes' ? ' tab-teaser' : '');
+    if (cat === CAT_CAMP) extra = ' tab-promo tab-' + PROMO_CAMP.tema + (promoPhase(PROMO_CAMP) === 'antes' ? ' tab-teaser' : '');
     else if (cat === CAT_PAIS) extra = ' tab-promo tab-pais';
     btn.className = 'cat-tab' + extra + (cat === activeCategory ? ' active' : '');
     const emojiPart = CAT_EMOJI[cat] ? CAT_EMOJI[cat] + ' ' : '';
@@ -1866,6 +2054,10 @@ function buildCategoryTabs() {
 // ============================================================
 // v3 — MOTOR DAS CAMPANHAS
 // ============================================================
+// v5 — as classes visuais saem do tema da campanha, então trocar de campanha
+// é trocar `tema` (e as regras .promo-<tema> no CSS), não mexer no JS.
+function tclass(base) { return base + ' ' + base + '-' + PROMO_CAMP.tema; }
+
 function normTxt(s) {
   return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
@@ -1877,17 +2069,17 @@ function promoPhase(promo) {
   if (n < promo.end)   return 'ativa';
   return 'encerrada';
 }
-function is0808Ativa()    { return promoPhase(PROMO_0808) === 'ativa'; }
-function tab0808Visivel() { const f = promoPhase(PROMO_0808); return f === 'ativa' || (f === 'antes' && PROMO_0808.teaser); }
+function campAtiva()    { return promoPhase(PROMO_CAMP) === 'ativa'; }
+function tabCampVisivel() { const f = promoPhase(PROMO_CAMP); return f === 'ativa' || (f === 'antes' && PROMO_CAMP.teaser); }
 function tabPaisVisivel() { return promoPhase(PROMO_PAIS) !== 'encerrada'; }
 
-// Desconto do site: o 08.08 sobrepõe o valor da planilha enquanto durar.
+// Desconto do site: a campanha sobrepõe o valor da planilha enquanto durar.
 function siteDiscount() {
-  return is0808Ativa() ? PROMO_0808.discount : globalDiscount;
+  return campAtiva() ? PROMO_CAMP.discount : globalDiscount;
 }
 
 // Desconto de UM produto. Itens de Dia dos Pais têm piso de 35% e
-// acompanham o desconto global sempre que ele for maior (é o caso no 08.08).
+// acompanham o desconto global sempre que ele for maior (é o caso durante a campanha).
 function discountFor(p) {
   const base = siteDiscount();
   if (p && tabPaisVisivel() && paisIds.has(p.id)) return Math.max(base, PROMO_PAIS.discount);
@@ -1910,10 +2102,10 @@ function ehProdutoDePai(p) {
   return PAIS_RULES.some(rx => rx.test(t));
 }
 
-// ---- Seleção: vitrine 08.08 (nota composta) ----
-function score0808(p) {
+// ---- Seleção: vitrine da campanha (nota composta) ----
+function scoreCamp(p) {
   const n = normTxt(p.name);
-  if (P0808_BLOCK.some(rx => rx.test(n))) return -1;
+  if (CAMP_BLOCK.some(rx => rx.test(n))) return -1;
   if (!p.img) return -1;                                  // sem foto não vira destaque
   if (p.name.trim().length < 12) return -1;               // nome incompleto = cadastro ruim
 
@@ -1922,13 +2114,13 @@ function score0808(p) {
   const v = p.price;
   s += v >= 400 ? 45 : v >= 250 ? 38 : v >= 150 ? 30 : v >= 100 ? 22 : v >= 60 ? 14 : v >= 30 ? 6 : 0;
   // marca com procura conhecida
-  if (P0808_PREMIUM.some(b => n.includes(b))) s += 20;
+  if (CAMP_PREMIUM.some(b => n.includes(b))) s += 20;
   // curadoria manual lidera
-  if (P0808_HERO.some(h => n.includes(h))) s += 40;
+  if (CAMP_HERO.some(h => n.includes(h))) s += 40;
   // estoque: mais unidades = mais margem total no período
   s += Math.min(p.stock, 8) * 2;
   // apetite por categoria
-  s += (P0808_CAT_W[p.category] != null ? P0808_CAT_W[p.category] : 0);
+  s += (CAMP_CAT_W[p.category] != null ? CAMP_CAT_W[p.category] : 0);
   // cadastro descritivo converte melhor
   if (p.name.trim().length >= 28) s += 4;
   return s;
@@ -1937,21 +2129,22 @@ function score0808(p) {
 function montarSelecoesPromo() {
   paisIds = new Set(allProducts.filter(ehProdutoDePai).map(p => p.id));
 
-  pais0808Ids = new Set(
+  campIds = new Set(
     allProducts
-      .map(p => ({ p, s: score0808(p) }))
+      .map(p => ({ p, s: p._camp != null ? p._camp : scoreCamp(p) }))
       .filter(x => x.s > 0)
       .sort((a, b) => (b.s - a.s) || (b.p.price - a.p.price))
-      .slice(0, PROMO_0808.size)
+      .slice(0, PROMO_CAMP.size)
       .map(x => x.p.id)
   );
 }
 
 function listaPromo(cat) {
-  const ids = cat === CAT_0808 ? pais0808Ids : paisIds;
+  const ids = cat === CAT_CAMP ? campIds : paisIds;
   const list = allProducts.filter(p => ids.has(p.id));
-  if (cat === CAT_0808) {
-    return list.sort((a, b) => (score0808(b) - score0808(a)) || (b.price - a.price));
+  if (cat === CAT_CAMP) {
+    list.sort((a, b) => (b._camp - a._camp) || (b.price - a.price));
+    return diversificar(list, 3);   // v5: nao enfileirar 3 variantes do mesmo produto
   }
   return list.sort((a, b) => b.price - a.price);
 }
@@ -1980,30 +2173,30 @@ function digitsHTML(ms, comDias) {
 function renderPromoMasthead() {
   const el = document.getElementById('promoMasthead');
   if (!el) return;
-  const fase0808 = promoPhase(PROMO_0808);
+  const faseCamp = promoPhase(PROMO_CAMP);
   // Na aba Dia dos Pais manda o banner dela; em qualquer outra aba (inclusive a home)
-  // manda o banner do 08.08 enquanto a campanha estiver visível — é ele que gera tráfego.
+  // manda o banner da campanha enquanto ela estiver visível — é ele que gera tráfego.
   const mostraPais = activeCategory === CAT_PAIS && tabPaisVisivel();
 
-  if (!mostraPais && tab0808Visivel()) {
-    const pct = Math.round(PROMO_0808.discount * 100);
-    if (fase0808 === 'antes') {
-      el.innerHTML = `<div class="promo-masthead promo-0808">
-        <div class="promo-mark"><span class="promo-mark-big">08.08</span><span class="promo-mark-sub">Chegando</span></div>
+  if (!mostraPais && tabCampVisivel()) {
+    const pct = Math.round(PROMO_CAMP.discount * 100);
+    if (faseCamp === 'antes') {
+      el.innerHTML = `<div class="${tclass('promo-masthead')}">
+        <div class="promo-mark"><span class="promo-mark-big">${PROMO_CAMP.label}</span><span class="promo-mark-sub">Chegando</span></div>
         <div class="promo-body">
           <div class="promo-kicker">Prepare o carrinho</div>
           <div class="promo-headline">Começa ${inicioLabel()}: <em>${pct}% OFF</em> em tudo</div>
           <div class="promo-sub">Monte seu carrinho agora — quando virar, o desconto entra em todos os itens automaticamente.</div>
-          <button class="promo-cta" id="promoCtaBtn">Ver a vitrine 08.08 →</button>
+          <button class="promo-cta" id="promoCtaBtn">Ver a vitrine ${PROMO_CAMP.label} →</button>
         </div>
         <div class="promo-clock">
           <div class="promo-clock-label">Começa em</div>
-          <div class="promo-digits" id="promoDigits">${digitsHTML(PROMO_0808.start - Date.now(), true)}</div>
+          <div class="promo-digits" id="promoDigits">${digitsHTML(PROMO_CAMP.start - Date.now(), true)}</div>
         </div>
       </div>`;
     } else {
-      el.innerHTML = `<div class="promo-masthead promo-0808">
-        <div class="promo-mark"><span class="promo-mark-big">08.08</span><span class="promo-mark-sub">Super oferta</span></div>
+      el.innerHTML = `<div class="${tclass('promo-masthead')}">
+        <div class="promo-mark"><span class="promo-mark-big">${PROMO_CAMP.label}</span><span class="promo-mark-sub">${PROMO_CAMP.marca}</span></div>
         <div class="promo-body">
           <div class="promo-kicker">Acontecendo agora</div>
           <div class="promo-headline"><em>${pct}% OFF</em> no site inteiro</div>
@@ -2012,7 +2205,7 @@ function renderPromoMasthead() {
         </div>
         <div class="promo-clock">
           <div class="promo-clock-label">Termina em</div>
-          <div class="promo-digits" id="promoDigits">${digitsHTML(PROMO_0808.end - Date.now(), true)}</div>
+          <div class="promo-digits" id="promoDigits">${digitsHTML(PROMO_CAMP.end - Date.now(), true)}</div>
         </div>
       </div>`;
     }
@@ -2023,11 +2216,11 @@ function renderPromoMasthead() {
       <div class="promo-body">
         <div class="promo-kicker">Seleção especial</div>
         <div class="promo-headline"><em>${pct}% OFF</em> nos presentes pra ele</div>
-        <div class="promo-sub">${paisIds.size} itens escolhidos a dedo: vinhos e destilados, barba e cuidado, moda masculina, bar e mesa, café e garagem.${is0808Ativa() ? ' <strong>Com os ' + Math.round(PROMO_0808.discount * 100) + '% do 08.08.</strong>' : ''}</div>
+        <div class="promo-sub">${paisIds.size} itens escolhidos a dedo: vinhos e destilados, barba e cuidado, moda masculina, bar e mesa, café e garagem.${campAtiva() ? ' <strong>Com os ' + Math.round(PROMO_CAMP.discount * 100) + '% do 08.08.</strong>' : ''}</div>
       </div>
       <div class="promo-clock">
         <div class="promo-clock-label">Termina em</div>
-        <div class="promo-digits" id="promoDigits">${digitsHTML((is0808Ativa() ? PROMO_0808.end : PROMO_PAIS.end) - Date.now(), true)}</div>
+        <div class="promo-digits" id="promoDigits">${digitsHTML((campAtiva() ? PROMO_CAMP.end : PROMO_PAIS.end) - Date.now(), true)}</div>
       </div>
     </div>`;
   } else {
@@ -2035,19 +2228,19 @@ function renderPromoMasthead() {
   }
 
   const cta = document.getElementById('promoCtaBtn');
-  if (cta) cta.addEventListener('click', () => goToCategory(CAT_0808));
+  if (cta) cta.addEventListener('click', () => goToCategory(CAT_CAMP));
 }
 
 // ---- Faixa de contexto acima da grade ----
 function renderPromoStrip() {
   const el = document.getElementById('promoStrip');
   if (!el) return;
-  if (activeCategory === CAT_0808 && tab0808Visivel()) {
-    const pct = Math.round(PROMO_0808.discount * 100);
-    el.innerHTML = `<div class="promo-strip promo-strip-0808">⭐ <span><strong>Vitrine 08.08</strong> — ${pais0808Ids.size} itens com maior procura e maior desconto em reais. ${is0808Ativa() ? `Todo o site está a ${pct}%.` : `A partir de ${inicioLabel()} tudo fica a ${pct}%.`}</span></div>`;
+  if (activeCategory === CAT_CAMP && tabCampVisivel()) {
+    const pct = Math.round(PROMO_CAMP.discount * 100);
+    el.innerHTML = `<div class="${tclass('promo-strip')}">⭐ <span><strong>Vitrine ${PROMO_CAMP.label}</strong> — ${campIds.size} itens com maior procura e maior desconto em reais. ${campAtiva() ? `Todo o site está a ${pct}%.` : `A partir de ${inicioLabel()} tudo fica a ${pct}%.`}</span></div>`;
   } else if (activeCategory === CAT_PAIS && tabPaisVisivel()) {
     const pct = Math.round(PROMO_PAIS.discount * 100);
-    el.innerHTML = `<div class="promo-strip promo-strip-pais">🎁 <span><strong>Presentes de Dia dos Pais ${PROMO_PAIS.dateLabel}</strong> — ${is0808Ativa() ? `seleção pra ele com os ${Math.round(PROMO_0808.discount*100)}% do 08.08.` : `${pct}% OFF nesta seleção.`}</span></div>`;
+    el.innerHTML = `<div class="promo-strip promo-strip-pais">🎁 <span><strong>Presentes de Dia dos Pais ${PROMO_PAIS.dateLabel}</strong> — ${campAtiva() ? `seleção pra ele com os ${Math.round(PROMO_CAMP.discount*100)}% do 08.08.` : `${pct}% OFF nesta seleção.`}</span></div>`;
   } else {
     el.innerHTML = '';
   }
@@ -2056,9 +2249,9 @@ function renderPromoStrip() {
 // ---- Relógio: atualiza dígitos e re-renderiza na virada de fase ----
 function startPromoClock() {
   if (promoClockTimer) clearInterval(promoClockTimer);
-  lastPromoPhase = promoPhase(PROMO_0808) + '|' + promoPhase(PROMO_PAIS);
+  lastPromoPhase = promoPhase(PROMO_CAMP) + '|' + promoPhase(PROMO_PAIS);
   promoClockTimer = setInterval(() => {
-    const fase = promoPhase(PROMO_0808) + '|' + promoPhase(PROMO_PAIS);
+    const fase = promoPhase(PROMO_CAMP) + '|' + promoPhase(PROMO_PAIS);
     if (fase !== lastPromoPhase) {
       // virou (começou ou terminou): recalcula preços, abas e vitrine
       lastPromoPhase = fase;
@@ -2072,12 +2265,12 @@ function startPromoClock() {
     }
     const d = document.getElementById('promoDigits');
     if (!d) return;
-    if (activeCategory === CAT_PAIS && promoPhase(PROMO_0808) !== 'ativa') {
+    if (activeCategory === CAT_PAIS && promoPhase(PROMO_CAMP) !== 'ativa') {
       d.innerHTML = digitsHTML(PROMO_PAIS.end - Date.now(), true);
-    } else if (promoPhase(PROMO_0808) === 'antes') {
-      d.innerHTML = digitsHTML(PROMO_0808.start - Date.now(), true);
-    } else if (is0808Ativa()) {
-      d.innerHTML = digitsHTML(PROMO_0808.end - Date.now(), true);
+    } else if (promoPhase(PROMO_CAMP) === 'antes') {
+      d.innerHTML = digitsHTML(PROMO_CAMP.start - Date.now(), true);
+    } else if (campAtiva()) {
+      d.innerHTML = digitsHTML(PROMO_CAMP.end - Date.now(), true);
     }
   }, 1000);
 }
@@ -2086,8 +2279,10 @@ function formatBRL(n) {
   return n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function stockBadgeHTML(stock) {
+function stockBadgeHTML(stock, conhecido) {
   if (stock <= 0) return '<span class="stock-badge badge-out">Esgotado</span>';
+  // v5: sem estoque informado, nao inventa escassez — so omite o selo.
+  if (conhecido === false) return '';
   if (stock === 1) return '<span class="stock-badge badge-low">Última unidade</span>';
   if (stock <= 3) return '<span class="stock-badge badge-low">Últimas ' + stock + ' unidades</span>';
   return '<span class="stock-badge badge-ok">Em estoque</span>';
@@ -2111,7 +2306,7 @@ function buildQtyOptions(stock, productId) {
 
 // v3 — rótulo do início: "hoje às 23:59", "amanhã às 09:00" ou "12/08 às 10:00"
 function inicioLabel() {
-  const ini = new Date(PROMO_0808.start);
+  const ini = new Date(PROMO_CAMP.start);
   const agora = new Date();
   const hora = ini.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   if (ini.toDateString() === agora.toDateString()) return 'hoje às ' + hora;
@@ -2146,24 +2341,24 @@ function atualizarFaixaDesconto() {
   }
 }
 
-// v3 — prévia: no teaser mostra quanto o item vai custar quando o 08.08 abrir
+// v3 — prévia: no teaser mostra quanto o item vai custar quando a campanha abrir
 function promoPreviewHTML(p, precoHoje) {
-  if (activeCategory !== CAT_0808) return '';
-  if (promoPhase(PROMO_0808) !== 'antes') return '';
-  const precoPromo = p.price * (1 - PROMO_0808.discount);
+  if (activeCategory !== CAT_CAMP) return '';
+  if (promoPhase(PROMO_CAMP) !== 'antes') return '';
+  const precoPromo = p.price * (1 - PROMO_CAMP.discount);
   if (precoPromo >= precoHoje - 0.005) return '';   // já está igual ou melhor hoje
   return `<div class="promo-preview">⏳ ${inicioLabel()}: <b>R$ ${formatBRL(precoPromo)}</b></div>`;
 }
 
 // v3 — selo de campanha no card
 function promoFlagHTML(p) {
-  if (activeCategory === CAT_0808) {
+  if (activeCategory === CAT_CAMP) {
     // No teaser o preço na tela ainda é o de hoje — o selo anuncia a taxa de amanhã,
-    // sem dar a entender que o desconto do 08.08 já está valendo.
-    if (promoPhase(PROMO_0808) === 'antes') {
-      return `<span class="promo-flag promo-flag-0808">08.08 · −${Math.round(PROMO_0808.discount * 100)}% em breve</span>`;
+    // sem dar a entender que o desconto da campanha já está valendo.
+    if (promoPhase(PROMO_CAMP) === 'antes') {
+      return `<span class="${tclass('promo-flag')}">${PROMO_CAMP.label} · −${Math.round(PROMO_CAMP.discount * 100)}% em breve</span>`;
     }
-    return `<span class="promo-flag promo-flag-0808">08.08 · −${discountPct(p)}%</span>`;
+    return `<span class="${tclass('promo-flag')}">${PROMO_CAMP.label} · −${discountPct(p)}%</span>`;
   }
   if (activeCategory === CAT_PAIS) {
     return `<span class="promo-flag promo-flag-pais">Pra ele · −${discountPct(p)}%</span>`;
@@ -2199,7 +2394,8 @@ function renderGrid() {
     const canAdd = !isOut && availQty > 0;
     const isNew = noveltyIds.has(p.id);
     const nameHL = highlightTerm(p.name, lastSearchTerm);
-    const promoCls = activeCategory === CAT_0808 ? ' promo-card-0808'
+    const previa = promoPreviewHTML(p, discountedPrice(p.price, p));
+    const promoCls = activeCategory === CAT_CAMP ? ' promo-card-' + PROMO_CAMP.tema
                    : activeCategory === CAT_PAIS ? ' promo-card-pais' : '';
     return `<div class="card${promoCls}" data-id="${p.id}">
       <div class="card-img-wrap">
@@ -2211,15 +2407,15 @@ function renderGrid() {
           : ''
         }
         <div class="svg-placeholder" style="display:${p.img ? 'none' : 'flex'}">${CAT_EMOJI[p.category] || '📦'}</div>
-        ${stockBadgeHTML(p.stock)}
+        ${stockBadgeHTML(p.stock, p.stockKnown)}
       </div>
       <div class="card-body">
         <div class="card-name" title="${escHTML(p.name)}">${nameHL}</div>
         <div class="card-prices">
           <div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−${discountPct(p)}%</span></div>
           <div class="price-discounted">R$ ${formatBRL(disc)}</div>
-          ${saved > 0.005 ? `<div class="price-savings">Economize R$ ${formatBRL(saved)}</div>` : ''}
-          ${promoPreviewHTML(p, disc)}
+          ${(saved > 0.005 && !previa) ? `<div class="price-savings">Economize R$ ${formatBRL(saved)}</div>` : ''}
+          ${previa}
         </div>
         <div class="card-category">${escHTML(p.category)}${p.sheet ? ' · ' + escHTML(p.sheet) : ''}</div>
         <div class="card-footer">
@@ -2579,12 +2775,12 @@ function buildTicker() {
 
   // v3: chamadas das campanhas entram primeiro na faixa
   const promoItems = [];
-  const fase0808 = promoPhase(PROMO_0808);
-  const pct0808  = Math.round(PROMO_0808.discount * 100);
-  if (fase0808 === 'antes' && PROMO_0808.teaser) {
-    promoItems.push({ text: `⏳ 08.08 começa ${inicioLabel()} — ${pct0808}% OFF em TUDO`, action: () => goToCategory(CAT_0808) });
-  } else if (fase0808 === 'ativa') {
-    promoItems.push({ text: `🔥 08.08 ACONTECENDO — ${pct0808}% OFF no site inteiro`, action: () => goToCategory(CAT_0808) });
+  const faseCamp = promoPhase(PROMO_CAMP);
+  const pctCamp  = Math.round(PROMO_CAMP.discount * 100);
+  if (faseCamp === 'antes' && PROMO_CAMP.teaser) {
+    promoItems.push({ text: `⏳ ${PROMO_CAMP.label} começa ${inicioLabel()} — ${pctCamp}% OFF em TUDO`, action: () => goToCategory(CAT_CAMP) });
+  } else if (faseCamp === 'ativa') {
+    promoItems.push({ text: `💎 ${PROMO_CAMP.label} ACONTECENDO — ${pctCamp}% OFF no site inteiro`, action: () => goToCategory(CAT_CAMP) });
   }
   if (tabPaisVisivel()) {
     const pctPais = Math.round(Math.max(siteDiscount(), PROMO_PAIS.discount) * 100);
@@ -2624,7 +2820,8 @@ function buildTicker() {
 
   // v3: rótulo da faixa acompanha a campanha
   const lbl = wrap.querySelector('.ticker-label');
-  if (lbl) lbl.textContent = fase0808 === 'ativa' ? '🔥 08.08' : (fase0808 === 'antes' ? '⏳ 08.08' : '🔥 Destaques');
+  if (lbl) lbl.textContent = faseCamp === 'ativa' ? ('💎 ' + PROMO_CAMP.label)
+    : (faseCamp === 'antes' ? ('⏳ ' + PROMO_CAMP.label) : '🔥 Destaques');
 
   wrap.style.display = 'flex';
 }
@@ -2640,7 +2837,7 @@ function goToCategory(cat) {
   applyFilters();
   // v3: nas campanhas sobe até o topo — o banner da campanha faz parte da oferta.
   // Nas categorias normais mantém o comportamento antigo (vai direto pra grade).
-  const ehPromo = cat === CAT_0808 || cat === CAT_PAIS;
+  const ehPromo = cat === CAT_CAMP || cat === CAT_PAIS;
   window.scrollTo({
     top: ehPromo ? 0 : (document.querySelector('main')?.offsetTop || 200),
     behavior: 'smooth'
@@ -2754,7 +2951,7 @@ function openQuickView(productId) {
           ? `<img src="${escHTML(p.img)}" alt="${escHTML(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
           : ''}
         <div class="svg-placeholder" style="display:${p.img ? 'none' : 'flex'}">${CAT_EMOJI[p.category] || '📦'}</div>
-        ${stockBadgeHTML(p.stock)}
+        ${stockBadgeHTML(p.stock, p.stockKnown)}
       </div>
       <div class="modal-body">
         <div class="modal-cat">${escHTML(p.category)}${p.sheet ? ' · ' + escHTML(p.sheet) : ''}</div>
