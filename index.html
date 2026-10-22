@@ -3,10 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lojinha DD — Catálogo</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Loja — Catálogo</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -1351,348 +1348,6 @@
     .promo-digit b { font-size: 1rem; }
     .promo-strip { margin: 12px 10px 0; font-size: .76rem; }
   }
-  /* ==========================================================
-     v7 — LAYOUT NOVO (out/2026)
-     Camada aditiva: sobrepõe o visual antigo sem apagar nenhuma
-     regra anterior. Apagar ESTE bloco devolve o site ao visual v6.
-     Tokens no topo; tema escuro só troca os tokens.
-     ========================================================== */
-  :root {
-    --v7-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --v7-bg: #f6f3ef;
-    --v7-surface: #ffffff;
-    --v7-surface-2: #f2eee8;
-    --v7-photo: #f3efe9;
-    --v7-line: #e7e1d9;
-    --v7-ink: #1c1917;
-    --v7-ink-2: #44403c;
-    --v7-muted: #857c75;
-    --v7-brand: #e11d48;
-    --v7-brand-ink: #be123c;
-    --v7-brand-soft: #fff0f3;
-    --v7-outlet: #b45309;
-    --v7-outlet-soft: #fff4e6;
-    --v7-outlet-line: #fed7aa;
-    --v7-radius: 16px;
-    --v7-shadow: 0 1px 2px rgba(28,25,23,.04), 0 4px 14px rgba(28,25,23,.05);
-    --v7-shadow-hover: 0 2px 6px rgba(28,25,23,.06), 0 16px 34px rgba(28,25,23,.11);
-  }
-  html[data-theme="dark"] {
-    --v7-bg: #111013;
-    --v7-surface: #1b1a1f;
-    --v7-surface-2: #25242a;
-    --v7-photo: #e6e1db;
-    --v7-line: #2f2d34;
-    --v7-ink: #f4f1ed;
-    --v7-ink-2: #d9d3cc;
-    --v7-muted: #9b948d;
-    --v7-brand: #fb7185;
-    --v7-brand-ink: #fda4af;
-    --v7-brand-soft: #2b161b;
-    --v7-outlet: #fbbf24;
-    --v7-outlet-soft: #2a2110;
-    --v7-outlet-line: #4a3a14;
-    --v7-shadow: 0 1px 2px rgba(0,0,0,.35);
-    --v7-shadow-hover: 0 12px 30px rgba(0,0,0,.5);
-  }
-
-  body, html[data-theme="dark"] body {
-    font-family: var(--v7-font);
-    background: var(--v7-bg);
-    color: var(--v7-ink);
-    -webkit-font-smoothing: antialiased;
-  }
-  button, input, select { font-family: inherit; }
-
-  /* — Faixa de avisos (ticker): fina e escura nos dois temas — */
-  .ticker-wrap { background: #1c1917; color: #f4f1ed; border-bottom: 0; }
-  .ticker-label { background: #e11d48; color: #fff; }
-
-  /* — Cabeçalho branco, marca à esquerda — */
-  header, html[data-theme="dark"] header {
-    background: var(--v7-surface);
-    color: var(--v7-ink);
-    box-shadow: none;
-    border-bottom: 1px solid var(--v7-line);
-  }
-  .header-inner { height: 62px; }
-  .logo { display: flex; align-items: center; gap: 10px; color: var(--v7-ink); }
-  .logo .logo-mark {
-    width: 36px; height: 36px; border-radius: 11px;
-    background: var(--v7-brand); color: #fff;
-    display: grid; place-items: center;
-    font-size: .78rem; font-weight: 800; letter-spacing: .02em; opacity: 1;
-    box-shadow: 0 4px 12px rgba(225,29,72,.28);
-  }
-  html[data-theme="dark"] .logo .logo-mark { background: #e11d48; }
-  .logo .logo-txt {
-    opacity: 1; display: flex; flex-direction: column; line-height: 1.05;
-    font-size: 1.12rem; font-weight: 800; letter-spacing: -.02em;
-  }
-  .logo .logo-txt small {
-    font-size: .6rem; font-weight: 700; letter-spacing: .18em;
-    text-transform: uppercase; color: var(--v7-muted); margin-top: 3px;
-  }
-  .btn-refresh, .btn-theme {
-    background: var(--v7-surface-2); color: var(--v7-ink);
-    border: 1px solid var(--v7-line);
-  }
-  .btn-refresh:hover, .btn-theme:hover { background: var(--v7-line); }
-  .cart-btn {
-    background: var(--v7-ink); color: var(--v7-surface);
-    height: 40px; border-radius: 12px; padding: 0 14px; font-weight: 700;
-  }
-  .cart-btn:hover { background: var(--v7-ink-2); }
-  .cart-badge { background: #e11d48; color: #fff; }
-  .last-update { color: var(--v7-muted); opacity: 1; }
-
-  /* — Busca colada no cabeçalho — */
-  .toolbar, html[data-theme="dark"] .toolbar {
-    top: 62px;
-    background: var(--v7-surface);
-    border-bottom: 1px solid var(--v7-line);
-  }
-  #searchInput, html[data-theme="dark"] #searchInput,
-  #sortSelect, html[data-theme="dark"] #sortSelect {
-    background: var(--v7-surface-2);
-    border: 1px solid transparent;
-    border-radius: 12px;
-    color: var(--v7-ink);
-  }
-  #searchInput:focus, #sortSelect:focus {
-    outline: none; background: var(--v7-surface);
-    border-color: var(--v7-ink-2);
-    box-shadow: 0 0 0 3px rgba(28,25,23,.08);
-  }
-
-  /* — Faixa do desconto do site: cartão discreto em vez do banner amarelo — */
-  .discount-hero, html[data-theme="dark"] .discount-hero {
-    max-width: 1280px;
-    width: calc(100% - 32px);
-    margin: 16px auto 0;
-    background: var(--v7-surface);
-    color: var(--v7-ink-2);
-    border: 1px solid var(--v7-line);
-    border-radius: var(--v7-radius);
-    box-shadow: var(--v7-shadow);
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    padding: 12px 14px 12px 18px;
-    gap: 6px 10px;
-    font-weight: 600;
-    letter-spacing: 0;
-  }
-  .discount-hero::before, .discount-hero-spark { display: none; }
-  .discount-hero-pct, html[data-theme="dark"] .discount-hero-pct {
-    color: var(--v7-brand); text-shadow: none; font-size: 1.3rem; font-weight: 800;
-  }
-  .discount-hero-txt strong, html[data-theme="dark"] .discount-hero-txt strong {
-    color: var(--v7-ink); text-decoration: none;
-  }
-  .discount-hero-note { color: var(--v7-muted); font-size: .8rem; font-weight: 500; }
-  .hero-chip {
-    margin-left: auto;
-    background: var(--v7-outlet-soft); color: var(--v7-outlet);
-    border: 1px solid var(--v7-outlet-line);
-    border-radius: 999px; padding: 7px 13px;
-    font-size: .8rem; font-weight: 800; cursor: pointer;
-    transition: transform .15s;
-  }
-  .hero-chip:hover { transform: translateX(2px); }
-
-  /* — Abas viram pílulas — */
-  .cat-tabs-wrap, html[data-theme="dark"] .cat-tabs-wrap {
-    background: transparent; border-bottom: 0;
-  }
-  .cat-tabs { gap: 8px; padding: 14px 16px 6px; }
-  .cat-tab {
-    background: var(--v7-surface);
-    color: var(--v7-ink-2);
-    border: 1px solid var(--v7-line);
-    border-radius: 999px;
-    padding: 8px 14px;
-    font-size: .82rem; font-weight: 600;
-  }
-  .cat-tab:hover { color: var(--v7-ink); border-color: var(--v7-muted); }
-  .cat-tab.active:not(.tab-promo) {
-    background: var(--v7-ink); color: var(--v7-surface);
-    border-color: var(--v7-ink); font-weight: 700;
-  }
-  .cat-count {
-    margin-left: 6px; padding: 1px 7px; border-radius: 999px;
-    background: var(--v7-surface-2); color: var(--v7-muted); font-weight: 700;
-  }
-  .cat-tab.active:not(.tab-promo) .cat-count {
-    background: rgba(127,127,127,.25); color: inherit; opacity: 1;
-  }
-  .cat-tab.tab-outlet {
-    background: var(--v7-outlet-soft); color: var(--v7-outlet);
-    border-color: var(--v7-outlet-line); font-weight: 800;
-  }
-  .cat-tab.tab-outlet.active { background: #b45309; color: #fff; border-color: #b45309; }
-  .cat-tab.tab-outlet .cat-count { background: rgba(180,83,9,.12); color: inherit; }
-
-  /* — Grade e cards — */
-  main { padding-top: 10px; }
-  .results-info, html[data-theme="dark"] .results-info { color: var(--v7-muted); }
-  .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; }
-  .card, html[data-theme="dark"] .card {
-    background: var(--v7-surface);
-    color: var(--v7-ink);
-    border: 1px solid var(--v7-line);
-    border-radius: var(--v7-radius);
-    box-shadow: var(--v7-shadow);
-  }
-  .card:hover { box-shadow: var(--v7-shadow-hover); transform: translateY(-3px); }
-  .card-img-wrap, html[data-theme="dark"] .card-img-wrap {
-    margin: 8px 8px 0;
-    border-radius: 12px;
-    background: var(--v7-photo);
-  }
-  /* foto inteira (sem cortar) e fundo branco da foto "some" no fundo do card */
-  .card-img-wrap img {
-    object-fit: contain;
-    padding: 7%;
-    mix-blend-mode: multiply;
-  }
-  .card:hover .card-img-wrap img { transform: scale(1.03); }
-  .svg-placeholder, html[data-theme="dark"] .svg-placeholder { background: var(--v7-photo); }
-  .badge-new {
-    top: 9px; left: 9px;
-    background: var(--v7-ink); color: var(--v7-surface);
-    font-size: .58rem; padding: 3px 8px; letter-spacing: .1em;
-  }
-  html[data-theme="dark"] .badge-new { background: #1c1917; color: #f4f1ed; }
-  .stock-badge {
-    top: 9px; right: 9px; font-size: .64rem; padding: 3px 8px;
-    border-radius: 999px; backdrop-filter: blur(4px);
-  }
-  .promo-flag { bottom: 9px; left: 9px; }
-  .promo-flag-outlet { background: #b45309; color: #fff; }
-
-  .card-body { padding: 12px 14px 14px; gap: 8px; }
-  .card-name, html[data-theme="dark"] .card-name {
-    color: var(--v7-ink);
-    font-size: .86rem; font-weight: 600; line-height: 1.34;
-    letter-spacing: -.005em;
-    -webkit-line-clamp: 3;
-    min-height: calc(1.34em * 2);
-  }
-  .card-prices { gap: 2px; }
-  .card .price-discounted {
-    order: 1; color: var(--v7-ink);
-    font-size: 1.16rem; font-weight: 800; letter-spacing: -.02em;
-  }
-  .card .price-original, html[data-theme="dark"] .card .price-original {
-    order: 2; color: var(--v7-muted); font-size: .76rem;
-  }
-  .discount-tag, html[data-theme="dark"] .discount-tag {
-    background: var(--v7-brand-soft); color: var(--v7-brand-ink);
-    box-shadow: none; border-radius: 6px; font-weight: 800;
-  }
-  .card .price-savings { display: none; }   /* o % e o preço riscado já contam a história */
-  .card-category, html[data-theme="dark"] .card-category {
-    color: var(--v7-muted); font-size: .7rem;
-  }
-  .card .qty-row { display: none; }        /* quantidade se ajusta no carrinho */
-  .btn-add {
-    border-radius: 12px; padding: 10px 8px;
-    background: #e11d48; color: #fff;
-    font-size: .82rem; font-weight: 700;
-  }
-  .btn-add:hover:not(:disabled) { background: #be123c; }
-  .btn-add.no-carrinho, .btn-add.no-carrinho:hover:not(:disabled) {
-    background: var(--v7-brand-soft); color: var(--v7-brand-ink);
-    box-shadow: inset 0 0 0 1px rgba(225,29,72,.25);
-  }
-  .btn-add:disabled, html[data-theme="dark"] .btn-add:disabled {
-    background: var(--v7-surface-2); color: var(--v7-muted);
-  }
-  .btn-add.no-carrinho:disabled { background: var(--v7-brand-soft); color: var(--v7-brand-ink); }
-
-  /* — Paginação — */
-  .page-btn, html[data-theme="dark"] .page-btn {
-    border-radius: 10px; border: 1px solid var(--v7-line);
-    background: var(--v7-surface); color: var(--v7-ink-2);
-  }
-  .page-btn.active, html[data-theme="dark"] .page-btn.active {
-    background: var(--v7-ink); color: var(--v7-surface); border-color: var(--v7-ink);
-  }
-
-  /* — Faixa da aba Outlet — */
-  .promo-strip-outlet {
-    background: var(--v7-outlet-soft); color: var(--v7-outlet);
-    border: 1px solid var(--v7-outlet-line);
-  }
-
-  /* — Barra do carrinho (aparece quando há itens) — */
-  .cart-bar {
-    position: fixed; left: 50%; bottom: 14px;
-    transform: translate(-50%, 160%);
-    width: min(520px, calc(100% - 24px));
-    display: flex; align-items: center; gap: 12px;
-    padding: 9px 9px 9px 16px;
-    background: #1c1917; color: #f4f1ed;
-    border-radius: 16px;
-    box-shadow: 0 14px 36px rgba(0,0,0,.28);
-    z-index: 160;
-    transition: transform .28s cubic-bezier(.2,.8,.2,1);
-  }
-  .cart-bar.show { transform: translate(-50%, 0); }
-  .cart-bar-info { flex: 1; font-size: .82rem; line-height: 1.25; color: #d6d1cb; }
-  .cart-bar-info b { display: block; font-size: 1.02rem; color: #fff; }
-  .cart-bar-btn {
-    background: #e11d48; color: #fff; border: 0; border-radius: 12px;
-    padding: 11px 16px; font-weight: 800; font-size: .86rem; cursor: pointer;
-  }
-  .cart-bar-btn:hover { background: #be123c; }
-  body.tem-cart-bar { padding-bottom: 88px; }
-  body.tem-cart-bar .toast { bottom: 96px; }
-  body.tem-cart-bar .btn-top { bottom: 92px; }
-
-  /* — Painel do carrinho nos tokens novos (e corrige o nome do item
-       que ficava ilegível no tema escuro — defeito anterior ao v7) — */
-  .cart-panel, html[data-theme="dark"] .cart-panel,
-  .cart-footer, html[data-theme="dark"] .cart-footer {
-    background: var(--v7-surface); color: var(--v7-ink); border-color: var(--v7-line);
-  }
-  .cart-item-name, html[data-theme="dark"] .cart-item-name { color: var(--v7-ink); }
-  .cart-item-price { color: var(--v7-muted); }
-  .cart-item, html[data-theme="dark"] .cart-item { border-bottom-color: var(--v7-line); }
-  .cart-item-img, html[data-theme="dark"] .cart-item-img { background: var(--v7-photo); border-radius: 10px; }
-  html[data-theme="dark"] .cart-bar { box-shadow: 0 14px 36px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08); }
-
-  /* — Rodapé — */
-  .site-footer {
-    max-width: 1280px; margin: 40px auto 0; padding: 26px 16px 34px;
-    border-top: 1px solid var(--v7-line);
-    display: flex; flex-wrap: wrap; gap: 10px 24px;
-    justify-content: space-between; align-items: center;
-    color: var(--v7-muted); font-size: .8rem;
-  }
-  .site-footer strong { color: var(--v7-ink); }
-  .site-footer a { color: var(--v7-ink); font-weight: 700; text-decoration: none; }
-  .site-footer a:hover { color: var(--v7-brand); }
-
-  @media (max-width: 600px) {
-    .header-inner { height: 58px; gap: 8px; }
-    .toolbar, html[data-theme="dark"] .toolbar { top: 58px; }
-    .logo .logo-txt small { display: none; }
-    .cart-btn { padding: 0 11px; }
-    .discount-hero, html[data-theme="dark"] .discount-hero { width: calc(100% - 20px); margin-top: 10px; }
-    .discount-hero-note { display: none; }
-  }
-  @media (max-width: 520px) {
-    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }   /* 2 colunas no celular */
-  }
-  @media (max-width: 480px) {
-    .grid { gap: 10px; }
-    .cat-tabs { padding: 10px 10px 4px; }
-    .card-img-wrap, html[data-theme="dark"] .card-img-wrap { margin: 6px 6px 0; }
-    .card-body { padding: 10px 10px 12px; gap: 6px; }
-    .card .price-discounted { font-size: 1.04rem; }
-    .btn-add { padding: 9px 6px; font-size: .78rem; }
-  }
 </style>
 </head>
 <body>
@@ -1714,7 +1369,7 @@
 <!-- HEADER -->
 <header>
   <div class="header-inner">
-    <div class="logo"><span class="logo-mark" aria-hidden="true">DD</span><span class="logo-txt">Lojinha DD<small>catálogo</small></span></div>
+    <div class="logo">Loja <span>— Catálogo</span></div>
     <span class="last-update" id="lastUpdate" title="Última atualização do catálogo"></span>
     <button class="btn-theme" id="btnTheme" title="Alternar tema (claro/escuro)" aria-label="Alternar tema">🌙</button>
     <button class="btn-refresh" id="btnRefresh" title="Atualizar catálogo">↻</button>
@@ -1752,8 +1407,6 @@
   <span class="discount-hero-pct" id="discountHeroPct">30%</span>
   <span class="discount-hero-txt">OFF em <strong>tudo</strong></span>
   <span class="discount-hero-spark">✨</span>
-  <span class="discount-hero-note">· preço já com desconto, sem cupom</span>
-  <button class="hero-chip" id="heroOutlet" type="button" hidden></button>
 </div>
 
 <!-- PROMO MASTHEAD (campanha / seleção curada) — preenchido por renderPromoMasthead() -->
@@ -1797,18 +1450,6 @@
 </div>
 
 <!-- TOAST -->
-<!-- v7: barra do carrinho (aparece quando há itens) -->
-<div class="cart-bar" id="cartBar" aria-live="polite">
-  <div class="cart-bar-info"><b id="cartBarTotal">R$ 0,00</b><span id="cartBarQtd">0 itens</span></div>
-  <button class="cart-bar-btn" id="cartBarBtn" type="button">Ver carrinho →</button>
-</div>
-
-<!-- v7: rodapé -->
-<footer class="site-footer">
-  <span><strong>Lojinha DD</strong> · preços já com desconto aplicado</span>
-  <span>Pedidos e dúvidas: <a id="footerWa" href="#" target="_blank" rel="noopener">WhatsApp</a></span>
-</footer>
-
 <div class="toast" id="toast"></div>
 
 <!-- BACK TO TOP -->
@@ -2074,8 +1715,6 @@ const CAT_EMOJI = {
   'Café & Alimentos': '☕',
   'Vinhos & Bebidas': '🍷',
   'Óleos & Séruns': '💧',
-  'Suplemento': '💪',
-  'Livros, Revistas e Comics': '📚',
   'Outros': '📦',
 };
 
@@ -2103,7 +1742,7 @@ let searchDebounceTimer = null;
 // se alguém apagar o texto de uma célula do cabeçalho (já aconteceu com A1/"Nome"),
 // o catálogo inteiro sumia e o site caía no retrato embutido, com preço e
 // disponibilidade velhos. Agora a posição da coluna é a fonte da verdade.
-const CSV_HEADERS = ['Nome', 'Preco', 'Estoque', 'Sala', 'Categoria', 'Imagem', 'Ativo', 'Comprado por', 'Entrada'];
+const CSV_HEADERS = ['Nome', 'Preco', 'Estoque', 'Sala', 'Categoria', 'Imagem', 'Ativo', 'Comprado por'];
 
 function repararCabecalho(headers, forcar) {
   const trocadas = [];
@@ -2123,42 +1762,18 @@ function repararCabecalho(headers, forcar) {
 }
 
 function parseCSV(text, forcarCabecalho) {
-  // v7: lê o arquivo inteiro respeitando aspas. Antes o texto era cortado por
-  // linha ANTES de tratar as aspas, e um nome com Enter dentro da célula partia
-  // o produto em dois pedaços inválidos — ele sumia do site (3 sumidos em 21/10).
-  const linhas = csvLinhas(text);
-  if (linhas.length < 2) return [];
-  const headers = repararCabecalho(linhas[0], forcarCabecalho);
+  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+  if (lines.length < 2) return [];
+  const headers = repararCabecalho(parseLine(lines[0]), forcarCabecalho);
   const results = [];
-  for (let i = 1; i < linhas.length; i++) {
-    const vals = linhas[i];
-    if (!vals.some(v => v.trim())) continue;
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    const vals = parseLine(lines[i]);
     const obj = {};
     headers.forEach((h, idx) => { obj[h.trim()] = (vals[idx] || '').trim(); });
     results.push(obj);
   }
   return results;
-}
-
-// v7 — CSV padrão (RFC 4180): vírgula separa, aspas protegem vírgula/aspas/Enter.
-function csvLinhas(text) {
-  const out = [];
-  let row = [], cur = '', inQ = false;
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    if (inQ) {
-      if (ch === '"') {
-        if (text[i + 1] === '"') { cur += '"'; i++; } else inQ = false;
-      } else cur += ch;
-    } else if (ch === '"') inQ = true;
-    else if (ch === ',') { row.push(cur); cur = ''; }
-    else if (ch === '\n' || ch === '\r') {
-      if (ch === '\r' && text[i + 1] === '\n') i++;
-      row.push(cur); out.push(row); row = []; cur = '';
-    } else cur += ch;
-  }
-  if (cur !== '' || row.length) { row.push(cur); out.push(row); }
-  return out;
 }
 
 function parseLine(line) {
@@ -2181,10 +1796,10 @@ function parseLine(line) {
 }
 
 function csvRowToProduct(row, idx) {
-  const nome = (row['Nome'] || '').replace(/\s+/g, ' ').trim();   // v7: Enter no nome vira espaço
+  const nome = (row['Nome'] || '').trim();
   if (!nome) return null;
-  // Linha de configuração — não é produto (__CONFIG__, __OUTLET__ e qualquer __X__)
-  if (nome.startsWith('__')) return null;
+  // Linha de configuração — não é produto
+  if (nome === '__CONFIG__') return null;
   // v3: linha de cabeçalho duplicada / cadastro vazio não vira produto
   if (JUNK_NAMES.includes(normTxt(nome))) return null;
   const ativo = (row['Ativo'] || '').toLowerCase().trim();
@@ -2192,9 +1807,6 @@ function csvRowToProduct(row, idx) {
   // Extrai apenas dígitos e ponto/vírgula do preço (evita datas ou texto)
   const precoRaw = (row['Preco'] || '0').replace(',', '.').replace(/[^\d.]/g, '');
   const preco = parseFloat(precoRaw) || 0;
-  // v7: sem preço válido não vai para a vitrine. Em 21/10 onze estojos entraram com
-  // o preço colado no nome e a coluna B vazia — apareciam a R$ 0,00 na primeira tela.
-  if (!(preco > 0)) { produtosSemPreco.push(nome); return null; }
   // v5: estoque em branco na planilha nao e "1". Guardar isso separado evita
   // gritar "Ultima unidade" em quase todo o catalogo, que e o que mata a confianca.
   const estoqueRaw = (row['Estoque'] || '').replace(/[^\d]/g, '');
@@ -2211,89 +1823,7 @@ function csvRowToProduct(row, idx) {
     sheet: (row['Sala'] || '').trim(),
     category: (row['Categoria'] || '').trim(),
     img: sanearImagem(row['Imagem']),
-    entrada: parseDataEntrada(row['Entrada']),   // v7: dia em que entrou no site (coluna I)
   };
-}
-
-// ============================================================
-// v7 — OUTLET: quem está há mais tempo no site ganha mais desconto
-// ------------------------------------------------------------
-// A data de entrada vem da coluna I ("Entrada") da planilha, que o Apps Script
-// preenche sozinho quando um produto fica ativo pela primeira vez. Os produtos
-// antigos foram datados a partir do histórico do data.csv no GitHub.
-// Ajuste sem código: linha __OUTLET__ da planilha — B = % de desconto, C = dias.
-// O outlet é um PISO: vale o maior entre ele e o desconto do site/campanha.
-// ============================================================
-const OUTLET_PADRAO = { pct: 0.35, dias: 90 };
-let OUTLET = { pct: OUTLET_PADRAO.pct, dias: OUTLET_PADRAO.dias };
-const CAT_OUTLET = '🏷️ Outlet';
-let produtosSemPreco = [];
-
-function parseOutletRow(rows) {
-  OUTLET = { pct: OUTLET_PADRAO.pct, dias: OUTLET_PADRAO.dias };
-  for (const row of rows) {
-    const achou = (row['Nome'] || '').trim() === '__OUTLET__'
-      || Object.values(row).some(v => String(v || '').trim() === '__OUTLET__');
-    if (!achou) continue;
-    const pct = parseFloat(String(row['Preco'] || '').replace(',', '.').replace(/[^\d.]/g, ''));
-    const dias = parseInt(String(row['Estoque'] || '').replace(/[^\d]/g, ''), 10);
-    let p2 = pct;
-    if (!isNaN(p2) && p2 > 0 && p2 < 1) p2 = p2 * 100;          // 35% digitado como porcentagem chega 0,35
-    if (!isNaN(p2) && p2 >= 0 && p2 <= 90) OUTLET.pct = p2 / 100;   // 0 = outlet desligado
-    if (!isNaN(dias) && dias >= 7 && dias <= 3650) OUTLET.dias = dias;
-    return;
-  }
-}
-
-// Aceita 2026-04-09, 09/04/2026 e 9/4/26. Qualquer outra coisa = sem data (sem outlet).
-function parseDataEntrada(v) {
-  const s = String(v || '').trim();
-  let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-  let y, mo, d;
-  if (m) { y = +m[1]; mo = +m[2]; d = +m[3]; }
-  else if ((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/))) {
-    d = +m[1]; mo = +m[2]; y = +m[3]; if (y < 100) y += 2000;
-  } else return null;
-  const dt = new Date(y, mo - 1, d);
-  if (isNaN(dt) || dt.getMonth() !== mo - 1 || y < 2020 || dt.getTime() > Date.now() + 86400000) return null;
-  return dt.getTime();
-}
-
-function diasNoSite(p) {
-  if (!p || !p.entrada) return null;
-  return Math.floor((Date.now() - p.entrada) / 86400000);
-}
-function ehOutlet(p) {
-  const d = diasNoSite(p);
-  return d != null && d >= OUTLET.dias;
-}
-// v7 — nome em CAIXA ALTA vira "Caixa de Título" SÓ NA TELA. Busca, carrinho
-// no WhatsApp e planilha continuam com o nome exato. Nome já em caixa normal
-// não é tocado.
-const NOME_MINUSCULAS = new Set(['de','da','do','das','dos','e','com','para','em','no','na','nos','nas','a','o','as','os','por','sem','ao','p']);
-const NOME_SIGLAS = new Set(['NBA','MAC','EDP','EDT','SPF','FPS','UV','DD','PH','LED','USB','GG','PP','XG','XL','XXL','YSL','DKNY','CK','JBL','TV','LG','BB','CC','KG','ML','UN','FC']);
-function nomeExibicao(nome) {
-  const s = String(nome || '').trim();
-  const letras = (s.match(/[A-Za-zÀ-ÖØ-öø-ÿ]/g) || []).length;
-  if (letras < 4) return s;
-  const maius = (s.match(/[A-ZÀ-ÖØ-Þ]/g) || []).length;
-  if (maius / letras < 0.7) return s;
-  let primeira = true;
-  return s.replace(/[A-Za-zÀ-ÖØ-öø-ÿ]+/g, (w, off) => {
-    const up = w.toUpperCase(), lo = w.toLowerCase();
-    let r;
-    if (/\d/.test(s.charAt(off - 1))) r = lo;                    // 30G -> 30g, 100ML -> 100ml
-    else if (NOME_SIGLAS.has(up)) r = up;
-    else if (!primeira && NOME_MINUSCULAS.has(lo)) r = lo;
-    else r = lo.charAt(0).toUpperCase() + lo.slice(1);
-    primeira = false;
-    return r;
-  });
-}
-
-function mesesTexto(dias) {
-  const m = Math.round(dias / 30);
-  return m <= 1 ? 'há 1 mês' : 'há ' + m + ' meses';
 }
 
 // Lê linha __CONFIG__ da planilha e extrai desconto global
@@ -2321,23 +1851,17 @@ function parseConfigRow(rows) {
 // forçando o cabeçalho canônico. "Muitas linhas e zero produtos" nunca é catálogo
 // vazio de verdade: é cabeçalho quebrado.
 function interpretarCSV(text, origem) {
-  produtosSemPreco = [];
   let rows = parseCSV(text);
   let products = rows.map((r, i) => csvRowToProduct(r, i)).filter(Boolean);
 
   if (products.length === 0 && rows.length > 0) {
     console.warn(`[catálogo] ${origem}: ${rows.length} linhas e 0 produtos — cabeçalho da planilha quebrado. Reparando pela posição das colunas.`);
-    produtosSemPreco = [];
     rows = parseCSV(text, true);                               // força A..H
     products = rows.map((r, i) => csvRowToProduct(r, i)).filter(Boolean);
     if (products.length > 0) cabecalhoReparado = true;
   }
 
   parseConfigRow(rows);                                        // lê __CONFIG__ p/ desconto
-  parseOutletRow(rows);                                        // v7: lê __OUTLET__ (% e dias)
-  if (produtosSemPreco.length) {
-    console.warn('[catálogo] ' + produtosSemPreco.length + ' produto(s) ativo(s) sem preço válido ficaram fora da vitrine:', produtosSemPreco);
-  }
   return products;
 }
 
@@ -2374,7 +1898,6 @@ function deduplicateProducts(list) {
       const existing = seen.get(key);
       existing.stock = Math.max(existing.stock, p.stock);
       existing.stockKnown = existing.stockKnown || p.stockKnown;   // v5
-      if (p.entrada && (!existing.entrada || p.entrada < existing.entrada)) existing.entrada = p.entrada;   // v7
       if (!existing.img && p.img) existing.img = p.img;
       if (p.rowIdx > existing.rowIdx) existing.rowIdx = p.rowIdx; // mantém a posição mais recente
     }
@@ -2415,9 +1938,6 @@ async function loadProducts(showLoader = false) {
   buildCategoryTabs();
   applyFilters();
   buildTicker();   // atualiza faixa rotativa com desconto e produtos prováveis de venda
-  reconciliarCarrinho();   // v7: itens do carrinho seguem o PRODUTO, não a posição
-  renderGrid();
-  updateCartBadge();   // v7: total da barra do carrinho depende do catálogo carregado
 }
 
 // ============================================================
@@ -2431,12 +1951,6 @@ function applyFilters() {
   let list;
   if (activeCategory === CAT_CAMP || activeCategory === CAT_PAIS) {
     list = listaPromo(activeCategory);
-    if (query) {
-      list = list.filter(p => (p.name + ' ' + p.category).toLowerCase().includes(query));
-    }
-  } else if (activeCategory === CAT_OUTLET) {
-    // v7: peças há mais tempo na loja — as de mais apelo primeiro
-    list = allProducts.filter(ehOutlet);
     if (query) {
       list = list.filter(p => (p.name + ' ' + p.category).toLowerCase().includes(query));
     }
@@ -2465,10 +1979,6 @@ function applyFilters() {
   else if (sort === 'newest') list.sort((a, b) => b.rowIdx - a.rowIdx);
   else if (activeCategory === CAT_CAMP || activeCategory === CAT_PAIS) {
     /* mantém a ordem de curadoria definida em listaPromo() */
-  }
-  else if (activeCategory === CAT_OUTLET && !query) {
-    list.sort((a, b) => (b._legal - a._legal) || (a.entrada - b.entrada));
-    list = diversificar(list, 3);
   }
   else if (activeCategory === 'Todas' && !query) {
     // v5: vitrine por apelo, não por preço. Antes a loja abria com jogo de cama de
@@ -2503,10 +2013,6 @@ function buildCategoryTabs() {
   if (tabCampVisivel()) promoTabs.push(CAT_CAMP);
   if (tabPaisVisivel()) promoTabs.push(CAT_PAIS);
   // v5: Novidades primeiro, campanhas em seguida, depois Todas e as categorias
-  // v7: Outlet entra depois das campanhas, só se houver peça elegível E se ele
-  // valer mais que o desconto do site (numa campanha maior, "outlet" seria rótulo vazio)
-  const nOutlet = allProducts.filter(ehOutlet).length;
-  if (nOutlet > 0 && OUTLET.pct > siteDiscount()) promoTabs.push(CAT_OUTLET);
   const allCats = [CAT_NOVIDADES, ...promoTabs, cats[0], ...cats.slice(1)];
 
   // v2: contador de produtos por categoria
@@ -2515,12 +2021,10 @@ function buildCategoryTabs() {
   counts[CAT_NOVIDADES] = Math.min(NOVIDADES_COUNT, allProducts.length);
   counts[CAT_CAMP] = campIds.size;
   counts[CAT_PAIS] = paisIds.size;
-  counts[CAT_OUTLET] = nOutlet;
   allProducts.forEach(p => {
     if (p.category) counts[p.category] = (counts[p.category] || 0) + 1;
   });
 
-  if (!allCats.includes(activeCategory)) activeCategory = CAT_NOVIDADES;   // v7: aba que sumiu
   const container = document.getElementById('catTabs');
   container.innerHTML = '';
   allCats.forEach(cat => {
@@ -2528,7 +2032,6 @@ function buildCategoryTabs() {
     let extra = '';
     if (cat === CAT_CAMP) extra = ' tab-promo tab-' + PROMO_CAMP.tema + (promoPhase(PROMO_CAMP) === 'antes' ? ' tab-teaser' : '');
     else if (cat === CAT_PAIS) extra = ' tab-promo tab-pais';
-    else if (cat === CAT_OUTLET) extra = ' tab-outlet';
     btn.className = 'cat-tab' + extra + (cat === activeCategory ? ' active' : '');
     const emojiPart = CAT_EMOJI[cat] ? CAT_EMOJI[cat] + ' ' : '';
     const countPart = counts[cat] != null ? `<span class="cat-count">${counts[cat]}</span>` : '';
@@ -2629,10 +2132,9 @@ function siteDiscount() {
 // Desconto de UM produto. Itens de Dia dos Pais têm piso de 35% e
 // acompanham o desconto global sempre que ele for maior (é o caso durante a campanha).
 function discountFor(p) {
-  let d = siteDiscount();
-  if (p && tabPaisVisivel() && paisIds.has(p.id)) d = Math.max(d, PROMO_PAIS.discount);
-  if (p && ehOutlet(p)) d = Math.max(d, OUTLET.pct);          // v7: outlet é piso
-  return d;
+  const base = siteDiscount();
+  if (p && tabPaisVisivel() && paisIds.has(p.id)) return Math.max(base, PROMO_PAIS.discount);
+  return base;
 }
 
 function discountedPrice(price, prod) {
@@ -2787,14 +2289,9 @@ function renderPromoStrip() {
   if (activeCategory === CAT_CAMP && tabCampVisivel()) {
     const pct = Math.round(PROMO_CAMP.discount * 100);
     el.innerHTML = `<div class="${tclass('promo-strip')}">⭐ <span><strong>Vitrine ${PROMO_CAMP.label}</strong> — ${campIds.size} itens com maior procura e maior desconto em reais. ${campAtiva() ? `Todo o site está a ${pct}%.` : `A partir de ${inicioLabel()} tudo fica a ${pct}%.`}</span></div>`;
-  } else if (activeCategory === CAT_OUTLET) {
-    // v7: a regra do outlet dita em português, com os números vigentes
-    const pctO = Math.round(Math.max(OUTLET.pct, siteDiscount()) * 100);
-    const meses = Math.round(OUTLET.dias / 30);
-    el.innerHTML = `<div class="promo-strip promo-strip-outlet">🏷️ <span><strong>Outlet</strong> — peças que estão há mais de ${meses >= 2 ? meses + ' meses' : OUTLET.dias + ' dias'} na loja saem com <strong>${pctO}% OFF</strong>. Quantidade limitada ao que está aqui.</span></div>`;
   } else if (activeCategory === CAT_PAIS && tabPaisVisivel()) {
     const pct = Math.round(PROMO_PAIS.discount * 100);
-    el.innerHTML = `<div class="promo-strip promo-strip-pais">🎁 <span><strong>Presentes de Dia dos Pais ${PROMO_PAIS.dateLabel}</strong> — ${campAtiva() ? `seleção pra ele com os ${Math.round(PROMO_CAMP.discount*100)}% do ${PROMO_CAMP.label}.` : `${pct}% OFF nesta seleção.`}</span></div>`;
+    el.innerHTML = `<div class="promo-strip promo-strip-pais">🎁 <span><strong>Presentes de Dia dos Pais ${PROMO_PAIS.dateLabel}</strong> — ${campAtiva() ? `seleção pra ele com os ${Math.round(PROMO_CAMP.discount*100)}% do 08.08.` : `${pct}% OFF nesta seleção.`}</span></div>`;
   } else {
     el.innerHTML = '';
   }
@@ -2893,14 +2390,6 @@ function atualizarFaixaDesconto() {
     const temBannerCampanha = !!document.querySelector('.promo-masthead');
     hero.style.display = temBannerCampanha ? 'none' : '';
   }
-  // v7: atalho para o outlet, só quando ele vale mais que o desconto do site
-  const chip = document.getElementById('heroOutlet');
-  if (chip) {
-    const n = allProducts.filter(ehOutlet).length;
-    const vale = n > 0 && OUTLET.pct > siteDiscount() && activeCategory !== CAT_OUTLET;
-    chip.hidden = !vale;
-    if (vale) chip.textContent = `🏷️ Outlet: ${n} peças com ${Math.round(OUTLET.pct * 100)}% OFF →`;
-  }
 }
 
 // v3 — prévia: no teaser mostra quanto o item vai custar quando a campanha abrir
@@ -2929,11 +2418,6 @@ function promoFlagHTML(p) {
   if (tabPaisVisivel() && paisIds.has(p.id) && discountFor(p) > siteDiscount()) {
     return `<span class="promo-flag promo-flag-pais">Dia dos Pais · −${discountPct(p)}%</span>`;
   }
-  // v7: outlet — só quando o piso do outlet é o que está valendo (numa campanha
-  // maior, o selo da campanha já conta a história e o do outlet seria ruído)
-  if (ehOutlet(p) && OUTLET.pct > siteDiscount()) {
-    return `<span class="promo-flag promo-flag-outlet">Outlet · −${discountPct(p)}%</span>`;
-  }
   return '';
 }
 
@@ -2960,7 +2444,7 @@ function renderGrid() {
     const isOut = p.stock <= 0;
     const canAdd = !isOut && availQty > 0;
     const isNew = noveltyIds.has(p.id);
-    const nameHL = highlightTerm(nomeExibicao(p.name), lastSearchTerm);
+    const nameHL = highlightTerm(p.name, lastSearchTerm);
     const previa = promoPreviewHTML(p, discountedPrice(p.price, p));
     const promoCls = activeCategory === CAT_CAMP ? ' promo-card-' + PROMO_CAMP.tema
                    : activeCategory === CAT_PAIS ? ' promo-card-pais' : '';
@@ -2990,7 +2474,7 @@ function renderGrid() {
             <label for="qty_${p.id}">Qtd:</label>
             <select id="qty_${p.id}">${buildQtyOptions(p.stock, p.id)}</select>
           </div>` : ''}
-          <button class="btn-add${inCart > 0 && !isOut ? ' no-carrinho' : ''}" data-id="${p.id}" ${isOut ? 'disabled' : ''}>${isOut ? 'Esgotado' : inCart > 0 ? `✓ No carrinho (${inCart})` : 'Adicionar'}</button>
+          <button class="btn-add" data-id="${p.id}" ${!canAdd ? 'disabled' : ''}>${isOut ? 'Esgotado' : 'Adicionar'}</button>
         </div>
       </div>
     </div>`;
@@ -2999,7 +2483,6 @@ function renderGrid() {
   // attach add-to-cart listeners
   grid.querySelectorAll('.btn-add:not(:disabled)').forEach(btn => {
     btn.addEventListener('click', () => {
-      if (btn.classList.contains('no-carrinho')) { openCart(); return; }   // v7: já está no carrinho → abre
       const id = parseInt(btn.dataset.id, 10);
       const sel = document.getElementById('qty_' + id);
       const qty = sel ? parseInt(sel.value, 10) : 1;
@@ -3075,68 +2558,13 @@ function cartProduct(id) {
   return allProducts.find(p => p.id === id);
 }
 
-// v7 — o carrinho guarda QUAL produto é (impressão do nome), não só a posição dele
-// na lista. Antes, qualquer mudança na planilha (produto novo no meio, preço apagado)
-// deslocava as posições e o pedido no WhatsApp podia sair com outro item.
-function chaveProduto(p) {
-  const s = String(p.name || '').toLowerCase().replace(/\s+/g, ' ').trim();
-  let h = 0x811c9dc5;
-  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
-  return h.toString(36);
-}
-
-// Itens do carrinho cujo produto não está no catálogo carregado AGORA (só acontece
-// quando o site está na cópia de reserva, sem rede). Ficam guardados e voltam sozinhos.
-let carrinhoFora = [];
-
-// Depois de cada carga do catálogo: cada item volta para o produto certo.
-// Catálogo normal: item de produto que sumiu/esgotou sai (com aviso).
-// Cópia de reserva (sem rede): NADA sai — o que não existe nela fica guardado.
-// Item de carrinho antigo, sem identificação, é descartado: melhor tirar do que trocar.
-function reconciliarCarrinho() {
-  if (!allProducts.length) return;
-  const porChave = new Map(allProducts.map(p => [chaveProduto(p), p]));
-  const todos = [...Object.values(cart), ...carrinhoFora];
-  const novo = {}, fora = [];
-  let perdidos = 0;
-  for (const v of todos) {
-    if (!v || !v.k || !(v.qty > 0)) { perdidos++; continue; }
-    const p = porChave.get(v.k);
-    if (!p || p.stock <= 0) {
-      if (usandoRetrato) { fora.push({ k: v.k, qty: v.qty }); continue; }
-      perdidos++; continue;
-    }
-    const ja = novo[p.id] ? novo[p.id].qty : 0;
-    // na reserva o estoque pode estar velho: não corta a quantidade que o cliente escolheu
-    novo[p.id] = { qty: usandoRetrato ? ja + v.qty : Math.min(ja + v.qty, p.stock), k: v.k };
-  }
-  cart = novo;
-  carrinhoFora = fora;
-  saveCart();
-  if (perdidos > 0 && !usandoRetrato) {
-    showToast(perdidos === 1 ? 'Um item do carrinho não está mais disponível'
-                             : perdidos + ' itens do carrinho não estão mais disponíveis');
-  }
-}
-
-// O que vai para o armazenamento e para o link de compartilhar: lista de {k, qty},
-// sem posição — vale para qualquer versão da planilha.
-function carrinhoParaGuardar() {
-  return [...Object.values(cart).filter(v => v && v.k).map(v => ({ k: v.k, qty: v.qty })), ...carrinhoFora];
-}
-function carrinhoDeGuardado(dado) {
-  cart = {};
-  carrinhoFora = Array.isArray(dado) ? dado.slice()
-               : (dado && typeof dado === 'object') ? Object.values(dado) : [];
-}
-
 function addToCart(id, qty) {
   const p = cartProduct(id);
   if (!p) return;
   const current = cart[id] ? cart[id].qty : 0;
   const newQty = Math.min(current + qty, p.stock);
   if (newQty <= current) { showToast('Quantidade máxima atingida'); return; }
-  cart[id] = { qty: newQty, k: chaveProduto(p) };
+  cart[id] = { qty: newQty };
   saveCart();
   updateCartBadge();
   renderGrid(); // refresh buttons/stock display
@@ -3155,7 +2583,7 @@ function setCartQty(id, qty) {
   const p = cartProduct(id);
   if (!p) return;
   if (qty <= 0) { removeFromCart(id); return; }
-  cart[id] = { qty: Math.min(qty, p.stock), k: chaveProduto(p) };
+  cart[id] = { qty: Math.min(qty, p.stock) };
   saveCart();
   updateCartBadge();
   renderCartPanel();
@@ -3164,7 +2592,6 @@ function setCartQty(id, qty) {
 
 function clearCart() {
   cart = {};
-  carrinhoFora = [];
   saveCart();
   updateCartBadge();
   renderCartPanel();
@@ -3172,30 +2599,19 @@ function clearCart() {
 }
 
 function saveCart() {
-  try { localStorage.setItem(LS_CART_KEY, JSON.stringify(carrinhoParaGuardar())); } catch (e) { /* modo privado */ }
+  localStorage.setItem(LS_CART_KEY, JSON.stringify(cart));
 }
 
 function loadCart() {
   try {
     const raw = localStorage.getItem(LS_CART_KEY);
-    if (raw) carrinhoDeGuardado(JSON.parse(raw));   // v7: é reconciliado quando o catálogo carregar
-  } catch (e) { cart = {}; carrinhoFora = []; }
+    if (raw) cart = JSON.parse(raw);
+  } catch (e) { cart = {}; }
 }
 
 function updateCartBadge() {
   const total = Object.values(cart).reduce((s, v) => s + v.qty, 0);
   document.getElementById('cartBadge').textContent = total;
-  // v7: barra fixa com quantidade e total
-  const bar = document.getElementById('cartBar');
-  if (bar) {
-    const mostra = total > 0 && allProducts.length > 0;
-    if (mostra) {
-      document.getElementById('cartBarTotal').textContent = 'R$ ' + formatBRL(cartDiscountedTotal());
-      document.getElementById('cartBarQtd').textContent = total + (total === 1 ? ' item' : ' itens') + ' no carrinho';
-    }
-    bar.classList.toggle('show', mostra);
-    document.body.classList.toggle('tem-cart-bar', mostra);
-  }
 }
 
 function cartItemCount() {
@@ -3234,18 +2650,14 @@ function renderCartPanel() {
   const totalsEl = document.getElementById('cartTotals');
 
   const ids = Object.keys(cart).map(Number);
-  const aguardando = carrinhoFora.reduce((s, v) => s + (v.qty || 0), 0);
-  const avisoFora = aguardando > 0
-    ? `<div class="cart-empty" style="padding:12px 16px;font-size:.8rem">⚠️ ${aguardando} ${aguardando === 1 ? 'item' : 'itens'} do seu carrinho não aparecem agora porque o catálogo está sem conexão. Eles voltam sozinhos quando a conexão normalizar — confira antes de enviar o pedido.</div>`
-    : '';
   if (ids.length === 0) {
-    itemsEl.innerHTML = avisoFora || '<div class="cart-empty">Seu carrinho está vazio 🛒</div>';
+    itemsEl.innerHTML = '<div class="cart-empty">Seu carrinho está vazio 🛒</div>';
     footerEl.style.display = 'none';
     return;
   }
   footerEl.style.display = '';
 
-  itemsEl.innerHTML = avisoFora + ids.map(id => {
+  itemsEl.innerHTML = ids.map(id => {
     const p = cartProduct(id);
     if (!p) return '';
     const qty = cart[id].qty;
@@ -3256,7 +2668,7 @@ function renderCartPanel() {
         : `<div class="cart-item-img" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:var(--gray-100)">${CAT_EMOJI[p.category]||'📦'}</div>`
       }
       <div class="cart-item-info">
-        <div class="cart-item-name" title="${escHTML(p.name)}">${escHTML(nomeExibicao(p.name))}</div>
+        <div class="cart-item-name" title="${escHTML(p.name)}">${escHTML(p.name)}</div>
         <div class="cart-item-price">R$ ${formatBRL(disc)}/un · Total: R$ ${formatBRL(disc * qty)}</div>
         <div class="cart-item-controls">
           <button class="qty-ctrl" onclick="setCartQty(${id}, ${qty - 1})">−</button>
@@ -3338,7 +2750,7 @@ document.getElementById('btnWhatsApp').addEventListener('click', () => {
 // SHARE CART VIA URL HASH
 // ============================================================
 document.getElementById('btnShareCart').addEventListener('click', () => {
-  const encoded = btoa(JSON.stringify(carrinhoParaGuardar()));
+  const encoded = btoa(JSON.stringify(cart));
   const url = location.origin + location.pathname + '#cart=' + encoded;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(url).then(() => showToast('Link copiado!'));
@@ -3353,8 +2765,8 @@ function loadCartFromHash() {
   try {
     const encoded = hash.slice(6);
     const decoded = JSON.parse(atob(encoded));
-    carrinhoDeGuardado(decoded);                     // v7: reconciliado quando o catálogo carregar
-    if (allProducts.length) reconciliarCarrinho(); else saveCart();
+    cart = decoded;
+    saveCart();
     updateCartBadge();
     history.replaceState(null, '', location.pathname);
     showToast('Carrinho carregado do link!');
@@ -3424,11 +2836,6 @@ function buildTicker() {
   if (tabPaisVisivel()) {
     const pctPais = Math.round(Math.max(siteDiscount(), PROMO_PAIS.discount) * 100);
     promoItems.push({ text: `👔 Dia dos Pais ${PROMO_PAIS.dateLabel} — ${paisIds.size} presentes com ${pctPais}% OFF`, action: () => goToCategory(CAT_PAIS) });
-  }
-  // v7: chamada do outlet, só quando ele vale mais que o desconto do site
-  const nOut = allProducts.filter(ehOutlet).length;
-  if (nOut > 0 && OUTLET.pct > siteDiscount()) {
-    promoItems.push({ text: `🏷️ Outlet — ${nOut} peças com ${Math.round(OUTLET.pct * 100)}% OFF`, action: () => goToCategory(CAT_OUTLET) });
   }
 
   // Monta lista de itens do ticker
@@ -3599,7 +3006,7 @@ function openQuickView(productId) {
       </div>
       <div class="modal-body">
         <div class="modal-cat">${escHTML(p.category)}${p.sheet ? ' · ' + escHTML(p.sheet) : ''}</div>
-        <h2 class="modal-name" id="modalName">${escHTML(nomeExibicao(p.name))}</h2>
+        <h2 class="modal-name" id="modalName">${escHTML(p.name)}</h2>
         <div class="modal-prices">
           <div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−${discountPct(p)}%</span></div>
           <div class="price-discounted">R$ ${formatBRL(disc)}</div>
@@ -3682,13 +3089,6 @@ updateCartBadge();
 loadProducts(false);
 startAutoRefresh();
 startPromoClock();   // v3: contagem regressiva + virada automática das campanhas
-// v7: rodapé, barra do carrinho e atalho do outlet
-(function () {
-  const wa = document.getElementById('footerWa');
-  if (wa) wa.href = 'https://wa.me/' + WA_NUMBER;
-  document.getElementById('cartBarBtn')?.addEventListener('click', openCart);
-  document.getElementById('heroOutlet')?.addEventListener('click', () => goToCategory(CAT_OUTLET));
-})();
 </script>
 </body>
 </html>
