@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loja — Catálogo</title>
+<title>Lojinha — Catálogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -1105,6 +1108,93 @@
   .promo-masthead-neon::after {
     background: linear-gradient(100deg, transparent, rgba(165,243,252,.16), transparent);
   }
+
+  /* ── Tema "bf" (Black Friday 27/11): preto profundo + ouro + faísca vermelha ──
+     Escuro nos dois temas do site, como o neon: é palco, não bloco de UI. */
+  .promo-masthead-bf {
+    background:
+      radial-gradient(90% 140% at 0% 0%,    rgba(250,204,21,.22) 0%, transparent 55%),
+      radial-gradient(80% 140% at 100% 100%, rgba(225,29,72,.30) 0%, transparent 55%),
+      repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 2px, transparent 2px 14px),
+      #070707;
+    border: 1px solid rgba(250,204,21,.45);
+    box-shadow: 0 0 0 1px rgba(250,204,21,.10) inset,
+                0 12px 40px rgba(0,0,0,.55),
+                0 0 50px rgba(250,204,21,.12);
+    color: #fafaf9;
+  }
+  .promo-masthead-bf .promo-mark { border-right-color: rgba(250,204,21,.35); }
+  .promo-masthead-bf .promo-mark-big {
+    background: linear-gradient(175deg, #fffbeb 0%, #fde68a 30%, #facc15 52%, #b45309 78%, #fde68a 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 2px 0 rgba(0,0,0,.6)) drop-shadow(0 0 14px rgba(250,204,21,.45));
+    letter-spacing: -.03em;
+  }
+  .promo-masthead-bf .promo-mark-sub {
+    color: #fff; opacity: 1; letter-spacing: .42em; font-weight: 800;
+    background: #e11d48; padding: 2px 6px 2px 9px; border-radius: 4px; display: inline-block; margin-top: 4px;
+  }
+  .promo-masthead-bf .promo-kicker { color: #facc15; opacity: 1; }
+  .promo-masthead-bf .promo-kicker::before {
+    content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    background: #ef4444; margin-right: 6px; vertical-align: middle;
+    box-shadow: 0 0 0 0 rgba(239,68,68,.7); animation: bf-ao-vivo 1.4s ease-out infinite;
+  }
+  @keyframes bf-ao-vivo { 0% { box-shadow: 0 0 0 0 rgba(239,68,68,.7); } 100% { box-shadow: 0 0 0 9px rgba(239,68,68,0); } }
+  .promo-masthead-bf .promo-headline em {
+    background: #facc15; color: #0a0a0a;
+    box-shadow: 0 0 22px rgba(250,204,21,.35);
+  }
+  .promo-masthead-bf .promo-sub { color: #e7e5e4; opacity: 1; }
+  .promo-masthead-bf .promo-sub strong { color: #fde68a; }
+  .promo-masthead-bf .promo-cta {
+    background: linear-gradient(100deg, #facc15, #f59e0b);
+    color: #0a0a0a; font-weight: 800;
+    box-shadow: 0 2px 16px rgba(250,204,21,.40);
+  }
+  .promo-masthead-bf .promo-clock-label { color: #fde68a; opacity: 1; }
+  .promo-masthead-bf .promo-digit {
+    background: rgba(255,255,255,.05);
+    border-color: rgba(250,204,21,.45);
+    box-shadow: 0 0 16px rgba(250,204,21,.10) inset;
+  }
+  .promo-masthead-bf .promo-digit b    { color: #fff; }
+  .promo-masthead-bf .promo-digit span { color: #fde68a; opacity: 1; }
+  .promo-masthead-bf::after {
+    background: linear-gradient(100deg, transparent, rgba(253,230,138,.20), transparent);
+  }
+  .cat-tab.tab-bf {
+    background: #0a0a0a; color: #facc15;
+    border: 1px solid rgba(250,204,21,.55);
+  }
+  .cat-tab.tab-bf:hover { color: #fde68a; }
+  .cat-tab.tab-bf.active { color: #facc15; box-shadow: 0 0 0 3px rgba(250,204,21,.30), 0 0 18px rgba(250,204,21,.30); }
+  .cat-tab.tab-bf:not(.active) { animation: tab-pulse-bf 2.4s ease-in-out infinite; }
+  @keyframes tab-pulse-bf {
+    0%, 100% { box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+    50%      { box-shadow: 0 2px 8px rgba(0,0,0,.2), 0 0 0 5px rgba(250,204,21,.18), 0 0 16px rgba(250,204,21,.30); }
+  }
+  .card.promo-card-bf { box-shadow: 0 0 0 1px rgba(250,204,21,.55), var(--shadow); }
+  .card.promo-card-bf::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #0a0a0a, #facc15, #e11d48, #facc15, #0a0a0a);
+    z-index: 3;
+  }
+  .card.promo-card-bf:hover { box-shadow: 0 0 0 2px #facc15, var(--shadow-lg); }
+  .promo-flag-bf {
+    background: #0a0a0a; color: #facc15;
+    border: 1px solid rgba(250,204,21,.6);
+    box-shadow: 0 2px 10px rgba(0,0,0,.35);
+  }
+  .promo-strip-bf { background: #0a0a0a; color: #f5f5f4; border: 1px solid rgba(250,204,21,.45); }
+  .promo-strip-bf strong { color: #facc15; }
+  /* site todo em clima de Black Friday enquanto a campanha estiver ativa */
+  body.camp-bf .discount-tag,
+  html[data-theme="dark"] body.camp-bf .discount-tag { background: #0a0a0a; color: #facc15; box-shadow: 0 0 0 1px rgba(250,204,21,.5); }
+  body.camp-bf .ticker-wrap, html[data-theme="dark"] body.camp-bf .ticker-wrap { background: #0a0a0a; color: #facc15; border-bottom: 1px solid rgba(250,204,21,.35); }
   .promo-pais { background: linear-gradient(118deg, #0d2137 0%, #17395c 52%, #2b5f86 100%); }
 
   /* marca da campanha (numerais grandes tipo marketplace) */
@@ -1348,6 +1438,325 @@
     .promo-digit b { font-size: 1rem; }
     .promo-strip { margin: 12px 10px 0; font-size: .76rem; }
   }
+  /* ==========================================================
+     v7 — LAYOUT NOVO (out/2026)
+     Camada aditiva: sobrepõe o visual antigo sem apagar nenhuma
+     regra anterior. Apagar ESTE bloco devolve o site ao visual v6.
+     Tokens no topo; tema escuro só troca os tokens.
+     ========================================================== */
+  :root {
+    --v7-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --v7-bg: #f6f3ef;
+    --v7-surface: #ffffff;
+    --v7-surface-2: #f2eee8;
+    --v7-photo: #f3efe9;
+    --v7-line: #e7e1d9;
+    --v7-ink: #1c1917;
+    --v7-ink-2: #44403c;
+    --v7-muted: #857c75;
+    --v7-brand: #e11d48;
+    --v7-brand-ink: #be123c;
+    --v7-brand-soft: #fff0f3;
+    --v7-outlet: #b45309;
+    --v7-outlet-soft: #fff4e6;
+    --v7-outlet-line: #fed7aa;
+    --v7-radius: 16px;
+    --v7-shadow: 0 1px 2px rgba(28,25,23,.04), 0 4px 14px rgba(28,25,23,.05);
+    --v7-shadow-hover: 0 2px 6px rgba(28,25,23,.06), 0 16px 34px rgba(28,25,23,.11);
+  }
+  html[data-theme="dark"] {
+    --v7-bg: #111013;
+    --v7-surface: #1b1a1f;
+    --v7-surface-2: #25242a;
+    --v7-photo: #e6e1db;
+    --v7-line: #2f2d34;
+    --v7-ink: #f4f1ed;
+    --v7-ink-2: #d9d3cc;
+    --v7-muted: #9b948d;
+    --v7-brand: #fb7185;
+    --v7-brand-ink: #fda4af;
+    --v7-brand-soft: #2b161b;
+    --v7-outlet: #fbbf24;
+    --v7-outlet-soft: #2a2110;
+    --v7-outlet-line: #4a3a14;
+    --v7-shadow: 0 1px 2px rgba(0,0,0,.35);
+    --v7-shadow-hover: 0 12px 30px rgba(0,0,0,.5);
+  }
+
+  body, html[data-theme="dark"] body {
+    font-family: var(--v7-font);
+    background: var(--v7-bg);
+    color: var(--v7-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, select { font-family: inherit; }
+
+  /* — Faixa de avisos (ticker): fina e escura nos dois temas — */
+  .ticker-wrap { background: #1c1917; color: #f4f1ed; border-bottom: 0; }
+  .ticker-label { background: #e11d48; color: #fff; }
+
+  /* — Cabeçalho branco, marca à esquerda — */
+  header, html[data-theme="dark"] header {
+    background: var(--v7-surface);
+    color: var(--v7-ink);
+    box-shadow: none;
+    border-bottom: 1px solid var(--v7-line);
+  }
+  .header-inner { height: 62px; }
+  .logo { display: flex; align-items: center; gap: 10px; color: var(--v7-ink); }
+  .logo .logo-mark {
+    width: 36px; height: 36px; border-radius: 11px;
+    background: var(--v7-brand); color: #fff;
+    display: grid; place-items: center;
+    font-size: .78rem; font-weight: 800; letter-spacing: .02em; opacity: 1;
+    box-shadow: 0 4px 12px rgba(225,29,72,.28);
+  }
+  html[data-theme="dark"] .logo .logo-mark { background: #e11d48; }
+  .logo .logo-txt {
+    opacity: 1; display: flex; flex-direction: column; line-height: 1.05;
+    font-size: 1.12rem; font-weight: 800; letter-spacing: -.02em;
+  }
+  .logo .logo-txt small {
+    font-size: .6rem; font-weight: 700; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--v7-muted); margin-top: 3px;
+  }
+  .btn-refresh, .btn-theme {
+    background: var(--v7-surface-2); color: var(--v7-ink);
+    border: 1px solid var(--v7-line);
+  }
+  .btn-refresh:hover, .btn-theme:hover { background: var(--v7-line); }
+  .cart-btn {
+    background: var(--v7-ink); color: var(--v7-surface);
+    height: 40px; border-radius: 12px; padding: 0 14px; font-weight: 700;
+  }
+  .cart-btn:hover { background: var(--v7-ink-2); }
+  .cart-badge { background: #e11d48; color: #fff; }
+  .last-update { color: var(--v7-muted); opacity: 1; }
+
+  /* — Busca colada no cabeçalho — */
+  .toolbar, html[data-theme="dark"] .toolbar {
+    top: 62px;
+    background: var(--v7-surface);
+    border-bottom: 1px solid var(--v7-line);
+  }
+  #searchInput, html[data-theme="dark"] #searchInput,
+  #sortSelect, html[data-theme="dark"] #sortSelect {
+    background: var(--v7-surface-2);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    color: var(--v7-ink);
+  }
+  #searchInput:focus, #sortSelect:focus {
+    outline: none; background: var(--v7-surface);
+    border-color: var(--v7-ink-2);
+    box-shadow: 0 0 0 3px rgba(28,25,23,.08);
+  }
+
+  /* v7.1: a faixa dos 30% voltou ao banner original (pedido do Marcelo, 25/10) */
+  .discount-hero-note { display: none; }
+  .hero-chip {
+    margin-left: auto;
+    background: var(--v7-outlet-soft); color: var(--v7-outlet);
+    border: 1px solid var(--v7-outlet-line);
+    border-radius: 999px; padding: 7px 13px;
+    font-size: .8rem; font-weight: 800; cursor: pointer;
+    transition: transform .15s;
+  }
+  .hero-chip:hover { transform: translateX(2px); }
+
+  /* — Abas viram pílulas — */
+  .cat-tabs-wrap, html[data-theme="dark"] .cat-tabs-wrap {
+    background: transparent; border-bottom: 0;
+  }
+  .cat-tabs { gap: 8px; padding: 14px 16px 6px; }
+  .cat-tab {
+    background: var(--v7-surface);
+    color: var(--v7-ink-2);
+    border: 1px solid var(--v7-line);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: .82rem; font-weight: 600;
+  }
+  .cat-tab:hover { color: var(--v7-ink); border-color: var(--v7-muted); }
+  .cat-tab.active:not(.tab-promo) {
+    background: var(--v7-ink); color: var(--v7-surface);
+    border-color: var(--v7-ink); font-weight: 700;
+  }
+  .cat-count {
+    margin-left: 6px; padding: 1px 7px; border-radius: 999px;
+    background: var(--v7-surface-2); color: var(--v7-muted); font-weight: 700;
+  }
+  .cat-tab.active:not(.tab-promo) .cat-count {
+    background: rgba(127,127,127,.25); color: inherit; opacity: 1;
+  }
+  .cat-tab.tab-outlet {
+    background: var(--v7-outlet-soft); color: var(--v7-outlet);
+    border-color: var(--v7-outlet-line); font-weight: 800;
+  }
+  .cat-tab.tab-outlet.active { background: #b45309; color: #fff; border-color: #b45309; }
+  .cat-tab.tab-outlet .cat-count { background: rgba(180,83,9,.12); color: inherit; }
+
+  /* — Grade e cards — */
+  main { padding-top: 10px; }
+  .results-info, html[data-theme="dark"] .results-info { color: var(--v7-muted); }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; }
+  .card, html[data-theme="dark"] .card {
+    background: var(--v7-surface);
+    color: var(--v7-ink);
+    border: 1px solid var(--v7-line);
+    border-radius: var(--v7-radius);
+    box-shadow: var(--v7-shadow);
+  }
+  .card:hover { box-shadow: var(--v7-shadow-hover); transform: translateY(-3px); }
+  .card-img-wrap, html[data-theme="dark"] .card-img-wrap {
+    margin: 8px 8px 0;
+    border-radius: 12px;
+    background: var(--v7-photo);
+  }
+  /* foto inteira (sem cortar) e fundo branco da foto "some" no fundo do card */
+  .card-img-wrap img {
+    object-fit: contain;
+    padding: 7%;
+    mix-blend-mode: multiply;
+  }
+  .card:hover .card-img-wrap img { transform: scale(1.03); }
+  .svg-placeholder, html[data-theme="dark"] .svg-placeholder { background: var(--v7-photo); }
+  .badge-new {
+    top: 9px; left: 9px;
+    background: var(--v7-ink); color: var(--v7-surface);
+    font-size: .58rem; padding: 3px 8px; letter-spacing: .1em;
+  }
+  html[data-theme="dark"] .badge-new { background: #1c1917; color: #f4f1ed; }
+  .stock-badge {
+    top: 9px; right: 9px; font-size: .64rem; padding: 3px 8px;
+    border-radius: 999px; backdrop-filter: blur(4px);
+  }
+  .promo-flag { bottom: 9px; left: 9px; }
+  .promo-flag-outlet { background: #b45309; color: #fff; }
+  .promo-flag-natal { background: #15803d; color: #fff; }
+
+  .card-body { padding: 12px 14px 14px; gap: 8px; }
+  .card-name, html[data-theme="dark"] .card-name {
+    color: var(--v7-ink);
+    font-size: .86rem; font-weight: 600; line-height: 1.34;
+    letter-spacing: -.005em;
+    -webkit-line-clamp: 3;
+    min-height: calc(1.34em * 2);
+  }
+  .card-prices { gap: 2px; }
+  .card .price-discounted {
+    order: 1; color: var(--v7-ink);
+    font-size: 1.16rem; font-weight: 800; letter-spacing: -.02em;
+  }
+  .card .price-original, html[data-theme="dark"] .card .price-original {
+    order: 2; color: var(--v7-muted); font-size: .76rem;
+  }
+  .discount-tag, html[data-theme="dark"] .discount-tag {
+    background: var(--v7-brand-soft); color: var(--v7-brand-ink);
+    box-shadow: none; border-radius: 6px; font-weight: 800;
+  }
+  .card .price-savings { display: none; }   /* o % e o preço riscado já contam a história */
+  .card-category, html[data-theme="dark"] .card-category {
+    color: var(--v7-muted); font-size: .7rem;
+  }
+  .card .qty-row { display: none; }        /* quantidade se ajusta no carrinho */
+  .btn-add {
+    border-radius: 12px; padding: 10px 8px;
+    background: #e11d48; color: #fff;
+    font-size: .82rem; font-weight: 700;
+  }
+  .btn-add:hover:not(:disabled) { background: #be123c; }
+  .btn-add.no-carrinho, .btn-add.no-carrinho:hover:not(:disabled) {
+    background: var(--v7-brand-soft); color: var(--v7-brand-ink);
+    box-shadow: inset 0 0 0 1px rgba(225,29,72,.25);
+  }
+  .btn-add:disabled, html[data-theme="dark"] .btn-add:disabled {
+    background: var(--v7-surface-2); color: var(--v7-muted);
+  }
+  .btn-add.no-carrinho:disabled { background: var(--v7-brand-soft); color: var(--v7-brand-ink); }
+
+  /* — Paginação — */
+  .page-btn, html[data-theme="dark"] .page-btn {
+    border-radius: 10px; border: 1px solid var(--v7-line);
+    background: var(--v7-surface); color: var(--v7-ink-2);
+  }
+  .page-btn.active, html[data-theme="dark"] .page-btn.active {
+    background: var(--v7-ink); color: var(--v7-surface); border-color: var(--v7-ink);
+  }
+
+  /* — Faixa da aba Outlet — */
+  .promo-strip-outlet {
+    background: var(--v7-outlet-soft); color: var(--v7-outlet);
+    border: 1px solid var(--v7-outlet-line);
+  }
+
+  /* — Barra do carrinho (aparece quando há itens) — */
+  .cart-bar {
+    position: fixed; left: 50%; bottom: 14px;
+    transform: translate(-50%, 160%);
+    width: min(520px, calc(100% - 24px));
+    display: flex; align-items: center; gap: 12px;
+    padding: 9px 9px 9px 16px;
+    background: #1c1917; color: #f4f1ed;
+    border-radius: 16px;
+    box-shadow: 0 14px 36px rgba(0,0,0,.28);
+    z-index: 160;
+    transition: transform .28s cubic-bezier(.2,.8,.2,1);
+  }
+  .cart-bar.show { transform: translate(-50%, 0); }
+  .cart-bar-info { flex: 1; font-size: .82rem; line-height: 1.25; color: #d6d1cb; }
+  .cart-bar-info b { display: block; font-size: 1.02rem; color: #fff; }
+  .cart-bar-btn {
+    background: #e11d48; color: #fff; border: 0; border-radius: 12px;
+    padding: 11px 16px; font-weight: 800; font-size: .86rem; cursor: pointer;
+  }
+  .cart-bar-btn:hover { background: #be123c; }
+  body.tem-cart-bar { padding-bottom: 88px; }
+  body.tem-cart-bar .toast { bottom: 96px; }
+  body.tem-cart-bar .btn-top { bottom: 92px; }
+
+  /* — Painel do carrinho nos tokens novos (e corrige o nome do item
+       que ficava ilegível no tema escuro — defeito anterior ao v7) — */
+  .cart-panel, html[data-theme="dark"] .cart-panel,
+  .cart-footer, html[data-theme="dark"] .cart-footer {
+    background: var(--v7-surface); color: var(--v7-ink); border-color: var(--v7-line);
+  }
+  .cart-item-name, html[data-theme="dark"] .cart-item-name { color: var(--v7-ink); }
+  .cart-item-price { color: var(--v7-muted); }
+  .cart-item, html[data-theme="dark"] .cart-item { border-bottom-color: var(--v7-line); }
+  .cart-item-img, html[data-theme="dark"] .cart-item-img { background: var(--v7-photo); border-radius: 10px; }
+  html[data-theme="dark"] .cart-bar { box-shadow: 0 14px 36px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08); }
+
+  /* — Rodapé — */
+  .site-footer {
+    max-width: 1280px; margin: 40px auto 0; padding: 26px 16px 34px;
+    border-top: 1px solid var(--v7-line);
+    display: flex; flex-wrap: wrap; gap: 10px 24px;
+    justify-content: space-between; align-items: center;
+    color: var(--v7-muted); font-size: .8rem;
+  }
+  .site-footer strong { color: var(--v7-ink); }
+  .site-footer a { color: var(--v7-ink); font-weight: 700; text-decoration: none; }
+  .site-footer a:hover { color: var(--v7-brand); }
+
+  @media (max-width: 600px) {
+    .header-inner { height: 58px; gap: 8px; }
+    .toolbar, html[data-theme="dark"] .toolbar { top: 58px; }
+    .logo .logo-txt small { display: none; }
+    .cart-btn { padding: 0 11px; }
+    .discount-hero-note { display: none; }
+  }
+  @media (max-width: 520px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }   /* 2 colunas no celular */
+  }
+  @media (max-width: 480px) {
+    .grid { gap: 10px; }
+    .cat-tabs { padding: 10px 10px 4px; }
+    .card-img-wrap, html[data-theme="dark"] .card-img-wrap { margin: 6px 6px 0; }
+    .card-body { padding: 10px 10px 12px; gap: 6px; }
+    .card .price-discounted { font-size: 1.04rem; }
+    .btn-add { padding: 9px 6px; font-size: .78rem; }
+  }
 </style>
 </head>
 <body>
@@ -1369,7 +1778,7 @@
 <!-- HEADER -->
 <header>
   <div class="header-inner">
-    <div class="logo">Loja <span>— Catálogo</span></div>
+    <div class="logo"><span class="logo-mark" aria-hidden="true">L</span><span class="logo-txt">Lojinha<small>catálogo</small></span></div>
     <span class="last-update" id="lastUpdate" title="Última atualização do catálogo"></span>
     <button class="btn-theme" id="btnTheme" title="Alternar tema (claro/escuro)" aria-label="Alternar tema">🌙</button>
     <button class="btn-refresh" id="btnRefresh" title="Atualizar catálogo">↻</button>
@@ -1407,6 +1816,8 @@
   <span class="discount-hero-pct" id="discountHeroPct">30%</span>
   <span class="discount-hero-txt">OFF em <strong>tudo</strong></span>
   <span class="discount-hero-spark">✨</span>
+  <span class="discount-hero-note">· preço já com desconto, sem cupom</span>
+  <button class="hero-chip" id="heroOutlet" type="button" hidden></button>
 </div>
 
 <!-- PROMO MASTHEAD (campanha / seleção curada) — preenchido por renderPromoMasthead() -->
@@ -1450,6 +1861,18 @@
 </div>
 
 <!-- TOAST -->
+<!-- v7: barra do carrinho (aparece quando há itens) -->
+<div class="cart-bar" id="cartBar" aria-live="polite">
+  <div class="cart-bar-info"><b id="cartBarTotal">R$ 0,00</b><span id="cartBarQtd">0 itens</span></div>
+  <button class="cart-bar-btn" id="cartBarBtn" type="button">Ver carrinho →</button>
+</div>
+
+<!-- v7: rodapé -->
+<footer class="site-footer">
+  <span><strong>Lojinha</strong> · preços já com desconto aplicado</span>
+  <span>Pedidos e dúvidas: <a id="footerWa" href="#" target="_blank" rel="noopener">WhatsApp</a></span>
+</footer>
+
 <div class="toast" id="toast"></div>
 
 <!-- BACK TO TOP -->
@@ -1483,18 +1906,22 @@ const LS_CART_KEY = 'loja_cart_v2';
 // Tudo que precisa de ajuste de data/desconto está AQUI.
 // As datas usam fuso -03:00 (Brasília) e valem para qualquer visitante.
 // ============================================================
-const CAT_CAMP = '💎 09.09';
+const CAT_CAMP = '🖤 Black Friday';
 const CAT_PAIS = '👔 Dia dos Pais';
 
 const PROMO_CAMP = {
   cat:   CAT_CAMP,
-  label: '09.09',            // aparece no numeral grande e nos textos
-  marca: 'Super 9',          // legenda sob o numeral
-  tema:  'neon',             // identidade visual (classe .promo-neon no CSS)
-  discount: 0.40,            // site INTEIRO neste percentual enquanto durar
-  start:  new Date('2026-09-08T23:59:00-03:00').getTime(), // hoje 08/09 às 23:59
-  end:    new Date('2026-09-09T23:59:59-03:00').getTime(), // fim do dia 09/09
-  teaser: true,              // com start no futuro, a aba entra em modo "chegando"
+  label: 'BLACK',            // aparece no numeral grande e nos selos
+  marca: 'FRIDAY',           // legenda sob o numeral
+  nome:  'Black Friday',     // nome por extenso nos textos
+  emoji: '🖤',
+  tema:  'bf',               // identidade visual (classes *-bf no CSS)
+  discount: 0.45,            // site INTEIRO neste percentual enquanto durar
+  roupas:   0.50,            // roupas (Moda & Calçados, sem calçado/bolsa/mochila/boné) — ehRoupa()
+  parados:  0.50,            // há 6+ meses no site (lista BF_PARADOS, tirada do histórico do data.csv)
+  start:  new Date('2026-11-27T00:00:00-03:00').getTime(), // sexta 27/11
+  end:    new Date('2026-11-27T23:59:59-03:00').getTime(), // fim do dia 27/11 — depois volta sozinho ao desconto da planilha
+  teaser: false,
   size:   56,                // itens na vitrine (2 páginas de 28)
 };
 
@@ -1715,6 +2142,8 @@ const CAT_EMOJI = {
   'Café & Alimentos': '☕',
   'Vinhos & Bebidas': '🍷',
   'Óleos & Séruns': '💧',
+  'Suplemento': '💪',
+  'Livros, Revistas e Comics': '📚',
   'Outros': '📦',
 };
 
@@ -1742,7 +2171,7 @@ let searchDebounceTimer = null;
 // se alguém apagar o texto de uma célula do cabeçalho (já aconteceu com A1/"Nome"),
 // o catálogo inteiro sumia e o site caía no retrato embutido, com preço e
 // disponibilidade velhos. Agora a posição da coluna é a fonte da verdade.
-const CSV_HEADERS = ['Nome', 'Preco', 'Estoque', 'Sala', 'Categoria', 'Imagem', 'Ativo', 'Comprado por'];
+const CSV_HEADERS = ['Nome', 'Preco', 'Estoque', 'Sala', 'Categoria', 'Imagem', 'Ativo', 'Comprado por', 'Entrada'];
 
 function repararCabecalho(headers, forcar) {
   const trocadas = [];
@@ -1762,18 +2191,42 @@ function repararCabecalho(headers, forcar) {
 }
 
 function parseCSV(text, forcarCabecalho) {
-  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
-  if (lines.length < 2) return [];
-  const headers = repararCabecalho(parseLine(lines[0]), forcarCabecalho);
+  // v7: lê o arquivo inteiro respeitando aspas. Antes o texto era cortado por
+  // linha ANTES de tratar as aspas, e um nome com Enter dentro da célula partia
+  // o produto em dois pedaços inválidos — ele sumia do site (3 sumidos em 21/10).
+  const linhas = csvLinhas(text);
+  if (linhas.length < 2) return [];
+  const headers = repararCabecalho(linhas[0], forcarCabecalho);
   const results = [];
-  for (let i = 1; i < lines.length; i++) {
-    if (!lines[i].trim()) continue;
-    const vals = parseLine(lines[i]);
+  for (let i = 1; i < linhas.length; i++) {
+    const vals = linhas[i];
+    if (!vals.some(v => v.trim())) continue;
     const obj = {};
     headers.forEach((h, idx) => { obj[h.trim()] = (vals[idx] || '').trim(); });
     results.push(obj);
   }
   return results;
+}
+
+// v7 — CSV padrão (RFC 4180): vírgula separa, aspas protegem vírgula/aspas/Enter.
+function csvLinhas(text) {
+  const out = [];
+  let row = [], cur = '', inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQ) {
+      if (ch === '"') {
+        if (text[i + 1] === '"') { cur += '"'; i++; } else inQ = false;
+      } else cur += ch;
+    } else if (ch === '"') inQ = true;
+    else if (ch === ',') { row.push(cur); cur = ''; }
+    else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      row.push(cur); out.push(row); row = []; cur = '';
+    } else cur += ch;
+  }
+  if (cur !== '' || row.length) { row.push(cur); out.push(row); }
+  return out;
 }
 
 function parseLine(line) {
@@ -1796,17 +2249,33 @@ function parseLine(line) {
 }
 
 function csvRowToProduct(row, idx) {
-  const nome = (row['Nome'] || '').trim();
+  const nome = (row['Nome'] || '').replace(/\s+/g, ' ').trim();   // v7: Enter no nome vira espaço
   if (!nome) return null;
-  // Linha de configuração — não é produto
-  if (nome === '__CONFIG__') return null;
+  // Linha de configuração — não é produto (__CONFIG__, __OUTLET__ e qualquer __X__)
+  if (nome.startsWith('__')) return null;
   // v3: linha de cabeçalho duplicada / cadastro vazio não vira produto
   if (JUNK_NAMES.includes(normTxt(nome))) return null;
   const ativo = (row['Ativo'] || '').toLowerCase().trim();
   if (ativo !== 'sim') return null;
   // Extrai apenas dígitos e ponto/vírgula do preço (evita datas ou texto)
   const precoRaw = (row['Preco'] || '0').replace(',', '.').replace(/[^\d.]/g, '');
-  const preco = parseFloat(precoRaw) || 0;
+  let preco = parseFloat(precoRaw) || 0;
+  // v7.1: coluna B vazia + "R$ 175,92" no fim do nome = PREÇO FINAL (já com desconto).
+  // O valor sai do nome só na tela; a planilha não é alterada.
+  let precoFinal = false, nomeTela = nome;
+  if (!(preco > 0) && /\bNAT\/\d{2}\b/i.test(nome)) {   // só estojo de Natal (… NAT/26- R$ 175,92)
+    const m = nome.match(/^(.*?)[\s\-–]*R\$\s*-?\s*(\d{1,3}(?:\.\d{3})*,\d{2}|\d+)\s*$/i);
+    if (m) {
+      const v = parseFloat(m[2].replace(/\./g, '').replace(',', '.'));
+      const limpo = m[1].replace(/[\s\-–]+$/, '').trim();
+      if (v > 0 && limpo) { preco = v; precoFinal = true; nomeTela = limpo; }
+    }
+  }
+  // v7: sem preço válido não vai para a vitrine. Em 21/10 onze estojos entraram com
+  // o preço colado no nome e a coluna B vazia — apareciam a R$ 0,00 na primeira tela.
+  if (!(preco > 0)) { produtosSemPreco.push(nome); return null; }
+  const imgOk = sanearImagem(row['Imagem']);
+  if (!imgOk) produtosSemFoto.push(nome);   // v7.1: só registra (diagnóstico); o produto continua no site
   // v5: estoque em branco na planilha nao e "1". Guardar isso separado evita
   // gritar "Ultima unidade" em quase todo o catalogo, que e o que mata a confianca.
   const estoqueRaw = (row['Estoque'] || '').replace(/[^\d]/g, '');
@@ -1816,14 +2285,102 @@ function csvRowToProduct(row, idx) {
   return {
     id: idx,
     rowIdx: idx,   // posição original na planilha — nunca sobrescrita, usada para Novidades
-    name: nome,
+    name: nomeTela,
+    nomePlanilha: nome,   // v7.1: nome cru da planilha — identidade (dedup e carrinho); name é só tela
     price: preco,
+    precoFinal: precoFinal,
     stock: estoque,
     stockKnown: estoqueConhecido,
     sheet: (row['Sala'] || '').trim(),
     category: (row['Categoria'] || '').trim(),
-    img: sanearImagem(row['Imagem']),
+    img: imgOk,
+    entrada: parseDataEntrada(row['Entrada']),   // v7: dia em que entrou no site (coluna I)
   };
+}
+
+// ============================================================
+// v7 — OUTLET: quem está há mais tempo no site ganha mais desconto
+// ------------------------------------------------------------
+// A data de entrada vem da coluna I ("Entrada") da planilha, que o Apps Script
+// preenche sozinho quando um produto fica ativo pela primeira vez. Os produtos
+// antigos foram datados a partir do histórico do data.csv no GitHub.
+// Ajuste sem código: linha __OUTLET__ da planilha — B = % de desconto, C = dias.
+// O outlet é um PISO: vale o maior entre ele e o desconto do site/campanha.
+// ============================================================
+const OUTLET_PADRAO = { pct: 0.35, dias: 90 };
+let OUTLET = { pct: OUTLET_PADRAO.pct, dias: OUTLET_PADRAO.dias };
+const CAT_OUTLET = '🏷️ Outlet';
+let produtosSemPreco = [];
+let produtosSemFoto = [];
+
+function parseOutletRow(rows) {
+  OUTLET = { pct: OUTLET_PADRAO.pct, dias: OUTLET_PADRAO.dias };
+  for (const row of rows) {
+    const achou = (row['Nome'] || '').trim() === '__OUTLET__'
+      || Object.values(row).some(v => String(v || '').trim() === '__OUTLET__');
+    if (!achou) continue;
+    const pct = parseFloat(String(row['Preco'] || '').replace(',', '.').replace(/[^\d.]/g, ''));
+    const dias = parseInt(String(row['Estoque'] || '').replace(/[^\d]/g, ''), 10);
+    let p2 = pct;
+    if (!isNaN(p2) && p2 > 0 && p2 < 1) p2 = p2 * 100;          // 35% digitado como porcentagem chega 0,35
+    if (!isNaN(p2) && p2 >= 0 && p2 <= 90) OUTLET.pct = p2 / 100;   // 0 = outlet desligado
+    if (!isNaN(dias) && dias >= 7 && dias <= 3650) OUTLET.dias = dias;
+    return;
+  }
+}
+
+// Aceita 2026-04-09, 09/04/2026 e 9/4/26. Qualquer outra coisa = sem data (sem outlet).
+function parseDataEntrada(v) {
+  const s = String(v || '').trim();
+  let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  let y, mo, d;
+  if (m) { y = +m[1]; mo = +m[2]; d = +m[3]; }
+  else if ((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/))) {
+    d = +m[1]; mo = +m[2]; y = +m[3]; if (y < 100) y += 2000;
+  } else return null;
+  const dt = new Date(y, mo - 1, d);
+  if (isNaN(dt) || dt.getMonth() !== mo - 1 || y < 2020 || dt.getTime() > Date.now() + 86400000) return null;
+  return dt.getTime();
+}
+
+function diasNoSite(p) {
+  if (!p || !p.entrada) return null;
+  return Math.floor((Date.now() - p.entrada) / 86400000);
+}
+function ehOutlet(p) {
+  const d = diasNoSite(p);
+  return d != null && d >= OUTLET.dias;
+}
+// v7 — nome em CAIXA ALTA vira "Caixa de Título" SÓ NA TELA. Busca, carrinho
+// no WhatsApp e planilha continuam com o nome exato. Nome já em caixa normal
+// não é tocado.
+const NOME_MINUSCULAS = new Set(['de','da','do','das','dos','e','com','para','em','no','na','nos','nas','a','o','as','os','por','sem','ao','p']);
+const NOME_SIGLAS = new Set(['NBA','MAC','EDP','EDT','SPF','FPS','UV','DD','PH','LED','USB','GG','PP','XG','XL','XXL','YSL','DKNY','CK','JBL','TV','LG','BB','CC','KG','ML','UN','FC']);
+function nomeExibicao(nome) {
+  const s = String(nome || '').trim();
+  const letras = (s.match(/[A-Za-zÀ-ÖØ-öø-ÿ]/g) || []).length;
+  if (letras < 4) return s;
+  const maius = (s.match(/[A-ZÀ-ÖØ-Þ]/g) || []).length;
+  if (maius / letras < 0.7) return s;
+  let primeira = true;
+  const t = s.replace(/[A-Za-zÀ-ÖØ-öø-ÿ]+/g, (w, off) => {
+    const up = w.toUpperCase(), lo = w.toLowerCase();
+    let r;
+    if (/\d/.test(s.charAt(off - 1))) r = lo;                    // 30G -> 30g, 100ML -> 100ml
+    else if (NOME_SIGLAS.has(up)) r = up;
+    else if (!primeira && NOME_MINUSCULAS.has(lo)) r = lo;
+    else r = lo.charAt(0).toUpperCase() + lo.slice(1);
+    primeira = false;
+    return r;
+  });
+  // v7.1: abreviação de estojo legível só na tela ("Estj Liz Nat/26" -> "Estojo Liz Natal 2026")
+  if (!/^Estj\b/.test(t)) return t;
+  return t.replace(/^Estj\b/, 'Estojo').replace(/\bNat\/(\d{2})\b/, 'Natal 20$1');
+}
+
+function mesesTexto(dias) {
+  const m = Math.round(dias / 30);
+  return m <= 1 ? 'há 1 mês' : 'há ' + m + ' meses';
 }
 
 // Lê linha __CONFIG__ da planilha e extrai desconto global
@@ -1851,17 +2408,23 @@ function parseConfigRow(rows) {
 // forçando o cabeçalho canônico. "Muitas linhas e zero produtos" nunca é catálogo
 // vazio de verdade: é cabeçalho quebrado.
 function interpretarCSV(text, origem) {
+  produtosSemPreco = []; produtosSemFoto = [];
   let rows = parseCSV(text);
   let products = rows.map((r, i) => csvRowToProduct(r, i)).filter(Boolean);
 
   if (products.length === 0 && rows.length > 0) {
     console.warn(`[catálogo] ${origem}: ${rows.length} linhas e 0 produtos — cabeçalho da planilha quebrado. Reparando pela posição das colunas.`);
+    produtosSemPreco = []; produtosSemFoto = [];
     rows = parseCSV(text, true);                               // força A..H
     products = rows.map((r, i) => csvRowToProduct(r, i)).filter(Boolean);
     if (products.length > 0) cabecalhoReparado = true;
   }
 
   parseConfigRow(rows);                                        // lê __CONFIG__ p/ desconto
+  parseOutletRow(rows);                                        // v7: lê __OUTLET__ (% e dias)
+  if (produtosSemPreco.length) {
+    console.warn('[catálogo] ' + produtosSemPreco.length + ' produto(s) ativo(s) sem preço válido ficaram fora da vitrine:', produtosSemPreco);
+  }
   return products;
 }
 
@@ -1890,7 +2453,7 @@ async function fetchCSV() {
 function deduplicateProducts(list) {
   const seen = new Map();
   for (const p of list) {
-    const key = p.name.toLowerCase().trim();
+    const key = (p.nomePlanilha || p.name).toLowerCase().trim();   // v7.1: nome cru (dois estojos com preços diferentes não se fundem)
     if (!seen.has(key)) {
       seen.set(key, { ...p });
     } else {
@@ -1898,6 +2461,7 @@ function deduplicateProducts(list) {
       const existing = seen.get(key);
       existing.stock = Math.max(existing.stock, p.stock);
       existing.stockKnown = existing.stockKnown || p.stockKnown;   // v5
+      if (p.entrada && (!existing.entrada || p.entrada < existing.entrada)) existing.entrada = p.entrada;   // v7
       if (!existing.img && p.img) existing.img = p.img;
       if (p.rowIdx > existing.rowIdx) existing.rowIdx = p.rowIdx; // mantém a posição mais recente
     }
@@ -1938,11 +2502,19 @@ async function loadProducts(showLoader = false) {
   buildCategoryTabs();
   applyFilters();
   buildTicker();   // atualiza faixa rotativa com desconto e produtos prováveis de venda
+  reconciliarCarrinho();   // v7: itens do carrinho seguem o PRODUTO, não a posição
+  renderGrid();
+  updateCartBadge();   // v7: total da barra do carrinho depende do catálogo carregado
 }
 
 // ============================================================
 // FILTERS & SORT
 // ============================================================
+// v7.1: busca acha pelo nome cru E pelo nome como aparece na tela ("estojo", "natal")
+function textoBusca(p) {
+  return (p.name + ' ' + nomeExibicao(p.name) + ' ' + p.category).toLowerCase();
+}
+
 function applyFilters() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const sort = document.getElementById('sortSelect').value;
@@ -1952,19 +2524,25 @@ function applyFilters() {
   if (activeCategory === CAT_CAMP || activeCategory === CAT_PAIS) {
     list = listaPromo(activeCategory);
     if (query) {
-      list = list.filter(p => (p.name + ' ' + p.category).toLowerCase().includes(query));
+      list = list.filter(p => textoBusca(p).includes(query));
+    }
+  } else if (activeCategory === CAT_OUTLET) {
+    // v7: peças há mais tempo na loja — as de mais apelo primeiro
+    list = allProducts.filter(ehOutlet);
+    if (query) {
+      list = list.filter(p => textoBusca(p).includes(query));
     }
   } else if (activeCategory === CAT_NOVIDADES) {
     // Ordena por posição real na planilha (rowIdx) — estável entre refreshes
     list = allProducts.slice().sort((a, b) => b.rowIdx - a.rowIdx).slice(0, NOVIDADES_COUNT);
     if (query) {
-      list = list.filter(p => (p.name + ' ' + p.category).toLowerCase().includes(query));
+      list = list.filter(p => textoBusca(p).includes(query));
     }
   } else {
     list = allProducts.filter(p => {
       if (activeCategory !== 'Todas' && p.category !== activeCategory) return false;
       if (query) {
-        const haystack = (p.name + ' ' + p.category).toLowerCase();
+        const haystack = textoBusca(p);
         if (!haystack.includes(query)) return false;
       }
       return true;
@@ -1980,11 +2558,26 @@ function applyFilters() {
   else if (activeCategory === CAT_CAMP || activeCategory === CAT_PAIS) {
     /* mantém a ordem de curadoria definida em listaPromo() */
   }
+  else if (activeCategory === CAT_OUTLET && !query) {
+    list.sort((a, b) => (b._legal - a._legal) || (a.entrada - b.entrada));
+    list = diversificar(list, 3);
+  }
   else if (activeCategory === 'Todas' && !query) {
     // v5: vitrine por apelo, não por preço. Antes a loja abria com jogo de cama de
     // R$ 1.057 e shampoo pet de 5L na primeira tela.
     list.sort((a, b) => (b._legal - a._legal) || (b.rowIdx - a.rowIdx));
     list = diversificar(list, 3);
+  }
+
+  // v7.1: estojos com o preço final no nome abrem a vitrine (pedido do Marcelo,
+  // 22/10). Só na ordem "Destaques", sem busca, em Novidades e Todas — e entram
+  // mesmo que estejam fora das 150 linhas mais novas.
+  if (sort === 'default' && !query && (activeCategory === CAT_NOVIDADES || activeCategory === 'Todas')) {
+    const estojos = allProducts.filter(p => p.precoFinal).sort((a, b) => b.rowIdx - a.rowIdx);
+    if (estojos.length) {
+      const ids = new Set(estojos.map(p => p.id));
+      list = estojos.concat(list.filter(p => !ids.has(p.id)));
+    }
   }
 
   filteredProducts = list;
@@ -2013,18 +2606,25 @@ function buildCategoryTabs() {
   if (tabCampVisivel()) promoTabs.push(CAT_CAMP);
   if (tabPaisVisivel()) promoTabs.push(CAT_PAIS);
   // v5: Novidades primeiro, campanhas em seguida, depois Todas e as categorias
+  // v7: Outlet entra depois das campanhas, só se houver peça elegível E se ele
+  // valer mais que o desconto do site (numa campanha maior, "outlet" seria rótulo vazio)
+  const nOutlet = allProducts.filter(ehOutlet).length;
+  if (nOutlet > 0 && OUTLET.pct > siteDiscount()) promoTabs.push(CAT_OUTLET);
   const allCats = [CAT_NOVIDADES, ...promoTabs, cats[0], ...cats.slice(1)];
 
   // v2: contador de produtos por categoria
   const counts = {};
   counts['Todas'] = allProducts.length;
-  counts[CAT_NOVIDADES] = Math.min(NOVIDADES_COUNT, allProducts.length);
+  counts[CAT_NOVIDADES] = Math.min(NOVIDADES_COUNT, allProducts.length)
+    + allProducts.filter(p => p.precoFinal && !noveltyIds.has(p.id)).length;   // v7.1: estojos entram na aba
   counts[CAT_CAMP] = campIds.size;
   counts[CAT_PAIS] = paisIds.size;
+  counts[CAT_OUTLET] = nOutlet;
   allProducts.forEach(p => {
     if (p.category) counts[p.category] = (counts[p.category] || 0) + 1;
   });
 
+  if (!allCats.includes(activeCategory)) activeCategory = CAT_NOVIDADES;   // v7: aba que sumiu
   const container = document.getElementById('catTabs');
   container.innerHTML = '';
   allCats.forEach(cat => {
@@ -2032,6 +2632,7 @@ function buildCategoryTabs() {
     let extra = '';
     if (cat === CAT_CAMP) extra = ' tab-promo tab-' + PROMO_CAMP.tema + (promoPhase(PROMO_CAMP) === 'antes' ? ' tab-teaser' : '');
     else if (cat === CAT_PAIS) extra = ' tab-promo tab-pais';
+    else if (cat === CAT_OUTLET) extra = ' tab-outlet';
     btn.className = 'cat-tab' + extra + (cat === activeCategory ? ' active' : '');
     const emojiPart = CAT_EMOJI[cat] ? CAT_EMOJI[cat] + ' ' : '';
     const countPart = counts[cat] != null ? `<span class="cat-count">${counts[cat]}</span>` : '';
@@ -2089,6 +2690,24 @@ const IMG_CORRECOES = [
     nova: 'https://cdn.awsli.com.br/800x800/2306/2306871/produto/164359270570d44461a.jpg',
     nota: 'Bife de Soja Escuro Kg — mesma imagem, 800×800 da fonte',
   },
+  // v7.1 (25/10) — links que não abriam no navegador (e um com o produto errado)
+  {
+    // Além de não abrir, era a foto de uma essência de LAVANDA
+    ruim: 'essencia-floral-lavandafrancesa-768x768',
+    nova: 'https://peterpaiva.jetassets.com.br/produto/0001090_2025-02-17_11_59_59_0.jpeg',
+    nota: 'Essência Laranja Lima de 100g — foto da loja da marca',
+  },
+  {
+    // Não abria e era o sabor tomate
+    ruim: 'sardinha_img_frt_tomate-azeite',
+    nova: 'https://m.media-amazon.com/images/I/61lsFtuELeL._AC_SL1200_.jpg',
+    nota: 'Filé de sardinha s/ pele c/ cebola e azeite 125g',
+  },
+  {
+    ruim: '3440190354_1SZ',
+    nova: 'https://http2.mlstatic.com/D_NQ_NP_958494-MLB85300394404_062025-O-pijama-de-frio-feminino-moletinho-flanelado-adulto-inverno.webp',
+    nota: 'Pijama Moletinho Flanelado De Frio Adulto Feminino',
+  },
 ];
 
 function sanearImagem(valor) {
@@ -2096,6 +2715,10 @@ function sanearImagem(valor) {
   if (!v) return '';
   // 1) só aceita o que é de fato endereço de imagem
   if (!/^(https?:\/\/|data:image\/)/i.test(v)) return '';
+  // v7.1: GIF transparente de 1×1 (marcador de carregamento copiado do Google) não é foto
+  if (/^data:image\/gif;base64,R0lGODlhAQABA/i.test(v)) return '';
+  // v7.1: link de anúncio do Google (google.com/aclk) não é imagem
+  if (/^https?:\/\/(www\.)?google\.[a-z.]+\/aclk/i.test(v)) return '';
   // 2) correção pontual, enquanto a planilha ainda tiver a URL ruim
   for (const c of IMG_CORRECOES) {
     if (v.indexOf(c.ruim) !== -1) return c.nova;
@@ -2131,10 +2754,29 @@ function siteDiscount() {
 
 // Desconto de UM produto. Itens de Dia dos Pais têm piso de 35% e
 // acompanham o desconto global sempre que ele for maior (é o caso durante a campanha).
+// ---- Black Friday: roupas e peças paradas há muito tempo ----
+// Roupa = categoria Moda & Calçados, menos calçado, bolsa, mochila, boné e o que caiu lá por engano.
+const NAO_ROUPA = /\b(melissa|chinelo|tamanco|scarpin|sandalia|sapatilha|sapato|bota|tenis|papete|calcados|crocs|pe ?direito|classico (amarelo|verde|azul)|mochila|bolsa|tote|keune|joelheira|bone|bucket|gorro|sabonete)\b/;
+function ehRoupa(p) {
+  return p.category === 'Moda & Calçados' && !NAO_ROUPA.test(normTxt(p.nomePlanilha || p.name));
+}
+// Produtos ativos que estão no site há 6 meses ou mais (primeira aparição no
+// histórico do data.csv, levantada em 27/11/2026). Casa pelo nome da planilha.
+const BF_PARADOS = new Set(["amaciante de calos spa dos pés cora alto poder pistache gel 100ml", "apice ativador modelador antifrizz mirra fix hidratação brilho .", "apice cachos shampoo nutritivo - 300ml", "apice creme de pentear nutritivo crespo power hidratação nutrição", "apice crespo power gelatina umidificadora e ativadora 300 ml", "aplique cromado retrovisor ld f250", "ativador e modelador antifrizz cachos 500g apse apice", "bandana babador com mordedor buba algodão estampado animais", "barbours vitamina c clarifer gel - vitamina c gel clareador 100ml gel", "bernardi pra' dei salt conegliano valdobbiadene brut 750ml", "body luxo manga única ombro só franzido premium mula manca", "body splash living grace desodorante colônia 200ml", "boticário cuide-se bem creme de pentear babosa 200ml", "cachepot de cimento cinza com texturas e desenhos", "cafeteira venus italiana de aço inox bialetti 4 xícaras", "café torrado moído gourmet bialetti 100% arábica moka 250g", "calca lg y0srb malha laise foi, bg120, tamanho 04", "calça de viscose pareô estampado", "calça jeans forum paul slim fit masculina | tamanho 46", "calça legging body for sure com cós transpassado 360° azul .. tamanho m", "calção adidas estro 19 infantil", "camisa regular fit shirt turquoise - tamanho g", "camiseta , assinatura la martin amarelo , sol , stone , tamanho g .", "camiseta masculina esportiva ace com refletivo plus size preta", "camiseta masculina tech ultrafresh - preto m", "camiseta masculino adams manga curta básica dry", "camiseta overcome gothic rose preta- tamanho g", "camisola selva - girafa", "camisola selva - girafa – nappô", "castiçal pedestal ferro preto mesa bancadas", "chinelo crocs bayaband slide black/white", "chinelo pédireito unissex nº. 39/40", "co wash limpeza suave crespo power 300ml apice", "condicionador apse acidificante nutri waves 300ml", "condicionador hidratante scalp care 300ml - apice", "conj kit trio vasos decorativos em poliresina cinza rústico boho chic plantas orgânicas permanentes secas", "creme de pentear nutri waves 500g apse", "creme de pentear nutri waves 500g ápice", "creme hidratante corporal english rose mahogany 350ml", "creme para pentear definição siàge pro cronology curvas 300ml", "creme pentear nutritivo ápice crespo power nutrição hidratação ...", "cropped slim básico liso sem estampa confortável modelo slim", "desodorante colônia celestial glow barbour's beauty 60ml perfume feminino fixação prolongada", "essência baunilha original gold 100g", "essência canela spicy gold 100g", "essência frutas vermelhas de 100g", "essência laranja lima de 100g", "essência lavanda francesa de 100g", "essência limão siciliano gold 100g", "essência madeira oriente pp gold 100g", "essência morango gold 100g", "essência perfume da princesa 100g", "eudora lyra loção hidratante desodorante corporal 150ml", "file sardinha s/ pele c/ alcaparras e azeite 125 grs", "file sardinha s/ pele c/ cebola e azeite 125grs", "garrafa térmica gocase urban inox parede dupla isolada 500ml", "gelatina acidificante nutri waves apice 300ml", "gelatina ativadora e umidificadora cachos apice 300ml", "gelatina umidificadora e ativadora crespo power 300ml apice", "gocase mochila escolar de 2 rodinhas infantil modelo play (preto ..", "godo shusei autêntico umeshu uguisuku vinho de ameixa tinto, 17,5 fl oz (495 ml)", "hidratante corporal la bella itália 200 ml chipre moderno frutal", "hidratante facial pele de porcelana", "hidratante spa dos pés cora pistache pote 250g", "home spray 250ml essencia lavanda", "joelheira antiderrapante bebê engatinhar - buba azul ou rosa ou .", "kit home bar gipsy ketel one acessórios para drinks", "l'occitane au brésil - manteiga de banho bacuri 150 ml", "la martina , camiseta , couro , barra . tamanho g cor paçoca , stone", "leave-in 2 em 1 bubbles hipoalergênico para cão gato 500ml", "legging c/ bolso lateral penelope g", "lescent varejo ltda -deo colonia no 2 - 25ml", "licor de ameixa japonesa kishu nanko umeshu 720ml |", "licor de ameixa umeshu chiebijin koucha 720ml ci-03 - e-sakê by ...", "licor de ameixa umeshu kurouma 700ml ci-03 - e-sakê by skae", "livro a obdiência que protege sergio celestrino", "mahogany espuma de banhp flor de laranjeira 200 ml", "mahogany la bella italia hodratante corporal 2", "manteigueira francesa colmeia vidro lyor premium", "mascara capilar apice nutri waves 300g", "mascara hidratante nutritiva apice cachos 300g", "melissa flip flop slim v original nº. 38", "melissa ladylike 39/40", "minivasos em cerâmica – 3 peças - casa allure", "mochila de carrinho 2 rodas play - clear", "mochila de carrinho 2 rodas play - homem-aranha - classic ...", "mochila de carrinho 2 rodas play - minnie classical rose - mochila ..", "mochila de carrinho 4 rodas fun - azul", "mochila de carrinho 4 rodas fun - lilás", "mochila de carrinho 4 rodas fun - preta", "mochila escolar de 2 rodinhas play - gocase", "molho mrs chicken mrs taste - 320g", "multivitamínico complete, 90 cápsulas, complete bari", "oleo vegetal de girassol 100ml by samia", "organizador multiuso 10 cm .", "pijama moletinho flanelado de frio adulto feminino", "refil difusor de aromas verbena 250ml", "riachuelo - tamanco solo+ cross verao nº. 37", "serum corporal clareador blemish care barbour's beauty 150g sem fragrância", "sex massager high water g spot", "shine 3 em 1 revestimento 300ml brilho proteção", "shorts modelador corporal alta compressão tamanho m", "top alice amarelo neon gg", "torneira misturador monocomando cascata cromado", "vaso de vidro com relevo círculos decorativo 23x12cm | challenge decor", "vaso decorativo de enfeite mesa moderno em vidro orgânico", "vaso decorativo de mesa design orgânico em alto relevo vidro luxo - casa hera maria", "vaso decorativo de mesa em vidro design irregular orgânico de luxo - casa hera maria", "vestido faixa reto preto tamanho g marca aura", "vestido tubinho preto em malha de alfaiataria premium encorpada", "vinho branco garzon reserva sauvignon blanc 750 ml uruguaio", "vinho pêra manca branco - 2023", "vinho rendez vous premier merlot cabernet sauvignon 750m", "ápice condicionador cachos nutritivo | nutrição, selagem", "ápice nutri waves gelatina acidificante e condicionante | ativação e fixação da curvatura com hidratação, brilho e controle de frizz | 300ml", "óleo 10 ml eucalipto glóbulos gt brasil", "óleo essencial alecrin by samia 100% puro 10ml calmante antidepressivo", "óleo essencial tea tree by samia 100% puro 10ml calmante antidepressivo", "óleo finalizador spa dos pés cora pistache 100ml"]);
+function ehParado(p) {
+  return BF_PARADOS.has(String(p.nomePlanilha || p.name).normalize('NFC').replace(/\s+/g, ' ').trim().toLowerCase());
+}
+
 function discountFor(p) {
-  const base = siteDiscount();
-  if (p && tabPaisVisivel() && paisIds.has(p.id)) return Math.max(base, PROMO_PAIS.discount);
-  return base;
+  if (p && p.precoFinal) return 0;                            // v7.1: preço já é o final
+  let d = siteDiscount();
+  if (p && campAtiva()) {                                     // Black Friday: pisos extras, só enquanto a campanha durar
+    if (PROMO_CAMP.roupas && ehRoupa(p))    d = Math.max(d, PROMO_CAMP.roupas);
+    if (PROMO_CAMP.parados && ehParado(p))  d = Math.max(d, PROMO_CAMP.parados);
+  }
+  if (p && tabPaisVisivel() && paisIds.has(p.id)) d = Math.max(d, PROMO_PAIS.discount);
+  if (p && ehOutlet(p)) d = Math.max(d, OUTLET.pct);          // v7: outlet é piso
+  return d;
 }
 
 function discountedPrice(price, prod) {
@@ -2146,6 +2788,7 @@ function discountPct(prod) {
 
 // ---- Seleção: Dia dos Pais ----
 function ehProdutoDePai(p) {
+  if (p.precoFinal) return false;   // v7.1: preço final não entra em seleção com %
   const t = normTxt(p.name + ' ' + p.category);
   if (PAIS_BLOCK.some(rx => rx.test(t))) return false;
   const n = normTxt(p.name);
@@ -2155,6 +2798,7 @@ function ehProdutoDePai(p) {
 
 // ---- Seleção: vitrine da campanha (nota composta) ----
 function scoreCamp(p) {
+  if (p.precoFinal) return -1;      // v7.1: preço final não entra em vitrine com %
   const n = normTxt(p.name);
   if (CAMP_BLOCK.some(rx => rx.test(n))) return -1;
   if (!p.img) return -1;                                  // sem foto não vira destaque
@@ -2222,6 +2866,7 @@ function digitsHTML(ms, comDias) {
 
 // ---- Masthead da campanha (muda conforme a aba e a fase) ----
 function renderPromoMasthead() {
+  document.body.classList.toggle('camp-' + PROMO_CAMP.tema, campAtiva());   // clima do site durante a campanha
   const el = document.getElementById('promoMasthead');
   if (!el) return;
   const faseCamp = promoPhase(PROMO_CAMP);
@@ -2251,7 +2896,7 @@ function renderPromoMasthead() {
         <div class="promo-body">
           <div class="promo-kicker">Acontecendo agora</div>
           <div class="promo-headline"><em>${pct}% OFF</em> no site inteiro</div>
-          <div class="promo-sub">⚡ Todos os ${allProducts.length} produtos com ${pct}% — sem cupom, já no preço.</div>
+          <div class="promo-sub">⚡ Todos os ${allProducts.length} produtos com ${pct}% — sem cupom, já no preço.${(PROMO_CAMP.roupas || PROMO_CAMP.parados) ? ' <strong>Roupas e peças selecionadas com até ' + Math.round(Math.max(PROMO_CAMP.roupas || 0, PROMO_CAMP.parados || 0) * 100) + '%.</strong>' : ''}</div>
           <button class="promo-cta" id="promoCtaBtn">Ver os destaques →</button>
         </div>
         <div class="promo-clock">
@@ -2288,10 +2933,15 @@ function renderPromoStrip() {
   if (!el) return;
   if (activeCategory === CAT_CAMP && tabCampVisivel()) {
     const pct = Math.round(PROMO_CAMP.discount * 100);
-    el.innerHTML = `<div class="${tclass('promo-strip')}">⭐ <span><strong>Vitrine ${PROMO_CAMP.label}</strong> — ${campIds.size} itens com maior procura e maior desconto em reais. ${campAtiva() ? `Todo o site está a ${pct}%.` : `A partir de ${inicioLabel()} tudo fica a ${pct}%.`}</span></div>`;
+    el.innerHTML = `<div class="${tclass('promo-strip')}">⭐ <span><strong>Vitrine ${PROMO_CAMP.nome || PROMO_CAMP.label}</strong> — ${campIds.size} itens com maior procura e maior desconto em reais. ${campAtiva() ? `Todo o site está a ${pct}%.` : `A partir de ${inicioLabel()} tudo fica a ${pct}%.`}</span></div>`;
+  } else if (activeCategory === CAT_OUTLET) {
+    // v7: a regra do outlet dita em português, com os números vigentes
+    const pctO = Math.round(Math.max(OUTLET.pct, siteDiscount()) * 100);
+    const meses = Math.round(OUTLET.dias / 30);
+    el.innerHTML = `<div class="promo-strip promo-strip-outlet">🏷️ <span><strong>Outlet</strong> — peças que estão há mais de ${meses >= 2 ? meses + ' meses' : OUTLET.dias + ' dias'} na loja saem com <strong>${pctO}% OFF</strong>. Quantidade limitada ao que está aqui.</span></div>`;
   } else if (activeCategory === CAT_PAIS && tabPaisVisivel()) {
     const pct = Math.round(PROMO_PAIS.discount * 100);
-    el.innerHTML = `<div class="promo-strip promo-strip-pais">🎁 <span><strong>Presentes de Dia dos Pais ${PROMO_PAIS.dateLabel}</strong> — ${campAtiva() ? `seleção pra ele com os ${Math.round(PROMO_CAMP.discount*100)}% do 08.08.` : `${pct}% OFF nesta seleção.`}</span></div>`;
+    el.innerHTML = `<div class="promo-strip promo-strip-pais">🎁 <span><strong>Presentes de Dia dos Pais ${PROMO_PAIS.dateLabel}</strong> — ${campAtiva() ? `seleção pra ele com os ${Math.round(PROMO_CAMP.discount*100)}% do ${PROMO_CAMP.label}.` : `${pct}% OFF nesta seleção.`}</span></div>`;
   } else {
     el.innerHTML = '';
   }
@@ -2390,10 +3040,19 @@ function atualizarFaixaDesconto() {
     const temBannerCampanha = !!document.querySelector('.promo-masthead');
     hero.style.display = temBannerCampanha ? 'none' : '';
   }
+  // v7: atalho para o outlet, só quando ele vale mais que o desconto do site
+  const chip = document.getElementById('heroOutlet');
+  if (chip) {
+    const n = allProducts.filter(ehOutlet).length;
+    const vale = n > 0 && OUTLET.pct > siteDiscount() && activeCategory !== CAT_OUTLET;
+    chip.hidden = !vale;
+    if (vale) chip.textContent = `🏷️ Outlet: ${n} peças com ${Math.round(OUTLET.pct * 100)}% OFF →`;
+  }
 }
 
 // v3 — prévia: no teaser mostra quanto o item vai custar quando a campanha abrir
 function promoPreviewHTML(p, precoHoje) {
+  if (p.precoFinal) return '';
   if (activeCategory !== CAT_CAMP) return '';
   if (promoPhase(PROMO_CAMP) !== 'antes') return '';
   const precoPromo = p.price * (1 - PROMO_CAMP.discount);
@@ -2414,9 +3073,20 @@ function promoFlagHTML(p) {
   if (activeCategory === CAT_PAIS) {
     return `<span class="promo-flag promo-flag-pais">Pra ele · −${discountPct(p)}%</span>`;
   }
+  // v7.1: estojo de Natal com preço final — o selo diz o que é, sem prometer % que não há
+  if (p.precoFinal) return '<span class="promo-flag promo-flag-natal">🎄 Natal</span>';
+  // Black Friday: quem tem desconto maior que o do site ganha o selo em qualquer aba
+  if (campAtiva() && discountFor(p) > siteDiscount() + 0.001) {
+    return `<span class="${tclass('promo-flag')}">${PROMO_CAMP.label} · −${discountPct(p)}%</span>`;
+  }
   // nas outras abas, sinaliza quem já está com desconto melhor que o do site
   if (tabPaisVisivel() && paisIds.has(p.id) && discountFor(p) > siteDiscount()) {
     return `<span class="promo-flag promo-flag-pais">Dia dos Pais · −${discountPct(p)}%</span>`;
+  }
+  // v7: outlet — só quando o piso do outlet é o que está valendo (numa campanha
+  // maior, o selo da campanha já conta a história e o do outlet seria ruído)
+  if (ehOutlet(p) && OUTLET.pct > siteDiscount()) {
+    return `<span class="promo-flag promo-flag-outlet">Outlet · −${discountPct(p)}%</span>`;
   }
   return '';
 }
@@ -2444,7 +3114,7 @@ function renderGrid() {
     const isOut = p.stock <= 0;
     const canAdd = !isOut && availQty > 0;
     const isNew = noveltyIds.has(p.id);
-    const nameHL = highlightTerm(p.name, lastSearchTerm);
+    const nameHL = highlightTerm(nomeExibicao(p.name), lastSearchTerm);
     const previa = promoPreviewHTML(p, discountedPrice(p.price, p));
     const promoCls = activeCategory === CAT_CAMP ? ' promo-card-' + PROMO_CAMP.tema
                    : activeCategory === CAT_PAIS ? ' promo-card-pais' : '';
@@ -2463,7 +3133,7 @@ function renderGrid() {
       <div class="card-body">
         <div class="card-name" title="${escHTML(p.name)}">${nameHL}</div>
         <div class="card-prices">
-          <div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−${discountPct(p)}%</span></div>
+          ${p.precoFinal ? '' : `<div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−${discountPct(p)}%</span></div>`}
           <div class="price-discounted">R$ ${formatBRL(disc)}</div>
           ${(saved > 0.005 && !previa) ? `<div class="price-savings">Economize R$ ${formatBRL(saved)}</div>` : ''}
           ${previa}
@@ -2474,7 +3144,7 @@ function renderGrid() {
             <label for="qty_${p.id}">Qtd:</label>
             <select id="qty_${p.id}">${buildQtyOptions(p.stock, p.id)}</select>
           </div>` : ''}
-          <button class="btn-add" data-id="${p.id}" ${!canAdd ? 'disabled' : ''}>${isOut ? 'Esgotado' : 'Adicionar'}</button>
+          <button class="btn-add${inCart > 0 && !isOut ? ' no-carrinho' : ''}" data-id="${p.id}" ${isOut ? 'disabled' : ''}>${isOut ? 'Esgotado' : inCart > 0 ? `✓ No carrinho (${inCart})` : 'Adicionar'}</button>
         </div>
       </div>
     </div>`;
@@ -2483,6 +3153,7 @@ function renderGrid() {
   // attach add-to-cart listeners
   grid.querySelectorAll('.btn-add:not(:disabled)').forEach(btn => {
     btn.addEventListener('click', () => {
+      if (btn.classList.contains('no-carrinho')) { openCart(); return; }   // v7: já está no carrinho → abre
       const id = parseInt(btn.dataset.id, 10);
       const sel = document.getElementById('qty_' + id);
       const qty = sel ? parseInt(sel.value, 10) : 1;
@@ -2558,13 +3229,68 @@ function cartProduct(id) {
   return allProducts.find(p => p.id === id);
 }
 
+// v7 — o carrinho guarda QUAL produto é (impressão do nome), não só a posição dele
+// na lista. Antes, qualquer mudança na planilha (produto novo no meio, preço apagado)
+// deslocava as posições e o pedido no WhatsApp podia sair com outro item.
+function chaveProduto(p) {
+  const s = String(p.nomePlanilha || p.name || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+  return h.toString(36);
+}
+
+// Itens do carrinho cujo produto não está no catálogo carregado AGORA (só acontece
+// quando o site está na cópia de reserva, sem rede). Ficam guardados e voltam sozinhos.
+let carrinhoFora = [];
+
+// Depois de cada carga do catálogo: cada item volta para o produto certo.
+// Catálogo normal: item de produto que sumiu/esgotou sai (com aviso).
+// Cópia de reserva (sem rede): NADA sai — o que não existe nela fica guardado.
+// Item de carrinho antigo, sem identificação, é descartado: melhor tirar do que trocar.
+function reconciliarCarrinho() {
+  if (!allProducts.length) return;
+  const porChave = new Map(allProducts.map(p => [chaveProduto(p), p]));
+  const todos = [...Object.values(cart), ...carrinhoFora];
+  const novo = {}, fora = [];
+  let perdidos = 0;
+  for (const v of todos) {
+    if (!v || !v.k || !(v.qty > 0)) { perdidos++; continue; }
+    const p = porChave.get(v.k);
+    if (!p || p.stock <= 0) {
+      if (usandoRetrato) { fora.push({ k: v.k, qty: v.qty }); continue; }
+      perdidos++; continue;
+    }
+    const ja = novo[p.id] ? novo[p.id].qty : 0;
+    // na reserva o estoque pode estar velho: não corta a quantidade que o cliente escolheu
+    novo[p.id] = { qty: usandoRetrato ? ja + v.qty : Math.min(ja + v.qty, p.stock), k: v.k };
+  }
+  cart = novo;
+  carrinhoFora = fora;
+  saveCart();
+  if (perdidos > 0 && !usandoRetrato) {
+    showToast(perdidos === 1 ? 'Um item do carrinho não está mais disponível'
+                             : perdidos + ' itens do carrinho não estão mais disponíveis');
+  }
+}
+
+// O que vai para o armazenamento e para o link de compartilhar: lista de {k, qty},
+// sem posição — vale para qualquer versão da planilha.
+function carrinhoParaGuardar() {
+  return [...Object.values(cart).filter(v => v && v.k).map(v => ({ k: v.k, qty: v.qty })), ...carrinhoFora];
+}
+function carrinhoDeGuardado(dado) {
+  cart = {};
+  carrinhoFora = Array.isArray(dado) ? dado.slice()
+               : (dado && typeof dado === 'object') ? Object.values(dado) : [];
+}
+
 function addToCart(id, qty) {
   const p = cartProduct(id);
   if (!p) return;
   const current = cart[id] ? cart[id].qty : 0;
   const newQty = Math.min(current + qty, p.stock);
   if (newQty <= current) { showToast('Quantidade máxima atingida'); return; }
-  cart[id] = { qty: newQty };
+  cart[id] = { qty: newQty, k: chaveProduto(p) };
   saveCart();
   updateCartBadge();
   renderGrid(); // refresh buttons/stock display
@@ -2583,7 +3309,7 @@ function setCartQty(id, qty) {
   const p = cartProduct(id);
   if (!p) return;
   if (qty <= 0) { removeFromCart(id); return; }
-  cart[id] = { qty: Math.min(qty, p.stock) };
+  cart[id] = { qty: Math.min(qty, p.stock), k: chaveProduto(p) };
   saveCart();
   updateCartBadge();
   renderCartPanel();
@@ -2592,6 +3318,7 @@ function setCartQty(id, qty) {
 
 function clearCart() {
   cart = {};
+  carrinhoFora = [];
   saveCart();
   updateCartBadge();
   renderCartPanel();
@@ -2599,19 +3326,32 @@ function clearCart() {
 }
 
 function saveCart() {
-  localStorage.setItem(LS_CART_KEY, JSON.stringify(cart));
+  try { localStorage.setItem(LS_CART_KEY, JSON.stringify(carrinhoParaGuardar())); } catch (e) { /* modo privado */ }
 }
 
 function loadCart() {
   try {
     const raw = localStorage.getItem(LS_CART_KEY);
-    if (raw) cart = JSON.parse(raw);
-  } catch (e) { cart = {}; }
+    if (raw) carrinhoDeGuardado(JSON.parse(raw));   // v7: é reconciliado quando o catálogo carregar
+  } catch (e) { cart = {}; carrinhoFora = []; }
 }
 
 function updateCartBadge() {
   const total = Object.values(cart).reduce((s, v) => s + v.qty, 0);
   document.getElementById('cartBadge').textContent = total;
+  // v7: barra fixa com quantidade e total
+  const bar = document.getElementById('cartBar');
+  if (bar) {
+    const mostra = total > 0 && allProducts.length > 0;
+    if (mostra) {
+      document.getElementById('cartBarTotal').textContent = 'R$ ' + formatBRL(cartDiscountedTotal());
+      const economia = cartSubtotal() - cartDiscountedTotal();   // v7.1: economia real do carrinho
+      document.getElementById('cartBarQtd').textContent = total + (total === 1 ? ' item' : ' itens')
+        + (economia > 0.005 ? ' · economia de R$\u00a0' + formatBRL(economia) : ' no carrinho');
+    }
+    bar.classList.toggle('show', mostra);
+    document.body.classList.toggle('tem-cart-bar', mostra);
+  }
 }
 
 function cartItemCount() {
@@ -2634,10 +3374,15 @@ function cartDiscountedTotal() {
 }
 
 // v3 — rótulo honesto: mostra um número só quando todos os itens têm a mesma taxa
+// v7.1: há item de preço final (estojo) no carrinho?
+function cartTemPrecoFinal() {
+  return Object.keys(cart).some(id => { const p = cartProduct(parseInt(id, 10)); return p && p.precoFinal; });
+}
+
 function cartDiscountLabel() {
   const pcts = [...new Set(Object.keys(cart)
     .map(id => cartProduct(parseInt(id, 10)))
-    .filter(Boolean)
+    .filter(p => p && !p.precoFinal)
     .map(p => discountPct(p)))].sort((a, b) => a - b);
   if (pcts.length === 0) return Math.round(siteDiscount() * 100) + '%';
   if (pcts.length === 1) return pcts[0] + '%';
@@ -2650,14 +3395,18 @@ function renderCartPanel() {
   const totalsEl = document.getElementById('cartTotals');
 
   const ids = Object.keys(cart).map(Number);
+  const aguardando = carrinhoFora.reduce((s, v) => s + (v.qty || 0), 0);
+  const avisoFora = aguardando > 0
+    ? `<div class="cart-empty" style="padding:12px 16px;font-size:.8rem">⚠️ ${aguardando} ${aguardando === 1 ? 'item' : 'itens'} do seu carrinho não aparecem agora porque o catálogo está sem conexão. Eles voltam sozinhos quando a conexão normalizar — confira antes de enviar o pedido.</div>`
+    : '';
   if (ids.length === 0) {
-    itemsEl.innerHTML = '<div class="cart-empty">Seu carrinho está vazio 🛒</div>';
+    itemsEl.innerHTML = avisoFora || '<div class="cart-empty">Seu carrinho está vazio 🛒</div>';
     footerEl.style.display = 'none';
     return;
   }
   footerEl.style.display = '';
 
-  itemsEl.innerHTML = ids.map(id => {
+  itemsEl.innerHTML = avisoFora + ids.map(id => {
     const p = cartProduct(id);
     if (!p) return '';
     const qty = cart[id].qty;
@@ -2668,7 +3417,7 @@ function renderCartPanel() {
         : `<div class="cart-item-img" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:var(--gray-100)">${CAT_EMOJI[p.category]||'📦'}</div>`
       }
       <div class="cart-item-info">
-        <div class="cart-item-name" title="${escHTML(p.name)}">${escHTML(p.name)}</div>
+        <div class="cart-item-name" title="${escHTML(p.name)}">${escHTML(nomeExibicao(p.name))}</div>
         <div class="cart-item-price">R$ ${formatBRL(disc)}/un · Total: R$ ${formatBRL(disc * qty)}</div>
         <div class="cart-item-controls">
           <button class="qty-ctrl" onclick="setCartQty(${id}, ${qty - 1})">−</button>
@@ -2685,8 +3434,9 @@ function renderCartPanel() {
   const saved = subtotal - discTotal;
   totalsEl.innerHTML = `
     <div class="cart-total-row"><span>Subtotal (sem desconto)</span><span>R$ ${formatBRL(subtotal)}</span></div>
-    <div class="cart-total-row" style="color:var(--success)"><span>Desconto (${cartDiscountLabel()})</span><span>− R$ ${formatBRL(saved)}</span></div>
-    <div class="cart-total-row main"><span>Total com desconto</span><span>R$ ${formatBRL(discTotal)}</span></div>`;
+    ${saved > 0.005 ? `<div class="cart-total-row" style="color:var(--success)"><span>Desconto (${cartDiscountLabel()}${cartTemPrecoFinal() ? ' nos demais itens' : ''})</span><span>− R$ ${formatBRL(saved)}</span></div>` : ''}
+    ${cartTemPrecoFinal() ? '<div class="cart-total-row" style="font-size:.8rem;opacity:.75"><span>Estojos de Natal já estão no preço final</span><span></span></div>' : ''}
+    <div class="cart-total-row main"><span>${saved > 0.005 ? 'Total com desconto' : 'Total'}</span><span>R$ ${formatBRL(discTotal)}</span></div>`;
 }
 
 // ============================================================
@@ -2732,13 +3482,17 @@ document.getElementById('btnWhatsApp').addEventListener('click', () => {
   const now = new Date();
   const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   const msg = [
-    '🛒 *Pedido — Loja*',
+    '🛒 *Pedido — Lojinha*',
     `📅 ${dateStr}`,
     '',
     ...lines,
     '',
     `🧾 ${itemCount} ${itemCount === 1 ? 'item' : 'itens'}`,
-    `*Total com ${cartDiscountLabel()} de desconto: R$ ${formatBRL(total)}*`,
+    (cartTemPrecoFinal()
+      ? (cartSubtotal() - total > 0.005
+          ? `*Total: R$ ${formatBRL(total)}* (${cartDiscountLabel()} de desconto nos demais itens; estojos de Natal a preço final)`
+          : `*Total: R$ ${formatBRL(total)}* (preço final)`)
+      : `*Total com ${cartDiscountLabel()} de desconto: R$ ${formatBRL(total)}*`),
     '',
     `Link: ${STORE_URL}`,
   ].join('\n');
@@ -2750,7 +3504,7 @@ document.getElementById('btnWhatsApp').addEventListener('click', () => {
 // SHARE CART VIA URL HASH
 // ============================================================
 document.getElementById('btnShareCart').addEventListener('click', () => {
-  const encoded = btoa(JSON.stringify(cart));
+  const encoded = btoa(JSON.stringify(carrinhoParaGuardar()));
   const url = location.origin + location.pathname + '#cart=' + encoded;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(url).then(() => showToast('Link copiado!'));
@@ -2765,8 +3519,8 @@ function loadCartFromHash() {
   try {
     const encoded = hash.slice(6);
     const decoded = JSON.parse(atob(encoded));
-    cart = decoded;
-    saveCart();
+    carrinhoDeGuardado(decoded);                     // v7: reconciliado quando o catálogo carregar
+    if (allProducts.length) reconciliarCarrinho(); else saveCart();
     updateCartBadge();
     history.replaceState(null, '', location.pathname);
     showToast('Carrinho carregado do link!');
@@ -2831,17 +3585,23 @@ function buildTicker() {
   if (faseCamp === 'antes' && PROMO_CAMP.teaser) {
     promoItems.push({ text: `⏳ ${PROMO_CAMP.label} começa ${inicioLabel()} — ${pctCamp}% OFF em TUDO`, action: () => goToCategory(CAT_CAMP) });
   } else if (faseCamp === 'ativa') {
-    promoItems.push({ text: `💎 ${PROMO_CAMP.label} ACONTECENDO — ${pctCamp}% OFF no site inteiro`, action: () => goToCategory(CAT_CAMP) });
+    promoItems.push({ text: `${PROMO_CAMP.emoji || '💎'} ${(PROMO_CAMP.nome || PROMO_CAMP.label).toUpperCase()} — ${pctCamp}% OFF no site inteiro`, action: () => goToCategory(CAT_CAMP) });
+    if (PROMO_CAMP.roupas) promoItems.push({ text: `👗 Roupas com ${Math.round(PROMO_CAMP.roupas * 100)}% OFF — só hoje`, action: () => goToCategory('Moda & Calçados') });
   }
   if (tabPaisVisivel()) {
     const pctPais = Math.round(Math.max(siteDiscount(), PROMO_PAIS.discount) * 100);
     promoItems.push({ text: `👔 Dia dos Pais ${PROMO_PAIS.dateLabel} — ${paisIds.size} presentes com ${pctPais}% OFF`, action: () => goToCategory(CAT_PAIS) });
   }
+  // v7: chamada do outlet, só quando ele vale mais que o desconto do site
+  const nOut = allProducts.filter(ehOutlet).length;
+  if (nOut > 0 && OUTLET.pct > siteDiscount()) {
+    promoItems.push({ text: `🏷️ Outlet — ${nOut} peças com ${Math.round(OUTLET.pct * 100)}% OFF`, action: () => goToCategory(CAT_OUTLET) });
+  }
 
   // Monta lista de itens do ticker
   const items = [
     ...promoItems,
-    { text: `🔥 Tudo com ${pct}% OFF — aproveite!`, action: null },
+    ...(campAtiva() ? [] : [{ text: `🔥 Tudo com ${pct}% OFF — aproveite!`, action: null }]),
     { text: `✨ ${Math.min(NOVIDADES_COUNT, allProducts.length)} novidades disponíveis — confira!`,
       action: () => goToCategory(CAT_NOVIDADES) },
     ...featured.map(p => ({
@@ -2871,7 +3631,7 @@ function buildTicker() {
 
   // v3: rótulo da faixa acompanha a campanha
   const lbl = wrap.querySelector('.ticker-label');
-  if (lbl) lbl.textContent = faseCamp === 'ativa' ? ('💎 ' + PROMO_CAMP.label)
+  if (lbl) lbl.textContent = faseCamp === 'ativa' ? ((PROMO_CAMP.emoji || '💎') + ' ' + (PROMO_CAMP.nome || PROMO_CAMP.label))
     : (faseCamp === 'antes' ? ('⏳ ' + PROMO_CAMP.label) : '🔥 Destaques');
 
   wrap.style.display = 'flex';
@@ -3006,9 +3766,9 @@ function openQuickView(productId) {
       </div>
       <div class="modal-body">
         <div class="modal-cat">${escHTML(p.category)}${p.sheet ? ' · ' + escHTML(p.sheet) : ''}</div>
-        <h2 class="modal-name" id="modalName">${escHTML(p.name)}</h2>
+        <h2 class="modal-name" id="modalName">${escHTML(nomeExibicao(p.name))}</h2>
         <div class="modal-prices">
-          <div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−${discountPct(p)}%</span></div>
+          ${p.precoFinal ? '' : `<div class="price-original">R$ ${formatBRL(p.price)} <span class="discount-tag">−${discountPct(p)}%</span></div>`}
           <div class="price-discounted">R$ ${formatBRL(disc)}</div>
           ${saved > 0.005 ? `<div class="price-savings">Economize R$ ${formatBRL(saved)}</div>` : ''}
         </div>
@@ -3089,6 +3849,13 @@ updateCartBadge();
 loadProducts(false);
 startAutoRefresh();
 startPromoClock();   // v3: contagem regressiva + virada automática das campanhas
+// v7: rodapé, barra do carrinho e atalho do outlet
+(function () {
+  const wa = document.getElementById('footerWa');
+  if (wa) wa.href = 'https://wa.me/' + WA_NUMBER;
+  document.getElementById('cartBarBtn')?.addEventListener('click', openCart);
+  document.getElementById('heroOutlet')?.addEventListener('click', () => goToCategory(CAT_OUTLET));
+})();
 </script>
 </body>
 </html>
